@@ -1,0 +1,79 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+
+{% block cart_content %}
+<div class="container my-4">
+    <div class="box-element">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+
+            <div class="d-flex align-items-center">
+                <h5 class="mb-0 me-3">Items: <strong>1</strong></h5>
+                <h5 class="mb-0 me-3">Total: <strong>$???</strong></h5>
+                <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Checkout</a>
+            </div>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img class="row-image me-3" src="{% static 'app/images/placeholder.png' %}"
+                                alt="Product Image">
+                            <p>Product 1</p>
+                        </div>
+                    </td>
+                    <td>$???</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <p class="quantity me-2">???</p>
+                            <div class="quantity-controls">
+                                <img class="chg-quantity me-1" src="{% static 'app/images/arrow-up.png' %}"
+                                    alt="Increase Quantity">
+                                <img class="chg-quantity" src="{% static 'app/images/arrow-down.png' %}"
+                                    alt="Decrease Quantity">
+                            </div>
+                        </div>
+                    </td>
+                    <td>$???</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .d-flex {
+        display: flex;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .btn {
+        height: 48px;
+        /* Ensure equal height */
+        display: flex;
+        align-items: center;
+        /* Vertically center text */
+        padding: 0 15px;
+        /* Optional: Add horizontal padding for a better look */
+        text-align: center;
+        /* Center text in button */
+    }
+</style>
+{% endblock cart_content %}

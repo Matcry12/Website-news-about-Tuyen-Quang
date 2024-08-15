@@ -1,0 +1,80 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+
+{% block content_checkout %}
+<div class="container my-4">
+    <div class="row">
+        <!-- Checkout Form -->
+        <div class="col-lg-6">
+            <div class="box-element p-4 border rounded" id="form-wrapper">
+                <form id="form">
+                    <h4 class="mb-4">Shipping Information</h4>
+
+                    <!-- User Information -->
+                    <div id="user-info" class="mb-4">
+                        <div class="form-group mb-3">
+                            <input required class="form-control" type="text" name="name" placeholder="Name..">
+                        </div>
+                        <div class="form-group">
+                            <input required class="form-control" type="email" name="email" placeholder="Email..">
+                        </div>
+                    </div>
+
+                    <!-- Shipping Information -->
+                    <div id="shipping-info" class="mb-4">
+                        <hr>
+                        <p class="mb-2">Shipping Information:</p>
+                        <hr>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" name="address" placeholder="Address..">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" name="city" placeholder="City..">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" name="state" placeholder="State..">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+                        </div>
+                        <div class="form-group mb-3">
+                            <input class="form-control" type="text" name="country" placeholder="Country..">
+                        </div>
+                    </div>
+
+                    <hr>
+                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                </form>
+            </div>
+
+            <br>
+
+            <!-- Payment Information -->
+            <div class="box-element p-4 border rounded hidden" id="payment-info">
+                <small>Paypal Options</small    all>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-6">
+            <div class="box-element p-4 border rounded">
+                <a class="btn btn-outline-dark mb-4" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+                <hr>
+                <h3 class="mb-4">Order Summary</h3>
+                <hr>
+                <div class="d-flex align-items-center mb-3">
+                    <img class="row-image me-3" src="{% static 'app/images/placeholder.png' %}" alt="Product Image">
+                    <div class="flex-grow-1">
+                        <p class="mb-1">Product 1</p>
+                        <p class="mb-1">Price: $???</p>
+                        <p class="mb-1">Quantity: x???</p>
+                    </div>
+                </div>
+                <hr>
+                <h5>Items: <strong>???</strong></h5>
+                <h5>Total: <strong>$???</strong></h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content_checkout %}
