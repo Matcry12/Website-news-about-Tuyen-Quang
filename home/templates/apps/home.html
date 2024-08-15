@@ -44,7 +44,7 @@
     <div class="row text-center">
         {% for new in news %}
         <div class="col-12 col-md-6 col-lg-4 mx-auto">
-            <img class="thumbnail" src="{% static 'app/images/imageEx.png' %}" alt="Tour du lịch">
+            <img class="thumbnail" src="{{ new.imageURL }}" alt="Tour du lịch">
             <div class="box-element product">
                 <h6><strong>{{ new.title }}</strong></h6>
                 <hr>
@@ -65,7 +65,24 @@
 
 <br /><br /><br />
 
+
 <style>
+    .thumbnail {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        max-height: 200px; /* Optional: set a maximum height */
+        object-fit: cover; /* Ensures the image covers the area without distortion */
+        /* border-radius: 8px; /* Optional: add rounded corners */
+    }
+
+    .box-element {
+        padding: 15px;
+        border: 1px solid #ddd;
+        /* border-radius: 8px; /* Optional: add rounded corners */
+        background-color: #fff;
+        margin-bottom: 20px; /* Space between items */
+    }
+
     .detail-text {
         white-space: nowrap;
         overflow: hidden;
