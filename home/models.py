@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class customer(models.Model):
-    userName = models.CharField(max_length=200)
-    password = models.CharField(max_length=255)
+    userName = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank=True)
+    name = models.CharField(max_length=255)
     role = models.CharField(max_length=10)
     email = models.CharField(max_length=200,null=True)
     phone = models.CharField(max_length=200,null=True)
@@ -18,11 +18,18 @@ class product(models.Model):
     price = models.FloatField(max_length=255)
     quantity = models.IntegerField(max_length=255)
     onSale = models.BooleanField(default=False,null=False,blank=False)
-    image = models.ImageField(null=True,blank=True)
+    imageP = models.ImageField(null=True,blank=True)
     location = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name    
+        return self.name
+    @property
+    def imageURL(self):
+        try:
+            url = self.imageP.url
+        except:
+            url = ''
+        return url    
 class order(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     _customer = models.ForeignKey(customer, on_delete=models.SET_NULL, blank=True, null=True)
@@ -33,14 +40,26 @@ class order(models.Model):
 
     def __str__(self):
         return str(self.id)
+    @property
+    def getCartItems(self):
+        Cart = self.cart_set.all()
+        total = sum([item.quantity for item in Cart])
+        return total
+    def getTotalPrice(self):
+        Cart = self.cart_set.all()
+        total = sum([item.getTotal for item in Cart])
+        return total
 class cart(models.Model):
-    _product = models.ForeignKey(product, on_delete=models.SET_NULL, blank=True, null=True)
-    _order = models.ForeignKey(order, on_delete=models.SET_NULL, blank=True, null=True)
+    Product = models.ForeignKey(product, on_delete=models.SET_NULL, blank=True, null=True)
+    Order = models.ForeignKey(order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0,null=True,blank=True)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True) 
 
-    def __str__(self):
-        return self.name    
+    @property
+    def getTotal(self):
+        total = self.Product.price * self.quantity
+        return total
+
 class new(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000)

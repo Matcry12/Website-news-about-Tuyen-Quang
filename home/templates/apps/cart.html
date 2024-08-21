@@ -3,51 +3,56 @@
 
 {% block cart_content %}
 <div class="container my-4">
-    <div class="box-element">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
 
-            <div class="d-flex align-items-center">
-                <h5 class="mb-0 me-3">Items: <strong>1</strong></h5>
-                <h5 class="mb-0 me-3">Total: <strong>$???</strong></h5>
-                <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Checkout</a>
+                    <div class="d-flex align-items-center">
+                        <h5 class="mb-0 me-3">Items: <strong>{{ order.getCartItems }}</strong></h5>
+                        <h5 class="mb-0 me-3">Total: $<strong>{{ order.getTotalPrice }}</strong></h5>
+                        <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Checkout</a>
+                    </div>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img class="row-image me-3" src="{{ item.Product.imageURL }}" alt="Product Image">
+                                    <p>{{ item.Product.name }}</p>
+                                </div>
+                            </td>
+                            <td>{{ item.Product.price }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <p class="quantity me-2">{{ item.quantity }}</p>
+                                    <div class="quantity-controls">
+                                        <img class="chg-quantity me-1" src="{% static 'app/images/arrow-up.png' %}"
+                                            alt="Increase Quantity">
+                                        <img class="chg-quantity" src="{% static 'app/images/arrow-down.png' %}"
+                                            alt="Decrease Quantity">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>$???</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img class="row-image me-3" src="{% static 'app/images/placeholder.png' %}"
-                                alt="Product Image">
-                            <p>Product 1</p>
-                        </div>
-                    </td>
-                    <td>$???</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <p class="quantity me-2">???</p>
-                            <div class="quantity-controls">
-                                <img class="chg-quantity me-1" src="{% static 'app/images/arrow-up.png' %}"
-                                    alt="Increase Quantity">
-                                <img class="chg-quantity" src="{% static 'app/images/arrow-down.png' %}"
-                                    alt="Decrease Quantity">
-                            </div>
-                        </div>
-                    </td>
-                    <td>$???</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 
@@ -74,6 +79,25 @@
         /* Optional: Add horizontal padding for a better look */
         text-align: center;
         /* Center text in button */
+    }
+
+    .row-image {
+        width: 100px;
+        height: auto;
+    }
+
+    .quantity-controls img {
+        cursor: pointer;
+    }
+
+    .box-element {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 15px;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
     }
 </style>
 {% endblock cart_content %}
