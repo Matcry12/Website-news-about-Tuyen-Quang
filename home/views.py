@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from .models import *
 import json
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
 
 def get_firstHTML(request):
     news = new.objects.all()
@@ -44,7 +47,7 @@ def updateItem(request):
     Order, created = order.objects.get_or_create(_customer = customer, complete = False)
     Cart, created = cart.objects.get_or_create(Order = Order, product = product)
 
-    if Cart.quantity > 0:
+    if Cart.quantity > 0 or action == 'add':
         if action == 'add':
             Cart.quantity += 1
         elif action == 'remove':
@@ -53,5 +56,30 @@ def updateItem(request):
         Cart.delete()
     Cart.save()
 
-
     return JsonResponse('added', safe=False)
+
+def register(request):
+    form = CreationUserForm()
+    context = {'form': form}
+    if request.method == "POST":
+        form = CreationUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request, 'apps/register.html', context)
+def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username = username, password = password)
+        if user is not None:
+            login(request,user)
+            return redirect('home')
+        else: messages.info(request, 'Username or password is not correct!')
+
+    context = {}
+    return render(request, 'apps/login.html', context)
+def logoutPage(request):
+    logout(request)
+    return redirect('login')

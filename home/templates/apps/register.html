@@ -1,0 +1,90 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link href="{% static 'app/css/register.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+    {% block register %}
+
+    <section class="vh-100 bg-image" style="background-color: #eee;">
+        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div class="card" style="border-radius: 15px;">
+                            <div class="card-body p-5">
+                                <h2 class="text-uppercase text-center mb-5">Đăng ký tài khoản</h2>
+
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="Username">Tên tài khoản</label>
+                                        {{ form.username }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="email">Email của bạn</label>
+                                        {{ form.email }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="password">Tên Riêng</label>
+                                        {{ form.first_name }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="password">Tên Họ</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="password">Mật khẩu</label>
+                                        {{ form.password1 }}
+                                    </div>
+
+                                    <div data-mdb-input-init class="form-outline mb-4">
+                                        <label class="form-label" for="password">Nhập lại mật khẩu</label>
+                                        {{ form.password2 }}
+                                    </div>
+
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Đăng ký</button>
+                                    </div>
+
+                                    <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản rồi? <a href="{% url 'login' %}"
+                                            class="fw-bold text-body"><u>Đăng nhập ở đây</u></a></p>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--
+<div class="container">
+    <h2 class="text-center">Register</h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form>
+    <div class="text-center mt-3">
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+</div>
+-->
+    {% endblock register %}
+</body>
+
+</html>
