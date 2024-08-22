@@ -30,18 +30,18 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <img class="row-image me-3" src="{{ item.Product.imageURL }}" alt="Product Image">
-                                    <p>{{ item.Product.name }}</p>
+                                    <img class="row-image me-3" src="{{ item.product.imageURL }}" alt="Product Image">
+                                    <p>{{ item.product.name }}</p>
                                 </div>
                             </td>
-                            <td>{{ item.Product.price }}</td>
+                            <td>{{ item.product.price }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <p class="quantity me-2">{{ item.quantity }}</p>
                                     <div class="quantity-controls">
-                                        <img class="chg-quantity me-1" src="{% static 'app/images/arrow-up.png' %}"
+                                        <img data-product= {{ item.product.id }} data-action= "add" class="chg-quantity me-1 update-cart" src="{% static 'app/images/arrow-up.png' %}"
                                             alt="Increase Quantity">
-                                        <img class="chg-quantity" src="{% static 'app/images/arrow-down.png' %}"
+                                        <img data-product= {{ item.product.id }} data-action= "remove" class="chg-quantity update-cart" src="{% static 'app/images/arrow-down.png' %}"
                                             alt="Decrease Quantity">
                                     </div>
                                 </div>

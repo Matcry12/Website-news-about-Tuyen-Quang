@@ -12,7 +12,7 @@ class customer(models.Model):
     def __str__(self):
         return self.name
     
-class product(models.Model):
+class Product(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
     price = models.FloatField(max_length=255)
@@ -50,14 +50,14 @@ class order(models.Model):
         total = sum([item.getTotal for item in Cart])
         return total
 class cart(models.Model):
-    Product = models.ForeignKey(product, on_delete=models.SET_NULL, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
     Order = models.ForeignKey(order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0,null=True,blank=True)
     date = models.DateTimeField(auto_now_add=True) 
 
     @property
     def getTotal(self):
-        total = self.Product.price * self.quantity
+        total = self.product.price * self.quantity
         return total
 
 class new(models.Model):

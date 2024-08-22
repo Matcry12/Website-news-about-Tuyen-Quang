@@ -65,10 +65,10 @@
 
                 {% for item in items %}
                 <div class="d-flex align-items-center mb-3">
-                    <img class="row-image me-3" src={{ item.Product.imageURL }} alt="Product Image">
+                    <img class="row-image me-3" src={{ item.product.imageURL }} alt="Product Image">
                     <div class="flex-grow-1">
-                        <p class="mb-1">Name: {{ item.Product.name }}</p>
-                        <p class="mb-1">Price: ${{ item.Product.price }}</p>
+                        <p class="mb-1">Name: {{ item.product.name }}</p>
+                        <p class="mb-1">Price: ${{ item.product.price }}</p>
                         <p class="mb-1">Quantity: x{{ item.quantity }}</p>
                     </div>
                 </div>
