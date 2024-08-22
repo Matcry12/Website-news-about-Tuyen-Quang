@@ -62,19 +62,25 @@
                 <hr>
                 <h3 class="mb-4">Order Summary</h3>
                 <hr>
+
+                {% for item in items %}
                 <div class="d-flex align-items-center mb-3">
-                    <img class="row-image me-3" src="{% static 'app/images/placeholder.png' %}" alt="Product Image">
+                    <img class="row-image me-3" src={{ item.product.imageURL }} alt="Product Image">
                     <div class="flex-grow-1">
-                        <p class="mb-1">Product 1</p>
-                        <p class="mb-1">Price: $???</p>
-                        <p class="mb-1">Quantity: x???</p>
+                        <p class="mb-1">Name: {{ item.product.name }}</p>
+                        <p class="mb-1">Price: ${{ item.product.price }}</p>
+                        <p class="mb-1">Quantity: x{{ item.quantity }}</p>
                     </div>
                 </div>
+                {% endfor %}
+
                 <hr>
-                <h5>Items: <strong>???</strong></h5>
-                <h5>Total: <strong>$???</strong></h5>
+                <h5>Items: <strong>{{ order.getCartItems }}</strong></h5>
+                <h5>Total: <strong>${{ order.getTotalPrice }}</strong></h5>
             </div>
         </div>
     </div>
 </div>
+
+
 {% endblock content_checkout %}
