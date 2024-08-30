@@ -1,17 +1,23 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 # Create your models here.
 
-class customer(models.Model):
-    userName = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank=True)
-    name = models.CharField(max_length=255)
-    role = models.CharField(max_length=10)
-    email = models.CharField(max_length=200,null=True)
-    phone = models.CharField(max_length=200,null=True)
+#Change creaton form    
+class CreationUserForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên tài khoản'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập email'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên riêng'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên họ'}),
+            #'password1': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu'}),
+            #'password2': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập lại mật khẩu'}),
+        }
 
-    def __str__(self):
-        return self.name
-    
 class Product(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
@@ -32,7 +38,7 @@ class Product(models.Model):
         return url    
 class order(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
-    _customer = models.ForeignKey(customer, on_delete=models.SET_NULL, blank=True, null=True)
+    _customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     dateOrder = models.DateTimeField(auto_now_add=True)
     outdateOrder = models.DateTimeField(null=True, blank=True)
     complete = models.BooleanField(default=False,null=False,blank=False)

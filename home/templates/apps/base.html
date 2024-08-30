@@ -118,34 +118,33 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Tin tức</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Dự án đầu tư</a>
-          </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit" style="border-radius: 10px;">Search</button>
+        <form class="d-flex" role="search" method= POST action= "{% url 'search' %}">
+          {% csrf_token %}
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name = "searched" required>
+          <button class="btn btn-outline-success" type="submit" style="border-radius: 10px; width: 150px">Tìm kiếm</button>
         </form>
       </div>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Người dùng
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="customerDef">
+            {{request.user}}
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Đơn hàng</a></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+            <li><a class="dropdown-item" href="{% url 'cart' %}">Đơn hàng</a></li>
+            <li><a class="dropdown-item" href= "{% url 'logout' %}">Đăng xuất</a></li>
           </ul>
         </li>
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Giỏ hàng</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Đăng nhập</a>
+        <li class="nav-item" style="display: {{ user_not_login }}">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Đăng nhập</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Đăng ký</a>
+        <li class="nav-item" style="display: {{ user_not_login }}">
+          <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Đăng ký</a>
         </li>
       </ul>
     </div>
@@ -154,9 +153,11 @@
   <!-- main body -->
 
   {% block banner_slider %}{% endblock %}
+  {% block register %}{% endblock %}
   {% block main-content %}{% endblock %}
   {% block cart_content %}{% endblock %}
   {% block content_checkout %}{% endblock %}
+  {% block search %}{% endblock %}
 
   <!-- footer -->
   <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">
@@ -164,6 +165,7 @@
   </footer>
 
   <script src="{%static 'app/js/cart.js' %}"></script>
+  <script src="{%static 'app/js/customer.js' %}"></script>
 
 </body>
 

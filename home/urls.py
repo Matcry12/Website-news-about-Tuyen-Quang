@@ -9,4 +9,8 @@ urlpatterns = [
     path('checkout', views.checkout, name="checkout"),
     path('hotel', views.hotel, name="hotel"),
     path('updateItem/', views.updateItem, name="updateItem"),
+    path('register/', views.register, name="register"),
+    path('login/', views.loginPage, name="login"),
+    path('logout/', views.logoutPage, name="logout"),
+    path('search/', views.search, name="search"),
 ]
