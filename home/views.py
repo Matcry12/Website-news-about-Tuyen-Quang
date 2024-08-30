@@ -9,9 +9,9 @@ from django.contrib import messages
 def get_firstHTML(request):
     news = new.objects.all()
     if request.user.is_authenticated:
-        user_not_login = "hidden"
+        user_not_login = "none"
     else:
-        user_not_login = "show"
+        user_not_login = "block"
     context = {'news': news, 'user_not_login': user_not_login}
     return render(request, 'apps/home.html', context)
 def Cart(request):
@@ -23,9 +23,9 @@ def Cart(request):
         items =[]
         _order = {'getCartItems': 0, 'getTotalPrice': 0, 'getTotal': 0}
     if request.user.is_authenticated:
-        user_not_login = "hidden"
+        user_not_login = "none"
     else:
-        user_not_login = "show"
+        user_not_login = "block"
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/cart.html', context)
@@ -38,18 +38,18 @@ def checkout(request):
         items =[]
         _order = {'getCartItems': 0, 'getTotalPrice': 0}
     if request.user.is_authenticated:
-        user_not_login = "hidden"
+        user_not_login = "none"
     else:
-        user_not_login = "show"
+        user_not_login = "block"
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/checkout.html', context)
 def hotel(request):
     products = Product.objects.all()
     if request.user.is_authenticated:
-        user_not_login = "hidden"
+        user_not_login = "none"
     else:
-        user_not_login = "show"
+        user_not_login = "block"
     context = {'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/hotel.html', context)
 def updateItem(request):
@@ -109,7 +109,7 @@ from .models import Product  # Adjust the import based on your project structure
 
 def search(request):
     # Determine if the user is logged in or not
-    user_not_login = "hidden" if request.user.is_authenticated else "show"
+    user_not_login = "none" if request.user.is_authenticated else "block"
 
     # Initialize context with default values
     context = {

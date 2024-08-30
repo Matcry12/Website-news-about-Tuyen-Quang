@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 # Create your models here.
@@ -8,7 +9,15 @@ class CreationUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
-    
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên tài khoản'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập email'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên riêng'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên họ'}),
+            #'password1': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu'}),
+            #'password2': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập lại mật khẩu'}),
+        }
+
 class Product(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=1000)
