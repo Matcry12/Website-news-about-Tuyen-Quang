@@ -8,16 +8,6 @@ class CreationUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
-
-class customer(models.Model):
-    userName = models.OneToOneField(User,on_delete=models.SET_NULL,null=True,blank=True)
-    name = models.CharField(max_length=255)
-    role = models.CharField(max_length=10)
-    email = models.CharField(max_length=200,null=True)
-    phone = models.CharField(max_length=200,null=True)
-
-    def __str__(self):
-        return self.name
     
 class Product(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -39,7 +29,7 @@ class Product(models.Model):
         return url    
 class order(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
-    _customer = models.ForeignKey(customer, on_delete=models.SET_NULL, blank=True, null=True)
+    _customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     dateOrder = models.DateTimeField(auto_now_add=True)
     outdateOrder = models.DateTimeField(null=True, blank=True)
     complete = models.BooleanField(default=False,null=False,blank=False)

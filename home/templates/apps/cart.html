@@ -27,18 +27,18 @@
                     </thead>
                     <tbody>
                         {% for item in items %}
-                        <tr>
+                        <tr class="cart-item" data-product-price="{{ item.product.price }}">
                             <td>
                                 <div class="d-flex align-items-center">
                                     <img class="row-image me-3" src="{{ item.product.imageURL }}" alt="Product Image">
                                     <p>{{ item.product.name }}</p>
                                 </div>
                             </td>
-                            <td>{{ item.product.price }}</td>
+                            <td >${{ item.product.price }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <p class="quantity me-2">{{ item.quantity }}</p>
-                                    <div class="quantity-controls">
+                                    <div class="quantity-controls"> 
                                         <img data-product= {{ item.product.id }} data-action= "add" class="chg-quantity me-1 update-cart" src="{% static 'app/images/arrow-up.png' %}"
                                             alt="Increase Quantity">
                                         <img data-product= {{ item.product.id }} data-action= "remove" class="chg-quantity update-cart" src="{% static 'app/images/arrow-down.png' %}"
@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>$???</td>
+                            <td class="item-total">${{ item.getTotal }}</td> <!-- Placeholder for item total -->
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -71,14 +71,10 @@
 
     .btn {
         height: 48px;
-        /* Ensure equal height */
         display: flex;
         align-items: center;
-        /* Vertically center text */
         padding: 0 15px;
-        /* Optional: Add horizontal padding for a better look */
         text-align: center;
-        /* Center text in button */
     }
 
     .row-image {
@@ -100,4 +96,5 @@
         background-color: #f9f9f9;
     }
 </style>
+
 {% endblock cart_content %}

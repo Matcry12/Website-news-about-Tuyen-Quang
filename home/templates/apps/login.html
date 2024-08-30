@@ -42,6 +42,10 @@
                                     <p class="text-center text-muted mt-5 mb-0">Bạn chưa có tài khoản? <a href="{% url 'register' %}"
                                         class="fw-bold text-body"><u>Đăng ký ở đây</u></a></p>
 
+                                    {% for message in messages %}
+                                        <p id='message' class="text-center text-muted mt-5 mb-0"> {{ message }}</p>
+                                    {% endfor %}
+
                                 </form>
 
                             </div>

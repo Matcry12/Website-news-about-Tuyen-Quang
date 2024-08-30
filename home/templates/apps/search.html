@@ -1,0 +1,65 @@
+{% extends 'apps/base.html' %}
+{% load static %} 
+{% block main-content %}
+
+<br /><br />
+
+<div>
+    <h6 class="text-center"><strong> Kết quả tìm kiếm của {{ searched }}</strong></h6>
+</div>
+
+<br />
+<div class="container">
+    <div class="row text-center">
+        {% for product in keys %}
+        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+            <img class="thumbnail" src="{{ product.imageURL }}" alt="Tour du lịch">
+            <div class="box-element product">
+                <h6><strong>{{ product.name }}</strong></h6>
+                <hr>
+                <p class="detail-text">
+                    ${{ product.price |truncatewords:15 }} <!-- Limiting the text to 15 words -->
+                </p>
+                <a class="btn btn-outline-success" href="">Xem chi tiết</a>
+                <button data-product={{ product.id }} data-action="add" class="btn btn-success ms-2 add-btn update-cart" href="">Thêm vào giỏ hàng</button>
+            </div>
+        </div>
+        {% if forloop.counter|divisibleby:3 %}
+    </div>
+    <div class="row text-center">
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+<br /><br /><br />
+
+
+<style>
+    .thumbnail {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        max-height: 200px; /* Optional: set a maximum height */
+        object-fit: cover; /* Ensures the image covers the area without distortion */
+        /* border-radius: 8px; /* Optional: add rounded corners */
+    }
+
+    .box-element {
+        padding: 15px;
+        border: 1px solid #ddd;
+        /* border-radius: 8px; /* Optional: add rounded corners */
+        background-color: #fff;
+        margin-bottom: 20px; /* Space between items */
+    }
+
+    .detail-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+</style>
+
+{% endblock %}
