@@ -1,7 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block banner_slider %}
 
+{% block banner_slider %}
 <div id="carouselExampleDark" class="carousel carousel-dark slide">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
@@ -29,59 +29,122 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
 {% endblock %}
+
 {% block main-content %}
+<div class="container mt-4">
+    <h6 class="text-center"><strong>Các địa điểm nghỉ dưỡng</strong></h6>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <h6 class="text-center"><strong>Choose Hotel Services</strong></h6>
+            <form method="POST">
+                {% csrf_token %}
+                <table class="table table-striped" style="border-radius: 10px; overflow: hidden; border: 1px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Service</th>
+                            <th scope="col">Available</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Internet</td>
+                            <td><input type="checkbox" name="category" value="Internet"></td>
+                        </tr>
+                        <tr>
+                            <td>Bãi để xe</td>
+                            <td><input type="checkbox" name="category" value="Bãi để xe"></td>
+                        </tr>
+                        <tr>
+                            <td>Trên cả tuyệt vời</td>
+                            <td><input type="checkbox" name="category" value="Trên cả tuyệt vời"></td>
+                        </tr>
+                        <tr>
+                            <td>Xuất sắc</td>
+                            <td><input type="checkbox" name="category" value="Xuất sắc"></td>
+                        </tr>
+                        <tr>
+                            <td>Rất tốt</td>
+                            <td><input type="checkbox" name="category" value="Rất tốt"></td>
+                        </tr>
+                        <tr>
+                            <td>Hài lòng</td>
+                            <td><input type="checkbox" name="category" value="Hài lòng"></td>
+                        </tr>
+                        <tr>
+                            <td>Trả tiền liền</td>
+                            <td><input type="checkbox" name="category" value="Trả tiền liền"></td>
+                        </tr>
+                        <tr>
+                            <td>Nhà nghỉ ven đường</td>
+                            <td><input type="checkbox" name="category" value="Nhà nghỉ ven đường"></td>
+                        </tr>
+                        <tr>
+                            <td>Khách sạn</td>
+                            <td><input type="checkbox" name="category" value="Khách sạn"></td>
+                        </tr>
+                        <tr>
+                            <td>Toàn bộ nhà trệt</td>
+                            <td><input type="checkbox" name="category" value="Toàn bộ nhà trệt"></td>
+                        </tr>
+                        <tr>
+                            <td>Trẻ em lưu trú miễn phí</td>
+                            <td><input type="checkbox" name="category" value="Trẻ em lưu trú miễn phí"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
+            </form>
+        </div>
 
-<br /><br />
-
-<div>
-    <h6 class="text-center"><strong> Các địa điểm nghỉ dưỡng</strong></h6>
-</div>
-
-<br />
-<div class="container">
-    <div class="row text-center">
-        {% for product in products %}
-        <div class="col-12 col-md-6 col-lg-4 mx-auto">
-            <img class="thumbnail" src="{{ product.imageURL }}" alt="Tour du lịch">
-            <div class="box-element product">
-                <h6><strong>{{ product.name }}</strong></h6>
-                <hr>
-                <p class="detail-text">
-                    ${{ product.price |truncatewords:15 }} <!-- Limiting the text to 15 words -->
-                </p>
-                <a class="btn btn-outline-success" href="">Xem chi tiết</a>
-                <button data-product={{ product.id }} data-action="add" class="btn btn-success ms-2 add-btn update-cart" href="">Thêm vào giỏ hàng</button>
+        <div class="col-md-8">
+            <div class="row text-center">
+                {% for product in products %}
+                <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                    <img class="thumbnail" src="{{ product.imageURL }}" alt="{{ product.name }}">
+                    <div class="box-element product">
+                        <h6><strong>{{ product.name }}</strong></h6>
+                        <hr>
+                        <p class="detail-text">${{ product.price | truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-outline-success rounded-pill me-2" href="">Xem chi tiết</a>
+                            <button data-product="{{ product.id }}" data-action="add" class="btn btn-success rounded-pill add-btn update-cart">Thêm vào giỏ hàng</button>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 %}
+            </div>
+            <div class="row text-center">
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
-        {% if forloop.counter|divisibleby:3 %}
-    </div>
-    <div class="row text-center">
-        {% endif %}
-        {% endfor %}
     </div>
 </div>
 
-
-<br /><br /><br />
-
+</br></br></br>
 
 <style>
     .thumbnail {
         width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        max-height: 200px; /* Optional: set a maximum height */
-        object-fit: cover; /* Ensures the image covers the area without distortion */
-        /* border-radius: 8px; /* Optional: add rounded corners */
+        height: auto; 
+        max-height: 200px; 
+        object-fit: cover; 
+        border-radius: 5px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
     }
 
     .box-element {
         padding: 15px;
         border: 1px solid #ddd;
-        /* border-radius: 8px; /* Optional: add rounded corners */
         background-color: #fff;
-        margin-bottom: 20px; /* Space between items */
+        margin-bottom: 20px; 
+        border-radius: 5px; 
+        transition: box-shadow 0.3s; 
+    }
+
+    .box-element:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
     }
 
     .detail-text {
@@ -90,6 +153,23 @@
         text-overflow: ellipsis;
         max-width: 100%;
         display: block;
+    }
+
+    .btn-outline-success {
+        color: #28a745; 
+        border-color: #28a745;
+        transition: background-color 0.3s;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745; 
+        color: white; 
+    }
+
+    @media (max-width: 768px) {
+        .box-element {
+            margin-bottom: 15px; 
+        }
     }
 </style>
 

@@ -17,6 +17,13 @@ class CreationUserForm(UserCreationForm):
             #'password1': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu'}),
             #'password2': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập lại mật khẩu'}),
         }
+    
+class category(models.Model):
+    name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -25,6 +32,7 @@ class Product(models.Model):
     quantity = models.IntegerField(max_length=255)
     onSale = models.BooleanField(default=False,null=False,blank=False)
     imageP = models.ImageField(null=True,blank=True)
+    categories = models.ManyToManyField(category, blank=True)
     location = models.CharField(max_length=255)
 
     def __str__(self):

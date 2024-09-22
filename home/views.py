@@ -44,14 +44,30 @@ def checkout(request):
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/checkout.html', context)
+from django.db.models import Q
+
 def hotel(request):
-    products = Product.objects.all()
-    if request.user.is_authenticated:
-        user_not_login = "none"
+    if request.method == 'POST':
+        selected_categories = request.POST.getlist('category')  # Retrieve the selected categories
+
+        if selected_categories:
+            products = Product.objects.filter(categories__name__in=selected_categories).distinct()
+        else:
+            products = Product.objects.all()  # Show all products if no categories are selected
     else:
-        user_not_login = "block"
-    context = {'products': products, 'user_not_login': user_not_login}
+        products = Product.objects.all()  # Default: show all products
+
+    # Check if the user is authenticated
+    user_not_login = "none" if request.user.is_authenticated else "block"
+
+    context = {
+        'products': products,
+        'user_not_login': user_not_login
+    }
+    
     return render(request, 'apps/hotel.html', context)
+
+
 def updateItem(request):
     data = json.loads(request.body)
 
@@ -127,5 +143,5 @@ def search(request):
         context['keys'] = Product.objects.filter(name__icontains=searched)  # Use icontains for case-insensitive search
 
     return render(request, 'apps/search.html', context)
-
+# views.py
     
