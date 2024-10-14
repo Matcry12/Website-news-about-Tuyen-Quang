@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from .models import *
+from django.db.models import Q
 import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
@@ -44,25 +45,34 @@ def checkout(request):
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/checkout.html', context)
-from django.db.models import Q
+
+from django.shortcuts import render
+from .models import Product
 
 def hotel(request):
+    # Start with an empty queryset for products
+    query = request.GET.get('q', '')  # Get the search query from the request
+    products = Product.objects.all()
+
+    if query:
+        # Search in both name and location fields
+        products = products.filter(Q(name__icontains=query) | Q(location__icontains=query))
+
+    # Handle the selected categories from POST request
     if request.method == 'POST':
         selected_categories = request.POST.getlist('category')  # Retrieve the selected categories
 
         if selected_categories:
-            products = Product.objects.filter(categories__name__in=selected_categories).distinct()
-        else:
-            products = Product.objects.all()  # Show all products if no categories are selected
-    else:
-        products = Product.objects.all()  # Default: show all products
+            # Filter products based on selected categories while retaining the search filter
+            products = products.filter(categories__name__in=selected_categories).distinct()
 
     # Check if the user is authenticated
     user_not_login = "none" if request.user.is_authenticated else "block"
 
     context = {
         'products': products,
-        'user_not_login': user_not_login
+        'user_not_login': user_not_login,
+        'query': query,
     }
     
     return render(request, 'apps/hotel.html', context)
@@ -120,28 +130,5 @@ def loginPage(request):
 def logoutPage(request):
     logout(request)
     return redirect('login')
-from django.shortcuts import render
-from .models import Product  # Adjust the import based on your project structure
-
-def search(request):
-    # Determine if the user is logged in or not
-    user_not_login = "none" if request.user.is_authenticated else "block"
-
-    # Initialize context with default values
-    context = {
-        'user_not_login': user_not_login,
-        'searched': '',  # Default value for search term
-        'keys': []  # Default empty list for search results
-    }
-
-    # Check if the request method is POST
-    if request.method == "POST":
-        # Get the search term from POST data
-        searched = request.POST.get("searched", "")
-        # Update context with the search term and results
-        context['searched'] = searched
-        context['keys'] = Product.objects.filter(name__icontains=searched)  # Use icontains for case-insensitive search
-
-    return render(request, 'apps/search.html', context)
 # views.py
     

@@ -34,16 +34,27 @@
 {% block main-content %}
 <div class="container mt-4">
     <h6 class="text-center"><strong>Các địa điểm nghỉ dưỡng</strong></h6>
+     <!-- Search Toolbar -->
+     <div class="row justify-content-center mt-3">
+        <div class="col-md-4">
+            <form method="GET" action="">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search by name or location">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="row mt-4">
         <div class="col-md-4">
-            <h6 class="text-center"><strong>Choose Hotel Services</strong></h6>
-            <form method="POST">
+            <h6 class="text-center"><strong>Các dịch vụ của Hotel</strong></h6>
+            <form id="serviceForm" method="POST">
                 {% csrf_token %}
                 <table class="table table-striped" style="border-radius: 10px; overflow: hidden; border: 1px solid #ddd;">
                     <thead>
                         <tr>
-                            <th scope="col">Service</th>
-                            <th scope="col">Available</th>
+                            <th scope="col">Dịch vụ</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -171,6 +182,39 @@
             margin-bottom: 15px; 
         }
     }
+    /* Optional: Adjust width */
+    input.form-control {
+        width: auto; /* Makes the input box adjust to its content */
+        max-width: 300px; /* Limits the maximum width */
+    }
+
+    button.btn {
+        width: auto; /* Ensures the button doesn't take up unnecessary space */
+    }
 </style>
+
+<script>
+    // Save the scroll position before the page is unloaded
+    window.addEventListener("beforeunload", function() {
+        // Store the current scroll position in localStorage
+        localStorage.setItem("scrollX", window.scrollX);
+        localStorage.setItem("scrollY", window.scrollY);
+    });
+
+    // Restore the scroll position when the page is loaded
+    window.addEventListener("load", function() {
+        const scrollX = localStorage.getItem("scrollX");
+        const scrollY = localStorage.getItem("scrollY");
+
+        // Only scroll if the stored positions exist
+        if (scrollX !== null && scrollY !== null) {
+            window.scrollTo(parseFloat(scrollX), parseFloat(scrollY));
+        }
+
+        // Optional: Clear the stored scroll positions after restoring
+        localStorage.removeItem("scrollX");
+        localStorage.removeItem("scrollY");
+    });
+</script>
 
 {% endblock %}
