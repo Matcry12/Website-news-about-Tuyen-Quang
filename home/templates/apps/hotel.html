@@ -37,10 +37,10 @@
      <!-- Search Toolbar -->
      <div class="row justify-content-center mt-3">
         <div class="col-md-4">
-            <form method="GET" action="">
+            <form method="GET" id="searchForm" action="">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Search by name or location">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" onclick="submitSearch()" class="btn btn-primary">Search</button>
                 </div>
             </form>
         </div>
@@ -50,7 +50,7 @@
             <h6 class="text-center"><strong>Các dịch vụ của Hotel</strong></h6>
             <form id="serviceForm" method="POST">
                 {% csrf_token %}
-                <table class="table table-striped" style="border-radius: 10px; overflow: hidden; border: 1px solid #ddd;">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Dịch vụ</th>
@@ -58,53 +58,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for category in categories %}
                         <tr>
-                            <td>Internet</td>
-                            <td><input type="checkbox" name="category" value="Internet"></td>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <input type="checkbox" name="category" value="{{ category.name }}" 
+                                       onchange="document.getElementById('serviceForm').submit();"
+                                       {% if category.name in selected_categories %} checked {% endif %}>
+                            </td>
                         </tr>
-                        <tr>
-                            <td>Bãi để xe</td>
-                            <td><input type="checkbox" name="category" value="Bãi để xe"></td>
-                        </tr>
-                        <tr>
-                            <td>Trên cả tuyệt vời</td>
-                            <td><input type="checkbox" name="category" value="Trên cả tuyệt vời"></td>
-                        </tr>
-                        <tr>
-                            <td>Xuất sắc</td>
-                            <td><input type="checkbox" name="category" value="Xuất sắc"></td>
-                        </tr>
-                        <tr>
-                            <td>Rất tốt</td>
-                            <td><input type="checkbox" name="category" value="Rất tốt"></td>
-                        </tr>
-                        <tr>
-                            <td>Hài lòng</td>
-                            <td><input type="checkbox" name="category" value="Hài lòng"></td>
-                        </tr>
-                        <tr>
-                            <td>Trả tiền liền</td>
-                            <td><input type="checkbox" name="category" value="Trả tiền liền"></td>
-                        </tr>
-                        <tr>
-                            <td>Nhà nghỉ ven đường</td>
-                            <td><input type="checkbox" name="category" value="Nhà nghỉ ven đường"></td>
-                        </tr>
-                        <tr>
-                            <td>Khách sạn</td>
-                            <td><input type="checkbox" name="category" value="Khách sạn"></td>
-                        </tr>
-                        <tr>
-                            <td>Toàn bộ nhà trệt</td>
-                            <td><input type="checkbox" name="category" value="Toàn bộ nhà trệt"></td>
-                        </tr>
-                        <tr>
-                            <td>Trẻ em lưu trú miễn phí</td>
-                            <td><input type="checkbox" name="category" value="Trẻ em lưu trú miễn phí"></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
             </form>
         </div>
 
@@ -214,6 +179,13 @@
         // Optional: Clear the stored scroll positions after restoring
         localStorage.removeItem("scrollX");
         localStorage.removeItem("scrollY");
+    });
+    // Ensure checkboxes remain checked after page reload
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            document.getElementById('serviceForm').submit();  // Auto-submit form
+        });
     });
 </script>
 

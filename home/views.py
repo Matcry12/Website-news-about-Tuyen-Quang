@@ -46,35 +46,42 @@ def checkout(request):
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/checkout.html', context)
 
-from django.shortcuts import render
-from .models import Product
 
 def hotel(request):
-    # Start with an empty queryset for products
-    query = request.GET.get('q', '')  # Get the search query from the request
+    # Start with all products
     products = Product.objects.all()
 
+    # Handle the search query from GET request
+    query = request.GET.get('q', '')
     if query:
-        # Search in both name and location fields
-        products = products.filter(Q(name__icontains=query) | Q(location__icontains=query))
+        products = products.filter(name__icontains=query)
 
-    # Handle the selected categories from POST request
+    # Handle selected categories from POST request
+    selected_categories = request.session.get('selected_categories', [])
+
     if request.method == 'POST':
-        selected_categories = request.POST.getlist('category')  # Retrieve the selected categories
+        selected_categories = request.POST.getlist('category')
+        # Store the selected categories in the session
+        request.session['selected_categories'] = selected_categories
 
         if selected_categories:
-            # Filter products based on selected categories while retaining the search filter
-            products = products.filter(categories__name__in=selected_categories).distinct()
+            # Filter products that have all the selected categories
+            for item in selected_categories:
+                products = products.filter(categories__name=item)
+
+    # Load all categories for the checkbox list
+    categories = category.objects.all()
 
     # Check if the user is authenticated
     user_not_login = "none" if request.user.is_authenticated else "block"
 
     context = {
         'products': products,
-        'user_not_login': user_not_login,
-        'query': query,
+        'categories': categories,
+        'selected_categories': selected_categories,  # Pass selected categories to the template
+        'user_not_login': user_not_login
     }
-    
+
     return render(request, 'apps/hotel.html', context)
 
 
