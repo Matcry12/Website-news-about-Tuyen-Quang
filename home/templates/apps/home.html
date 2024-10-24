@@ -51,7 +51,7 @@
                 <p class="detail-text">
                     {{ new.detail|truncatewords:15 }} <!-- Limiting the text to 15 words -->
                 </p>
-                <a class="btn btn-outline-success" href="{{ new.get_absolute_url }}">Xem chi tiết</a>
+                <a class="btn btn-outline-success" href="{% url 'detail' %}?id={{new.id}}">Xem chi tiết</a>
             </div>
         </div>
         {% if forloop.counter|divisibleby:3 %}

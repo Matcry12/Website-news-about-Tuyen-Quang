@@ -31,6 +31,7 @@ class Product(models.Model):
     price = models.FloatField(max_length=255)
     quantity = models.IntegerField(max_length=255)
     onSale = models.BooleanField(default=False,null=False,blank=False)
+    detail = models.TextField(null=True, blank=True)
     imageP = models.ImageField(null=True,blank=True)
     categories = models.ManyToManyField(category, blank=True)
     location = models.CharField(max_length=255)

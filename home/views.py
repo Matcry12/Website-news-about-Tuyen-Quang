@@ -30,6 +30,7 @@ def Cart(request):
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/cart.html', context)
+
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user
@@ -50,15 +51,18 @@ def checkout(request):
 def hotel(request):
     # Start with all products
     products = Product.objects.all()
-
+    
     # Handle the search query from GET request
     query = request.GET.get('q', '')
     if query:
         products = products.filter(name__icontains=query)
+        # If a search is made, clear selected categories (optional, based on your requirement)
+        selected_categories = []
+    else:
+        # If no search, use selected categories from session
+        selected_categories = request.session.get('selected_categories', [])
 
     # Handle selected categories from POST request
-    selected_categories = request.session.get('selected_categories', [])
-
     if request.method == 'POST':
         selected_categories = request.POST.getlist('category')
         # Store the selected categories in the session
@@ -70,7 +74,7 @@ def hotel(request):
                 products = products.filter(categories__name=item)
 
     # Load all categories for the checkbox list
-    categories = category.objects.all()
+    categories = category.objects.all()  # Ensure the model name is correct
 
     # Check if the user is authenticated
     user_not_login = "none" if request.user.is_authenticated else "block"
@@ -138,4 +142,20 @@ def logoutPage(request):
     logout(request)
     return redirect('login')
 # views.py
+
+def detail(request):
+    if request.user.is_authenticated:
+        customer = request.user
+        _order, created = order.objects.get_or_create(_customer = customer, complete = False)
+        items = _order.cart_set.all()
+        user_not_login = "none"
+    else:
+        items =[]
+        _order = {'getCartItems': 0, 'getTotalPrice': 0, 'getTotal': 0}
+        user_not_login = "block"
+
+    id = request.GET.get('id', '')
+    products = Product.objects.filter(id = id)
+    context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
+    return render(request, 'apps/detail.html', context)
     

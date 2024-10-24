@@ -39,7 +39,7 @@
         <div class="col-md-4">
             <form method="GET" id="searchForm" action="">
                 <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search by name or location">
+                    <input type="text" name="q" class="form-control" placeholder="Search by name or location" required>
                     <button type="submit" onclick="submitSearch()" class="btn btn-primary">Search</button>
                 </div>
             </form>
@@ -75,24 +75,31 @@
 
         <div class="col-md-8">
             <div class="row text-center">
-                {% for product in products %}
-                <div class="col-12 col-md-6 col-lg-4 mx-auto">
-                    <img class="thumbnail" src="{{ product.imageURL }}" alt="{{ product.name }}">
-                    <div class="box-element product">
-                        <h6><strong>{{ product.name }}</strong></h6>
-                        <hr>
-                        <p class="detail-text">${{ product.price | truncatewords:15 }}</p>
-                        <div class="d-flex justify-content-center">
-                            <a class="btn btn-outline-success rounded-pill me-2" href="">Xem chi tiết</a>
-                            <button data-product="{{ product.id }}" data-action="add" class="btn btn-success rounded-pill add-btn update-cart">Thêm vào giỏ hàng</button>
+                {% if products %}
+                    {% for product in products %}
+                        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                            <img class="thumbnail" src="{{ product.imageURL }}" alt="{{ product.name }}">
+                            <div class="box-element product">
+                                <h6><strong>{{ product.name }}</strong></h6>
+                                <hr>
+                                <p class="detail-text">${{ product.price | truncatewords:15 }}</p>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-outline-success rounded-pill me-2" href="{% url 'detail' %}?id={{product.id}}">Xem chi tiết</a>
+                                    <button data-product="{{ product.id }}" data-action="add" class="btn btn-success rounded-pill add-btn update-cart">Thêm vào giỏ hàng</button>
+                                </div>
+                            </div>
                         </div>
+                        {% if forloop.counter|divisibleby:3 %}
                     </div>
-                </div>
-                {% if forloop.counter|divisibleby:3 %}
-            </div>
-            <div class="row text-center">
+                    <div class="row text-center">
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12 empty-state">
+                        <h6 class="text-danger">Không có sản phẩm nào.</h6>
+                        <button class="btn btn-primary" onclick="window.location.href='{% url 'hotel' %}'">Tải lại trang</button>
+                    </div>
                 {% endif %}
-                {% endfor %}
             </div>
         </div>
     </div>
@@ -156,6 +163,14 @@
     button.btn {
         width: auto; /* Ensures the button doesn't take up unnecessary space */
     }
+
+    .empty-state {
+        height: 600px; /* Adjust height as needed */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
 <script>
@@ -180,13 +195,40 @@
         localStorage.removeItem("scrollX");
         localStorage.removeItem("scrollY");
     });
+
     // Ensure checkboxes remain checked after page reload
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const searchForm = document.getElementById('searchForm');
+    const serviceForm = document.getElementById('serviceForm');
+
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
-            document.getElementById('serviceForm').submit();  // Auto-submit form
+            const searchQuery = document.querySelector('input[name="q"]').value;
+
+            // Only auto-submit service form if there is no active search query
+            if (searchQuery.trim() === "") {
+                serviceForm.submit();  // Auto-submit service form when no search is happening
+            }
         });
     });
+
+    function resetServiceForm() {
+        location.reload();
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = false;  // Uncheck all checkboxes
+        });
+    }
+
+    // Add event listener for search form submission
+    searchForm.addEventListener('submit', function(e) {
+        const searchQuery = document.querySelector('input[name="q"]').value;
+
+        // Only reset checkboxes if there is a valid search query
+        if (searchQuery.trim() !== "") {
+            resetServiceForm();  // Reset checkboxes in service form when search query is submitted
+        }
+    });
+    
 </script>
 
 {% endblock %}

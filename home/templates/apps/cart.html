@@ -7,12 +7,12 @@
         <div class="col-lg-12">
             <div class="box-element">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'hotel' %}">&#x2190; Trở lại mua sắm</a>
 
                     <div class="d-flex align-items-center">
                         <h5 class="mb-0 me-3">Items: <strong>{{ order.getCartItems }}</strong></h5>
                         <h5 class="mb-0 me-3">Total: $<strong>{{ order.getTotalPrice }}</strong></h5>
-                        <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Checkout</a>
+                        <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Thanh toán</a>
                     </div>
                 </div>
 
@@ -27,27 +27,29 @@
                     </thead>
                     <tbody>
                         {% for item in items %}
-                        <tr class="cart-item" data-product-price="{{ item.product.price }}">
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img class="row-image me-3" src="{{ item.product.imageURL }}" alt="Product Image">
-                                    <p>{{ item.product.name }}</p>
-                                </div>
-                            </td>
-                            <td >${{ item.product.price }}</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <p class="quantity me-2">{{ item.quantity }}</p>
-                                    <div class="quantity-controls"> 
-                                        <img data-product= {{ item.product.id }} data-action= "add" class="chg-quantity me-1 update-cart" src="{% static 'app/images/arrow-up.png' %}"
-                                            alt="Increase Quantity">
-                                        <img data-product= {{ item.product.id }} data-action= "remove" class="chg-quantity update-cart" src="{% static 'app/images/arrow-down.png' %}"
-                                            alt="Decrease Quantity">
+                        {% if item.quantity > 0 %}
+                            <tr class="cart-item" data-product-price="{{ item.product.price }}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="row-image me-3" src="{{ item.product.imageURL }}" alt="Product Image">
+                                        <p>{{ item.product.name }}</p>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="item-total">${{ item.getTotal }}</td> <!-- Placeholder for item total -->
-                        </tr>
+                                </td>
+                                <td>${{ item.product.price }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <p class="quantity me-2">{{ item.quantity }}</p>
+                                        <div class="quantity-controls">
+                                            <img data-product="{{ item.product.id }}" data-action="add" class="chg-quantity me-1 update-cart"
+                                                src="{% static 'app/images/arrow-up.png' %}" alt="Increase Quantity">
+                                            <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity update-cart"
+                                                src="{% static 'app/images/arrow-down.png' %}" alt="Decrease Quantity">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="item-total">${{ item.getTotal }}</td>
+                            </tr>
+                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
