@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from .models import *
+from django.db.models import Q
 import json
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
@@ -29,6 +30,7 @@ def Cart(request):
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/cart.html', context)
+
 def checkout(request):
     if request.user.is_authenticated:
         customer = request.user
@@ -44,14 +46,49 @@ def checkout(request):
     products = Product.objects.all()
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/checkout.html', context)
+
+
 def hotel(request):
+    # Start with all products
     products = Product.objects.all()
-    if request.user.is_authenticated:
-        user_not_login = "none"
+    
+    # Handle the search query from GET request
+    query = request.GET.get('q', '')
+    if query:
+        products = products.filter(name__icontains=query)
+        # If a search is made, clear selected categories (optional, based on your requirement)
+        selected_categories = []
     else:
-        user_not_login = "block"
-    context = {'products': products, 'user_not_login': user_not_login}
+        # If no search, use selected categories from session
+        selected_categories = request.session.get('selected_categories', [])
+
+    # Handle selected categories from POST request
+    if request.method == 'POST':
+        selected_categories = request.POST.getlist('category')
+        # Store the selected categories in the session
+        request.session['selected_categories'] = selected_categories
+
+        if selected_categories:
+            # Filter products that have all the selected categories
+            for item in selected_categories:
+                products = products.filter(categories__name=item)
+
+    # Load all categories for the checkbox list
+    categories = category.objects.all()  # Ensure the model name is correct
+
+    # Check if the user is authenticated
+    user_not_login = "none" if request.user.is_authenticated else "block"
+
+    context = {
+        'products': products,
+        'categories': categories,
+        'selected_categories': selected_categories,  # Pass selected categories to the template
+        'user_not_login': user_not_login
+    }
+
     return render(request, 'apps/hotel.html', context)
+
+
 def updateItem(request):
     data = json.loads(request.body)
 
@@ -104,28 +141,21 @@ def loginPage(request):
 def logoutPage(request):
     logout(request)
     return redirect('login')
-from django.shortcuts import render
-from .models import Product  # Adjust the import based on your project structure
+# views.py
 
-def search(request):
-    # Determine if the user is logged in or not
-    user_not_login = "none" if request.user.is_authenticated else "block"
+def detail(request):
+    if request.user.is_authenticated:
+        customer = request.user
+        _order, created = order.objects.get_or_create(_customer = customer, complete = False)
+        items = _order.cart_set.all()
+        user_not_login = "none"
+    else:
+        items =[]
+        _order = {'getCartItems': 0, 'getTotalPrice': 0, 'getTotal': 0}
+        user_not_login = "block"
 
-    # Initialize context with default values
-    context = {
-        'user_not_login': user_not_login,
-        'searched': '',  # Default value for search term
-        'keys': []  # Default empty list for search results
-    }
-
-    # Check if the request method is POST
-    if request.method == "POST":
-        # Get the search term from POST data
-        searched = request.POST.get("searched", "")
-        # Update context with the search term and results
-        context['searched'] = searched
-        context['keys'] = Product.objects.filter(name__icontains=searched)  # Use icontains for case-insensitive search
-
-    return render(request, 'apps/search.html', context)
-
+    id = request.GET.get('id', '')
+    products = Product.objects.filter(id = id)
+    context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
+    return render(request, 'apps/detail.html', context)
     

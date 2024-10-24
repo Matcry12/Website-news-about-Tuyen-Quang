@@ -1,7 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block banner_slider %}
 
+{% block banner_slider %}
 <div id="carouselExampleDark" class="carousel carousel-dark slide">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
@@ -29,59 +29,105 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
 {% endblock %}
+
 {% block main-content %}
+<div class="container mt-4">
+    <h6 class="text-center"><strong>Các địa điểm nghỉ dưỡng</strong></h6>
+     <!-- Search Toolbar -->
+     <div class="row justify-content-center mt-3">
+        <div class="col-md-4">
+            <form method="GET" id="searchForm" action="">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search by name or location" required>
+                    <button type="submit" onclick="submitSearch()" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <h6 class="text-center"><strong>Các dịch vụ của Hotel</strong></h6>
+            <form id="serviceForm" method="POST">
+                {% csrf_token %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Dịch vụ</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <input type="checkbox" name="category" value="{{ category.name }}" 
+                                       onchange="document.getElementById('serviceForm').submit();"
+                                       {% if category.name in selected_categories %} checked {% endif %}>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
 
-<br /><br />
-
-<div>
-    <h6 class="text-center"><strong> Các địa điểm nghỉ dưỡng</strong></h6>
-</div>
-
-<br />
-<div class="container">
-    <div class="row text-center">
-        {% for product in products %}
-        <div class="col-12 col-md-6 col-lg-4 mx-auto">
-            <img class="thumbnail" src="{{ product.imageURL }}" alt="Tour du lịch">
-            <div class="box-element product">
-                <h6><strong>{{ product.name }}</strong></h6>
-                <hr>
-                <p class="detail-text">
-                    ${{ product.price |truncatewords:15 }} <!-- Limiting the text to 15 words -->
-                </p>
-                <a class="btn btn-outline-success" href="">Xem chi tiết</a>
-                <button data-product={{ product.id }} data-action="add" class="btn btn-success ms-2 add-btn update-cart" href="">Thêm vào giỏ hàng</button>
+        <div class="col-md-8">
+            <div class="row text-center">
+                {% if products %}
+                    {% for product in products %}
+                        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+                            <img class="thumbnail" src="{{ product.imageURL }}" alt="{{ product.name }}">
+                            <div class="box-element product">
+                                <h6><strong>{{ product.name }}</strong></h6>
+                                <hr>
+                                <p class="detail-text">${{ product.price | truncatewords:15 }}</p>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-outline-success rounded-pill me-2" href="{% url 'detail' %}?id={{product.id}}">Xem chi tiết</a>
+                                    <button data-product="{{ product.id }}" data-action="add" class="btn btn-success rounded-pill add-btn update-cart">Thêm vào giỏ hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 %}
+                    </div>
+                    <div class="row text-center">
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12 empty-state">
+                        <h6 class="text-danger">Không có sản phẩm nào.</h6>
+                        <button class="btn btn-primary" onclick="window.location.href='{% url 'hotel' %}'">Tải lại trang</button>
+                    </div>
+                {% endif %}
             </div>
         </div>
-        {% if forloop.counter|divisibleby:3 %}
-    </div>
-    <div class="row text-center">
-        {% endif %}
-        {% endfor %}
     </div>
 </div>
 
-
-<br /><br /><br />
-
+</br></br></br>
 
 <style>
     .thumbnail {
         width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        max-height: 200px; /* Optional: set a maximum height */
-        object-fit: cover; /* Ensures the image covers the area without distortion */
-        /* border-radius: 8px; /* Optional: add rounded corners */
+        height: auto; 
+        max-height: 200px; 
+        object-fit: cover; 
+        border-radius: 5px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
     }
 
     .box-element {
         padding: 15px;
         border: 1px solid #ddd;
-        /* border-radius: 8px; /* Optional: add rounded corners */
         background-color: #fff;
-        margin-bottom: 20px; /* Space between items */
+        margin-bottom: 20px; 
+        border-radius: 5px; 
+        transition: box-shadow 0.3s; 
+    }
+
+    .box-element:hover {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
     }
 
     .detail-text {
@@ -91,6 +137,98 @@
         max-width: 100%;
         display: block;
     }
+
+    .btn-outline-success {
+        color: #28a745; 
+        border-color: #28a745;
+        transition: background-color 0.3s;
+    }
+
+    .btn-outline-success:hover {
+        background-color: #28a745; 
+        color: white; 
+    }
+
+    @media (max-width: 768px) {
+        .box-element {
+            margin-bottom: 15px; 
+        }
+    }
+    /* Optional: Adjust width */
+    input.form-control {
+        width: auto; /* Makes the input box adjust to its content */
+        max-width: 300px; /* Limits the maximum width */
+    }
+
+    button.btn {
+        width: auto; /* Ensures the button doesn't take up unnecessary space */
+    }
+
+    .empty-state {
+        height: 600px; /* Adjust height as needed */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
+
+<script>
+    // Save the scroll position before the page is unloaded
+    window.addEventListener("beforeunload", function() {
+        // Store the current scroll position in localStorage
+        localStorage.setItem("scrollX", window.scrollX);
+        localStorage.setItem("scrollY", window.scrollY);
+    });
+
+    // Restore the scroll position when the page is loaded
+    window.addEventListener("load", function() {
+        const scrollX = localStorage.getItem("scrollX");
+        const scrollY = localStorage.getItem("scrollY");
+
+        // Only scroll if the stored positions exist
+        if (scrollX !== null && scrollY !== null) {
+            window.scrollTo(parseFloat(scrollX), parseFloat(scrollY));
+        }
+
+        // Optional: Clear the stored scroll positions after restoring
+        localStorage.removeItem("scrollX");
+        localStorage.removeItem("scrollY");
+    });
+
+    // Ensure checkboxes remain checked after page reload
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const searchForm = document.getElementById('searchForm');
+    const serviceForm = document.getElementById('serviceForm');
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const searchQuery = document.querySelector('input[name="q"]').value;
+
+            // Only auto-submit service form if there is no active search query
+            if (searchQuery.trim() === "") {
+                serviceForm.submit();  // Auto-submit service form when no search is happening
+            }
+        });
+    });
+
+    function resetServiceForm() {
+        location.reload();
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = false;  // Uncheck all checkboxes
+        });
+    }
+
+    // Add event listener for search form submission
+    searchForm.addEventListener('submit', function(e) {
+        const searchQuery = document.querySelector('input[name="q"]').value;
+
+        // Only reset checkboxes if there is a valid search query
+        if (searchQuery.trim() !== "") {
+            resetServiceForm();  // Reset checkboxes in service form when search query is submitted
+        }
+    });
+    
+</script>
 
 {% endblock %}

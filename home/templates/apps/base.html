@@ -81,7 +81,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'hotel' %}">Khu nghỉ dưỡng</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'hotel' %}">Khách sạn</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -119,11 +119,7 @@
             <a class="nav-link active" aria-current="page" href="#">Tin tức</a>
           </li>
         </ul>
-        <form class="d-flex" role="search" method= POST action= "{% url 'search' %}">
-          {% csrf_token %}
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name = "searched" required>
-          <button class="btn btn-outline-success" type="submit" style="border-radius: 10px; width: 150px">Tìm kiếm</button>
-        </form>
+
       </div>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item dropdown">
@@ -133,7 +129,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Trang cá nhân</a></li>
             <li><a class="dropdown-item" href="{% url 'cart' %}">Đơn hàng</a></li>
-            <li><a class="dropdown-item" href= "{% url 'logout' %}">Đăng xuất</a></li>
+            <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
         </li>
 
