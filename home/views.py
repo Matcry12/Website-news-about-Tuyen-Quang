@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from .models import *
 from django.db.models import Q
@@ -158,4 +158,25 @@ def detail(request):
     products = Product.objects.filter(id = id)
     context = {'items': items, 'order': _order, 'products': products, 'user_not_login': user_not_login}
     return render(request, 'apps/detail.html', context)
+
+def news(request):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+    else:
+        user_not_login = "block"
+    id = request.GET.get('id', '')
+    news = new.objects.filter(id = id)
+    context = {'news': news, 'user_not_login': user_not_login}
+    return render(request, 'apps/news.html', context)
+
+def profile(request):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        user_profile = UserProfile.objects.get(user=request.user)
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        user_profile = None  # No profile available for non-logged-in users
+    context = {'profile': user_profile, 'user_not_login': user_not_login}
     
+    return render(request, 'apps/profile.html', context)

@@ -1,5 +1,6 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% block title %}Trang chủ{% endblock %}
 {% block banner_slider %}
 
 <div id="carouselExampleDark" class="carousel carousel-dark slide">
@@ -51,7 +52,7 @@
                 <p class="detail-text">
                     {{ new.detail|truncatewords:15 }} <!-- Limiting the text to 15 words -->
                 </p>
-                <a class="btn btn-outline-success" href="{% url 'detail' %}?id={{new.id}}">Xem chi tiết</a>
+                <a class="btn btn-outline-success" href="{% url 'news' %}?id={{new.id}}">Xem chi tiết</a>
             </div>
         </div>
         {% if forloop.counter|divisibleby:3 %}
