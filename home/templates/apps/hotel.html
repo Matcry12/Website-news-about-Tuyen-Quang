@@ -1,5 +1,13 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% block title %}Khách sạn{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'app/js/hotel.js' %}"></script>
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/hotel.css' %}">
+{% endblock %}
 
 {% block banner_slider %}
 <div id="carouselExampleDark" class="carousel carousel-dark slide">
@@ -39,8 +47,8 @@
         <div class="col-md-4">
             <form method="GET" id="searchForm" action="">
                 <div class="input-group">
-                    <input type="text" name="q" class="form-control" placeholder="Search by name or location" required>
-                    <button type="submit" onclick="submitSearch()" class="btn btn-primary">Search</button>
+                    <input type="text" name="q" class="form-control" placeholder="Tìm kiếm theo tên hoặc vị trí" required>
+                    <button type="submit" onclick="submitSearch()" class="btn btn-primary">Tìm kiếm</button>
                 </div>
             </form>
         </div>
@@ -97,7 +105,7 @@
                 {% else %}
                     <div class="col-12 empty-state">
                         <h6 class="text-danger">Không có sản phẩm nào.</h6>
-                        <button class="btn btn-primary" onclick="window.location.href='{% url 'hotel' %}'">Tải lại trang</button>
+                        <button class="btn btn-primary" id="resetButton" onclick="window.location.href='{% url 'hotel' %}'">Tải lại trang</button>
                     </div>
                 {% endif %}
             </div>
@@ -106,129 +114,5 @@
 </div>
 
 </br></br></br>
-
-<style>
-    .thumbnail {
-        width: 100%;
-        height: auto; 
-        max-height: 200px; 
-        object-fit: cover; 
-        border-radius: 5px; 
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    }
-
-    .box-element {
-        padding: 15px;
-        border: 1px solid #ddd;
-        background-color: #fff;
-        margin-bottom: 20px; 
-        border-radius: 5px; 
-        transition: box-shadow 0.3s; 
-    }
-
-    .box-element:hover {
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
-    }
-
-    .detail-text {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        display: block;
-    }
-
-    .btn-outline-success {
-        color: #28a745; 
-        border-color: #28a745;
-        transition: background-color 0.3s;
-    }
-
-    .btn-outline-success:hover {
-        background-color: #28a745; 
-        color: white; 
-    }
-
-    @media (max-width: 768px) {
-        .box-element {
-            margin-bottom: 15px; 
-        }
-    }
-    /* Optional: Adjust width */
-    input.form-control {
-        width: auto; /* Makes the input box adjust to its content */
-        max-width: 300px; /* Limits the maximum width */
-    }
-
-    button.btn {
-        width: auto; /* Ensures the button doesn't take up unnecessary space */
-    }
-
-    .empty-state {
-        height: 600px; /* Adjust height as needed */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
-
-<script>
-    // Save the scroll position before the page is unloaded
-    window.addEventListener("beforeunload", function() {
-        // Store the current scroll position in localStorage
-        localStorage.setItem("scrollX", window.scrollX);
-        localStorage.setItem("scrollY", window.scrollY);
-    });
-
-    // Restore the scroll position when the page is loaded
-    window.addEventListener("load", function() {
-        const scrollX = localStorage.getItem("scrollX");
-        const scrollY = localStorage.getItem("scrollY");
-
-        // Only scroll if the stored positions exist
-        if (scrollX !== null && scrollY !== null) {
-            window.scrollTo(parseFloat(scrollX), parseFloat(scrollY));
-        }
-
-        // Optional: Clear the stored scroll positions after restoring
-        localStorage.removeItem("scrollX");
-        localStorage.removeItem("scrollY");
-    });
-
-    // Ensure checkboxes remain checked after page reload
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const searchForm = document.getElementById('searchForm');
-    const serviceForm = document.getElementById('serviceForm');
-
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            const searchQuery = document.querySelector('input[name="q"]').value;
-
-            // Only auto-submit service form if there is no active search query
-            if (searchQuery.trim() === "") {
-                serviceForm.submit();  // Auto-submit service form when no search is happening
-            }
-        });
-    });
-
-    function resetServiceForm() {
-        location.reload();
-        checkboxes.forEach(function(checkbox) {
-            checkbox.checked = false;  // Uncheck all checkboxes
-        });
-    }
-
-    // Add event listener for search form submission
-    searchForm.addEventListener('submit', function(e) {
-        const searchQuery = document.querySelector('input[name="q"]').value;
-
-        // Only reset checkboxes if there is a valid search query
-        if (searchQuery.trim() !== "") {
-            resetServiceForm();  // Reset checkboxes in service form when search query is submitted
-        }
-    });
-    
-</script>
 
 {% endblock %}

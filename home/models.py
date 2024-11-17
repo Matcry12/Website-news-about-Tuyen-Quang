@@ -17,7 +17,7 @@ class CreationUserForm(UserCreationForm):
             #'password1': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu'}),
             #'password2': forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập lại mật khẩu'}),
         }
-    
+
 class category(models.Model):
     name = models.CharField(max_length=1000)
 
@@ -78,7 +78,7 @@ class cart(models.Model):
 class new(models.Model):
     #productId = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000)
-    detail = models.CharField(max_length=2000)
+    detail = models.TextField(null=True,blank=True)
     image = models.ImageField(null=True,blank=True)
 
     def __str__(self):
@@ -90,3 +90,23 @@ class new(models.Model):
         except:
             url = ''
         return url
+    
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    follows = models.ManyToManyField("self", 
+                                     related_name="followed_by",
+                                     symmetrical=False,
+                                     blank=True
+                                     )
+    data_modified = models.DateTimeField(User, auto_now=True)
+    profile_image = models.ImageField(null=True,blank=True, upload_to="images/")
+    
+    def __str__(self):
+        return self.user.username
+    @property
+    def imageURL(self):
+        try:
+            url = self.profile_image.url
+        except:
+            url = ''
+        return url    

@@ -1,5 +1,5 @@
 {% extends 'apps/base.html' %}
-{% load static %}
+{% block title %}Thanh toán{% endblock %}
 
 {% block content_checkout %}
 <div class="container my-4">
@@ -64,6 +64,7 @@
                 <hr>
 
                 {% for item in items %}
+                {% if item.quantity > 0 %}
                 <div class="d-flex align-items-center mb-3">
                     <img class="row-image me-3" src={{ item.product.imageURL }} alt="Product Image">
                     <div class="flex-grow-1">
@@ -72,6 +73,7 @@
                         <p class="mb-1">Quantity: x{{ item.quantity }}</p>
                     </div>
                 </div>
+                {% endif %}
                 {% endfor %}
 
                 <hr>

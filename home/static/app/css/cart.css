@@ -1,0 +1,38 @@
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.btn {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    text-align: center;
+}
+
+.row-image {
+    width: 100px;
+    height: auto;
+}
+
+.quantity-controls img {
+    cursor: pointer;
+}
+
+.box-element {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}

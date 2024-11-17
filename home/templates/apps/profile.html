@@ -1,0 +1,50 @@
+{% extends 'apps/base.html' %}
+{% block title %}Trang cá nhân{% endblock %}
+
+{% block profile %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <!-- Profile Header -->
+        <div class="row mb-4">
+            <div class="col-md-3 text-center">
+                <!-- Display the Profile Image -->
+                {% if profile %}
+                    <img src="{{ profile.imageURL }}" class="img-fluid rounded-circle mb-3" alt="Profile Image" width="120">
+                {% else %}
+                    <img src="https://www.gravatar.com/avatar/658a364d199fda38ad7c509b769ca939?d=identicon&s=120" class="img-fluid rounded-circle mb-3" alt="Default Profile Image" width="120">
+                {% endif %}
+            </div>
+            <div class="col-md-9">
+                {% if profile %}
+                    <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                    <p class="text-muted">Email: {{ profile.user.email }}</p>
+                {% else %}
+                    <h2>Please log in to see your profile.</h2>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Profile Details Section -->
+        {% if profile %}
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="text-uppercase">Personal Information</h5>
+                <p><strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                <p><strong>Username:</strong> {{ profile.user.username }}</p>
+                <p><strong>Bio:</strong> <!-- Add bio field if available in UserProfile --></p>
+            </div>
+            <div class="col-md-6">
+                <h5 class="text-uppercase">Account Information</h5>
+                <p><strong>Member Since:</strong> {{ profile.user.date_joined }}</p>
+                <p><strong>Last Login:</strong> {{ profile.user.last_login }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Edit Profile Button -->
+        <div class="mt-4 text-center">
+            <a href="{% url 'home' %}" class="btn btn-primary">Edit Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock profile %}
