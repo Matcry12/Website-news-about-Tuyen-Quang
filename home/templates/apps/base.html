@@ -136,7 +136,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Giỏ hàng</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Quản lý phòng</a>
         </li>
         <li class="nav-item" style="display: {{ user_not_login }}">
           <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Đăng nhập</a>
@@ -160,7 +160,8 @@
   {% block cart_content %}{% endblock %}
   {% block content_checkout %}{% endblock %}
   {% block search %}{% endblock %}
-
+  {% block booking %}{% endblock %}
+  </br>
   <!-- footer -->
   <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">
     Liên hệ: suslord

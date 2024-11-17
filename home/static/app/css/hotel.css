@@ -1,63 +1,136 @@
+/* Bordered Box Styling */
+.bordered-box {
+    border: 1px solid #ddd;      /* Light border around the box */
+    padding: 10px;               /* Padding inside each box */
+    border-radius: 5px;          /* Rounded corners for a softer look */
+    background-color: #f9f9f9;   /* Optional light background */
+}
+
+/* Room and Price Group */
+.room-price-group {
+    text-align: right;
+    font-weight: 500;
+}
+/* Thumbnail styling for product images */
 .thumbnail {
-    width: 100%;
-    height: auto; 
-    max-height: 200px; 
-    object-fit: cover; 
-    border-radius: 5px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    width: 100%;                  /* Ensures the image takes up the full width of its container */
+    height: 200px;                /* Fixed height for consistency; adjust as needed */
+    object-fit: cover;            /* Crops the image to cover the container while maintaining aspect ratio */
+    border-radius: 5px;           /* Rounded corners for a softer look */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for visual appeal */
 }
 
-.box-element {
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    margin-bottom: 20px; 
-    border-radius: 5px; 
-    transition: box-shadow 0.3s; 
+/* Service and Button Group */
+.box-group {
+    margin-bottom: 15px; /* Space between boxes */
 }
 
-.box-element:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+/* Individual Button Styling */
+.chat-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    color: #0d6efd;
+    border-color: #0d6efd;
+    transition: background-color 0.3s;
 }
 
-.detail-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: block;
+.chat-button:hover {
+    background-color: #0d6efd;
+    color: white;
 }
 
-.btn-outline-success {
-    color: #28a745; 
+.detail-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    color: #28a745;
     border-color: #28a745;
     transition: background-color 0.3s;
 }
 
-.btn-outline-success:hover {
-    background-color: #28a745; 
-    color: white; 
+.detail-button:hover {
+    background-color: #28a745;
+    color: white;
 }
 
-@media (max-width: 768px) {
-    .box-element {
-        margin-bottom: 15px; 
-    }
-}
-/* Optional: Adjust width */
-input.form-control {
-    width: auto; /* Makes the input box adjust to its content */
-    max-width: 300px; /* Limits the maximum width */
-}
-
-button.btn {
-    width: auto; /* Ensures the button doesn't take up unnecessary space */
+/* Centered "Đặt phòng" Button */
+.add-btn.update-cart {
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 50px;
+    border-color: #28a745;
+    transition: background-color 0.3s;
 }
 
-.empty-state {
-    height: 600px; /* Adjust height as needed */
-    display: flex;
-    flex-direction: column;
+.add-btn.update-cart:hover {
+    background-color: #218838;
+}
+.mini-map {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+/* Modal Styling */
+.map-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
     justify-content: center;
     align-items: center;
 }
+
+.map-modal-content {
+    position: relative;
+    width: 80%; /* 80% of the screen width */
+    height: 80%; /* 80% of the screen height */
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    left: 20px; /* Move button to the left side */
+    right: auto; /* Ensure it is not aligned to the right */
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    z-index: 1001;
+}
+.view-map-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: #28a745; /* Green text initially */
+    background-color: transparent; /* Transparent background initially */
+    border: 2px solid #28a745; /* Green border */
+    border-radius: 50px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.view-map-btn:hover {
+    background-color: #28a745; /* Fill green on hover */
+    color: white; /* White text on hover */
+}
+
+/* Flex adjustments for side-by-side boxes */
+.d-flex .flex-grow-1 {
+    flex: 1;
+    margin-bottom: 10px;
+}
+.search-input {
+    flex-grow: 1; /* Expands to take up available space */
+}
+
+.search-btn {
+    padding: 6px 12px; /* Adjust padding for a smaller button */
+    font-size: 0.875rem; /* Smaller font size */
+}
+

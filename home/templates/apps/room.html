@@ -1,0 +1,30 @@
+{% load custom_filters %}
+<div class="row">
+    {% for room in rooms %}
+    <div class="col-12 mb-4"> <!-- Full width column for each room -->
+        <div class="card">
+            <div class="row g-0">
+                <!-- Image Section -->
+                <div class="col-md-4">
+                    <img src="{{ room.imageURL }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Ảnh phòng">
+                </div>
+
+                <!-- Content Section -->
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h4 class="card-title"><strong>{{ room.get_room_type_display }}</strong></h4>
+                        <p class="card-text"><strong>Mã phòng:</strong> {{ room.roomCode }}</p>
+                        <p class="card-text"><strong>Giá: </strong>{{ room.price|format_price }} Đồng</p>
+                        <p class="card-text"><strong>Đánh giá: </strong>
+                            {% for _ in "1"|center:room.rating %}
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                            {% endfor %}
+                        </p>
+                        <a class="btn btn-primary" href="{% url 'booking' %}?product_id={{ product.id }}&room_id={{ room.id }}">Đặt phòng</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

@@ -1,9 +1,16 @@
 {% extends 'apps/base.html' %}
+{% load static %}
 {% block title %}Chi tiết sản phẩm{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'app/js/details.js' %}"></script>
+{% endblock %}
+{% block extra_css %}
+
+{% endblock %}
 
 {% block detail %}
 <div class="container mt-5 mb-5">
-    {% for product in products %}
     <div class="card mb-5 p-4 shadow">
         <div class="row">
             <!-- Product Image Section -->
@@ -26,20 +33,79 @@
 
                     <!-- Product Title & Price -->
                     <h2 class="text-uppercase font-weight-bold">{{ product.name }}</h2>
-                    <p class="text-muted mb-2">{{ product.category }}</p>
                     <div class="price mb-4">
-                        <span class="text-success h4">{{ product.price }}$</span>
+                        <span class="text-success h4">{{ product.amountprice }} Đồng</span>
                     </div>
 
                     <!-- Product Description -->
                     <p class="about mb-4">{{ product.detail }}</p>
 
-                    <!-- Add to Cart Button -->
-                    <button class="btn btn-danger text-uppercase add-btn update-cart" data-product="{{ product.id }}" data-action="add">Add to Cart</button>
+                    <!-- Address and Contact Information -->
+                    <p><strong>Địa chỉ:</strong> {{ product.location }}</p>
+                    <p><strong>Số điện thoại:</strong> {{ product.phonecall }}</p>
+
+                    <!-- Services -->
+                    <p><strong>Dịch vụ:</strong>
+                        {% for category in product.categories.all %}
+                            {{ category.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            No services available
+                        {% endfor %}
+                    </p>
+
+                    <!-- Map and Zalo Buttons -->
+                    <div class="d-flex justify-content-between mt-3">
+                        <button class="btn btn-success">Chat qua Zalo</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Room Details Section -->
+        <h3>Loại phòng</h3>
+
+        <div class="container mt-5 mb-5" id="room">
+            <div class="card mb-5 p-4 shadow">
+                <div class="row">
+                    <!-- Filter Section -->
+                    <div class="col-md-3">
+                        <form id="sortForm" method="POST">
+                            {% csrf_token %}
+                            <h6><strong>Sắp xếp theo mức giá</strong></h6>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>Rẻ đến đắt</td>
+                                        <td>
+                                            <input type="checkbox" name="priceSort" value="asc" onchange="submitSortForm(this)" 
+                                                {% if request.POST.priceSort == 'asc' %}checked{% endif %}>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Đắt đén rẻ</td>
+                                        <td>
+                                            <input type="checkbox" name="priceSort" value="desc" onchange="submitSortForm(this)" 
+                                                {% if request.POST.priceSort == 'desc' %}checked{% endif %}>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+
+                    <!-- Room Listings Section -->
+                    <div class="col-md-9">
+                        <div class="row rooms-container">
+                            <div id="productContainer">
+                                {% include 'apps/room.html' with rooms=rooms %}
+                            </div>    
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
 </div>
+
 {% endblock detail %}

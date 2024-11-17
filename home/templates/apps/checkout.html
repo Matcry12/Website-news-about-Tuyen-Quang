@@ -8,12 +8,12 @@
         <div class="col-lg-6">
             <div class="box-element p-4 border rounded" id="form-wrapper">
                 <form id="form">
-                    <h4 class="mb-4">Shipping Information</h4>
+                    <h4 class="mb-4">Thông tin khách hàng</h4>
 
                     <!-- User Information -->
                     <div id="user-info" class="mb-4">
                         <div class="form-group mb-3">
-                            <input required class="form-control" type="text" name="name" placeholder="Name..">
+                            <input required class="form-control" type="text" name="name" placeholder="Họ và tên..">
                         </div>
                         <div class="form-group">
                             <input required class="form-control" type="email" name="email" placeholder="Email..">
@@ -23,27 +23,18 @@
                     <!-- Shipping Information -->
                     <div id="shipping-info" class="mb-4">
                         <hr>
-                        <p class="mb-2">Shipping Information:</p>
+                        <p class="mb-2">Địa chỉ:</p>
                         <hr>
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="address" placeholder="Address..">
+                            <input class="form-control" type="text" name="address" placeholder="Địa chỉ..">
                         </div>
                         <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="city" placeholder="City..">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="state" placeholder="State..">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-                        </div>
-                        <div class="form-group mb-3">
-                            <input class="form-control" type="text" name="country" placeholder="Country..">
+                            <input class="form-control" type="text" name="city" placeholder="Thành phố..">
                         </div>
                     </div>
 
                     <hr>
-                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+                    <input id="form-button" class="btn btn-success btn-block" type="submit" value="Tiếp tục">
                 </form>
             </div>
 
@@ -58,9 +49,9 @@
         <!-- Order Summary -->
         <div class="col-lg-6">
             <div class="box-element p-4 border rounded">
-                <a class="btn btn-outline-dark mb-4" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+                <a class="btn btn-outline-dark mb-4" href="{% url 'cart' %}">&#x2190; Trở lại giỏ hàng</a>
                 <hr>
-                <h3 class="mb-4">Order Summary</h3>
+                <h3 class="mb-4">Danh sách khách sạn</h3>
                 <hr>
 
                 {% for item in items %}
@@ -68,17 +59,17 @@
                 <div class="d-flex align-items-center mb-3">
                     <img class="row-image me-3" src={{ item.product.imageURL }} alt="Product Image">
                     <div class="flex-grow-1">
-                        <p class="mb-1">Name: {{ item.product.name }}</p>
-                        <p class="mb-1">Price: ${{ item.product.price }}</p>
-                        <p class="mb-1">Quantity: x{{ item.quantity }}</p>
+                        <p class="mb-1">Tên khách sạn: {{ item.product.name }}</p>
+                        <p class="mb-1">Giá thành: {{ item.product.price }} Đồng</p>
+                        <p class="mb-1">Số lượng: x{{ item.quantity }}</p> 
                     </div>
                 </div>
                 {% endif %}
                 {% endfor %}
 
                 <hr>
-                <h5>Items: <strong>{{ order.getCartItems }}</strong></h5>
-                <h5>Total: <strong>${{ order.getTotalPrice }}</strong></h5>
+                <h5>Số lượng: <strong>{{ order.getCartItems }}</strong></h5>
+                <h5>Tổng số tiền: <strong>{{ order.getTotalPrice }} Đồng</strong></h5>
             </div>
         </div>
     </div>

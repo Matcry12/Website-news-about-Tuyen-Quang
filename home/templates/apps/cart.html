@@ -1,5 +1,6 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}Giỏ hàng{% endblock %}
 
 {% block extra_css %}
@@ -12,49 +13,56 @@
         <div class="col-lg-12">
             <div class="box-element">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'hotel' %}">&#x2190; Trở lại mua sắm</a>
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'hotel' %}">&#x2190; Trở lại</a>
 
                     <div class="d-flex align-items-center">
-                        <h5 class="mb-0 me-3">Items: <strong>{{ order.getCartItems }}</strong></h5>
-                        <h5 class="mb-0 me-3">Total: $<strong>{{ order.getTotalPrice }}</strong></h5>
+                        <h5 class="mb-0 me-3">Số lượng: <strong>{{ order_instance|length }}</strong> phòng</h5>
                         <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Thanh toán</a>
                     </div>
                 </div>
-
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Item</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
+                            <th>Tên CS lưu trú</th>
+                            <th>Địa chỉ</th>
+                            <th>Số ĐT</th>
+                            <th>Người Đặt phòng</th>
+                            <th>Ngày đặt phòng</th>
+                            <th>Loại phòng</th>
+                            <th>Mã phòng</th>
+                            <th>Giá tiền</th>
+                            <th>Xác nhận</th>
+                            {% if profile.role == 'seller' %}
+                            <th>Trạng thái</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in items %}
-                        {% if item.quantity > 0 %}
-                            <tr class="cart-item" data-product-price="{{ item.product.price }}">
+                        {% for order in order_instance %}
+                            <tr>
+                                <td>{{ order.room.product.name }}</td>
+                                <td>{{ order.room.product.location }}</td>
+                                <td>{{ order.phonecall }}</td>
+                                <td>{{ order.cname }}</td>
+                                <td>{{ order.datebook|date:"d/m/Y" }}</td>
+                                <td>{{ order.room.roomName }}</td> <!-- Assuming you want room type -->
+                                <td>{{ order.room.roomCode }}</td>
+                                <td>{{ order.room.price|format_price }} Đồng</td>
+
+                                {% if profile.role == 'seller' %}
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img class="row-image me-3" src="{{ item.product.imageURL }}" alt="Product Image">
-                                        <p>{{ item.product.name }}</p>
-                                    </div>
+                                    <a href="" class="btn btn-primary">Xác Nhận</a>
+                                    <a href="" class="btn btn-warning">Chờ</a>
                                 </td>
-                                <td>${{ item.product.price }}</td>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <p class="quantity me-2">{{ item.quantity }}</p>
-                                        <div class="quantity-controls">
-                                            <img data-product="{{ item.product.id }}" data-action="add" class="chg-quantity me-1 update-cart"
-                                                src="{% static 'app/images/arrow-up.png' %}" alt="Increase Quantity">
-                                            <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity update-cart"
-                                                src="{% static 'app/images/arrow-down.png' %}" alt="Decrease Quantity">
-                                        </div>
-                                    </div>
+                                    <a href="" class="btn btn-danger">Trả</a>
+                                    <a href="" class="btn btn-info">Sửa</a>
+                                    <a href="" class="btn btn-dark">Xóa</a>
                                 </td>
-                                <td class="item-total">${{ item.getTotal }}</td>
+                                {% else %} 
+                                <td>Chờ/Xác Nhận</td>
+                                {% endif %}
                             </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
