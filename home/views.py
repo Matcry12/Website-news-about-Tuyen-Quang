@@ -9,34 +9,54 @@ from django.db.models import Case, When, IntegerField
 from django.db.models.functions import Cast
 from django.template.loader import render_to_string
 from django.utils import timezone
+from home.templatetags.forms import RoomForm, RoomPicForm
 
-def get_firstHTML(request):
+def news(request):
     news = new.objects.all()
     if request.user.is_authenticated:
         user_not_login = "none"
     else:
         user_not_login = "block"
     context = {'news': news, 'user_not_login': user_not_login}
-    return render(request, 'apps/home.html', context)
+    return render(request, 'apps/news.html', context)
 def Cart(request):
     if request.user.is_authenticated:
         customer = request.user
         user_profile = UserProfile.objects.get(user=customer)
         # Corrected the field name to `customer`
-        order_instance = order.objects.filter(customer=customer)
+        order_instance = order.objects.filter(room__product__owner=customer)
+        order_customer = order.objects.filter(customer=customer)
         user_not_login = "none"
     else:
         order_instance = {}  # If the user is not authenticated, we don't need to query orders
+        order_customer = {} 
         user_not_login = "block"
         user_profile = None
 
     context = {
         'user_not_login': user_not_login,
         'order_instance': order_instance,  # Add the orders to the context for use in the template
+        'order_customer': order_customer,
         'profile': user_profile
     }
 
     return render(request, 'apps/cart.html', context)
+
+def updateOrder(request):
+    data = json.loads(request.body)
+
+    order_id = data['orderId']
+    action = data['action']
+
+    Order = get_object_or_404(order, id=order_id)
+
+    if action == 'true':
+        Order.confirm = True
+    elif action == 'false':
+        Order.confirm = False
+    Order.save()
+
+    return JsonResponse("changed", safe=False)
 
 
 def checkout(request):
@@ -56,7 +76,7 @@ def checkout(request):
     return render(request, 'apps/checkout.html', context)
 
 
-def hotel(request):
+def home(request):
     # Start with all products
     products = Product.objects.all()
     
@@ -99,7 +119,7 @@ def hotel(request):
         'user_not_login': user_not_login
     }
 
-    return render(request, 'apps/hotel.html', context)
+    return render(request, 'apps/home.html', context)
 
 
 def updateItem(request):
@@ -189,7 +209,7 @@ def detail(request):
     return render(request, 'apps/detail.html', context)
 
 
-def news(request):
+def newdetail(request):
     if request.user.is_authenticated:
         user_not_login = "none"
     else:
@@ -197,7 +217,7 @@ def news(request):
     id = request.GET.get('id', '')
     news = new.objects.filter(id = id)
     context = {'news': news, 'user_not_login': user_not_login}
-    return render(request, 'apps/news.html', context)
+    return render(request, 'apps/newdetail.html', context)
 
 def profile(request):
     if request.user.is_authenticated:
@@ -291,3 +311,35 @@ def booking(request, order_id=None):
     }
 
     return render(request, 'apps/booking.html', context)
+
+def updateRoom(request, room_id):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        user_profile = UserProfile.objects.get(user=request.user)
+        room =  Room.objects.get(id = room_id)
+        if room.product.owner != user_profile.user:  # Compare the actual User object
+            return redirect('home') 
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        user_profile = None  # No profile available for non-logged-in users
+        return redirect('login')
+    room_form = RoomForm(request.POST or None, request.FILES or None , instance=room)
+    pic_form = RoomPicForm(request.POST or None , request.FILES or None , instance=room)
+    if room_form.is_valid() and pic_form.is_valid():
+            room_form.save()
+            pic_form.save()
+
+            return redirect('cart')  # Redirect to room details page after saving
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'room': room, 'room_form': room_form, 'pic_form': pic_form}
+    return render(request, 'apps/update_room.html', context)
+
+def delete_order(request, order_id):
+
+    user_profile = UserProfile.objects.get(user=request.user)
+    
+    orderD = order.objects.get(id=order_id)
+    orderD.delete()
+    messages.success(request, "Order deleted successfully")
+    return redirect('cart')
+    

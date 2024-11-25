@@ -1,0 +1,36 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Cập nhật cơ sở lưu trú{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/update_room.css' %}">
+{% endblock %}
+
+{% block detail %}
+
+<div class="custom-box">
+    <h1> Cập nhật cơ sở lưu trú</h1>
+    <br/>
+    <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ room_form.as_p }}
+
+        {{ pic_form.as_p }}
+        
+        {% if pic_form.instance.image %}
+            <div class="field-wrapper">
+                <label for="current-image">Ảnh hiện tại:</label>
+                <img src="{{ pic_form.instance.image.url }}" alt="Room Image" class="uploaded-image">
+            </div>
+        {% endif %}
+        <br/>
+        <input type="submit" value="Cập nhật" class="btn btn-secondary">
+    </form>
+</div>
+
+<br/><br/>
+{% endblock detail %}

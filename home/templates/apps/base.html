@@ -32,6 +32,7 @@
   <script src="{%static 'app/js/myscript.js' %}"></script>
   <script type="text/javascript">
     var user = '{{ request.user }}'
+    var userRole = '{{ request.user.userprofile.role }}'
 
     function getCookie(name) {
       let cookieValue = null;
@@ -62,6 +63,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'home' %}">
         <img src=" {% static 'app/images/logo_nvh (Small).png' %}" width="55" height="55" />
+        <img src=" {% static 'app/images/Tuyenquanglogo-removebg-preview.png' %}" width="55" height="55" />
         DU LỊCH TUYÊN QUANG
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -73,52 +75,8 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Trang chủ</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Giới thiệu
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Giới thiệu chung</a></li>
-              <li><a class="dropdown-item" href="#">Danh bạ</a></li>
-            </ul>
-          </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'hotel' %}">Khách sạn</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Quảng bá
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Tư liệu</a></li>
-              <li><a class="dropdown-item" href="#">Phim ảnh </a></li>
-              <li><a class="dropdown-item" href="#">Hình ảnh </a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Địa danh tham quan
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="#">Khu du lịch Tân Trào</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Khu suối khoáng Mỹ Lâm</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Khu du lịch sinh thái Na Hang</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Các điểm tham quan du lịch khác</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Thông tin du lịch</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Tin tức</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'news' %}">Tin tức</a>
           </li>
         </ul>
 
@@ -130,7 +88,8 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
-            <li><a class="dropdown-item" href="{% url 'cart' %}">Đơn hàng</a></li>
+            <li><a class="dropdown-item" href="{% url 'cart' %}">Quản lí phòng</a></li>
+            <li><a class="dropdown-item" href="">Lịch sử đặt phòng</a></li>
             <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
         </li>
@@ -164,7 +123,7 @@
   </br>
   <!-- footer -->
   <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">
-    Liên hệ: suslord
+    Liên hệ: 0335788907
   </footer>
 
   <script src="{%static 'app/js/cart.js' %}"></script>

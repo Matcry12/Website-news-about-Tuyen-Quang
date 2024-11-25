@@ -6,6 +6,9 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/cart.css' %}">
 {% endblock %}
+{% block extra_js %}
+<script src="{% static 'app/js/cart.js' %}"></script>
+{% endblock %}
 
 {% block cart_content %}
 <div class="container my-4">
@@ -16,8 +19,13 @@
                     <a class="btn btn-outline-dark rounded-btn" href="{% url 'hotel' %}">&#x2190; Trở lại</a>
 
                     <div class="d-flex align-items-center">
-                        <h5 class="mb-0 me-3">Số lượng: <strong>{{ order_instance|length }}</strong> phòng</h5>
-                        <a class="btn btn-success rounded-btn ms-3" href="{% url 'checkout' %}">Thanh toán</a>
+                        <h5 class="mb-0 me-3">Số lượng: <strong>
+                            {% if profile.role == 'seller' %}
+                                {{ order_instance|length }}
+                            {% else %}
+                                {{ order_customer|length }}
+                            {% endif %}
+                        </strong> phòng</h5>
                     </div>
                 </div>
                 <table class="table table-striped">
@@ -33,42 +41,86 @@
                             <th>Giá tiền</th>
                             <th>Xác nhận</th>
                             {% if profile.role == 'seller' %}
-                            <th>Trạng thái</th>
+                                <th>Trạng thái</th>
+                            {% else %}
+                                <th></th>
                             {% endif %}
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        {% for order in order_instance %}
-                            <tr>
-                                <td>{{ order.room.product.name }}</td>
-                                <td>{{ order.room.product.location }}</td>
-                                <td>{{ order.phonecall }}</td>
-                                <td>{{ order.cname }}</td>
-                                <td>{{ order.datebook|date:"d/m/Y" }}</td>
-                                <td>{{ order.room.roomName }}</td> <!-- Assuming you want room type -->
-                                <td>{{ order.room.roomCode }}</td>
-                                <td>{{ order.room.price|format_price }} Đồng</td>
+                        {% if profile.role == 'seller' %}
+                            {% for order in order_instance %}
+                                {% if order.room.product.owner == request.user %}
+                                    <tr>
+                                        <td>{{ order.room.product.name }}</td>
+                                        <td>{{ order.room.product.location }}</td>
+                                        <td>{{ order.phonecall }}</td>
+                                        <td>{{ order.cname }}</td>
+                                        <td>{{ order.datebook|date:"d/m/Y" }}</td>
+                                        <td>{{ order.room.roomName }}</td>
+                                        <td>{{ order.room.roomCode }}</td>
+                                        <td>{{ order.room.price|format_price }} Đồng</td>
+                                        <td>
+                                            {% if order.confirm %}
+                                                <!-- Solid "Xác Nhận" button and outlined "Chờ" button -->
+                                                <button class="btn btn-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                    Xác Nhận
+                                                </button>
+                                                <button class="btn btn-outline-warning btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                    Chờ
+                                                </button>
+                                            {% else %}
+                                                <!-- Outlined "Xác Nhận" button and solid "Chờ" button -->
+                                                <button class="btn btn-outline-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                    Xác Nhận
+                                                </button>
+                                                <button class="btn btn-primary btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                    Chờ
+                                                </button>
+                                            {% endif %}
 
-                                {% if profile.role == 'seller' %}
-                                <td>
-                                    <a href="" class="btn btn-primary">Xác Nhận</a>
-                                    <a href="" class="btn btn-warning">Chờ</a>
-                                </td>
-                                <td>
-                                    <a href="" class="btn btn-danger">Trả</a>
-                                    <a href="" class="btn btn-info">Sửa</a>
-                                    <a href="" class="btn btn-dark">Xóa</a>
-                                </td>
-                                {% else %} 
-                                <td>Chờ/Xác Nhận</td>
+                                            <!-- <a>Trạng thái của khách: {{ order.confirm }}</a> -->
+
+                                        </td>
+                                        <td>
+                                            <a href="" class="btn btn-danger">Trả</a>
+                                            <a href="{% url 'update_room' room_id=order.room.id %}" class="btn btn-info">Sửa</a>
+                                            <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
+                                        </td>
+                                    </tr>
                                 {% endif %}
-                            </tr>
-                        {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {% for order in order_customer %}
+                                <tr>
+                                    <td>{{ order.room.product.name }}</td>
+                                    <td>{{ order.room.product.location }}</td>
+                                    <td>{{ order.phonecall }}</td>
+                                    <td>{{ order.cname }}</td>
+                                    <td>{{ order.datebook|date:"d/m/Y" }}</td>
+                                    <td>{{ order.room.roomName }}</td>
+                                    <td>{{ order.room.roomCode }}</td>
+                                    <td>{{ order.room.price|format_price }} Đồng</td>
+                                    <td>
+                                        {% if order.confirm %}
+                                            Xác Nhận
+                                        {% else %}
+                                            Chờ
+                                        {% endif %}
+                                    </td>
+                                    <td> 
+                                        <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                     </tbody>
+                    
                 </table>
+                <br/>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock cart_content %}

@@ -33,8 +33,8 @@ class category(models.Model):
 # Product model (Hotel)
 class Product(models.Model):
     name = models.CharField(max_length=1000)
-    owner = models.CharField(max_length=1000, default='N/A')
     amountprice = models.CharField(max_length=255, blank=False, default='0')
+    owner =  models.OneToOneField(User, on_delete=models.CASCADE)
     onSale = models.BooleanField(default=False)
     detail = models.TextField(null=True, blank=True)
     imageP = models.ImageField(null=True, blank=True)
@@ -114,6 +114,7 @@ class order(models.Model):
     phonecall = models.CharField(max_length=255, blank=False, default='0')
     datebook = models.DateTimeField(null=True, blank=False)
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
+    confirm = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Order #{self.id} by {self.customer} ({'Complete' if self.complete else 'Pending'})"
