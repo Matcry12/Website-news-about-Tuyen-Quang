@@ -382,3 +382,132 @@ h3.text-center {
         background-color: #007bff; /* Different shade for visibility */
     }
 }
+
+/* Ensure Product Div Matches Room Div Height */
+.product-div, .room-div {
+    display: flex;              /* Flexbox for consistent alignment */
+    flex-direction: column;     /* Stack elements vertically */
+    justify-content: space-between; /* Evenly space elements */
+    height: 100%;               /* Equalize heights */
+    background-color: #f9f9f9;  /* Optional light background for consistency */
+    border: 1px solid #ddd;     /* Optional border to match styling */
+    border-radius: 5px;         /* Rounded corners for a cohesive design */
+}
+
+/* Fix Product Image Dimensions */
+.product-div .thumbnail, 
+.room-div img {
+    width: 100%;                /* Image takes up full width */
+    height: auto;               /* Maintain aspect ratio */
+    max-height: 200px;          /* Limit height for consistency */
+    object-fit: cover;          /* Crops and fills the image within its container */
+    border-radius: 5px;         /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for uniform design */
+}
+
+/* Ensure Consistent Button Alignment */
+.product-div .btn, 
+.room-div .btn {
+    margin-top: auto;           /* Push buttons to the bottom of the div */
+    align-self: center;         /* Center-align buttons */
+}
+
+/* Match Card Styling for Products and Rooms */
+.custom-card {
+    height: 100%;               /* Ensure cards are equal height */
+    display: flex;              /* Use flexbox for vertical alignment */
+    flex-direction: column;     /* Stack child elements vertically */
+    justify-content: space-between; /* Space out children evenly */
+    overflow: hidden;           /* Hide overflow content */
+}
+
+.custom-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.custom-card img {
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-card .card-body {
+    padding: 15px;
+    text-align: left;
+}
+
+.custom-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.custom-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
+
+/* Flex Parent for Consistent Height */
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to avoid layout breaking */
+}
+
+/* Product and Room Cards */
+.product-div, .room-div {
+    display: flex;              /* Use flexbox for vertical alignment */
+    flex-direction: column;     /* Stack elements vertically */
+    justify-content: space-between; /* Space content evenly */
+    flex-grow: 1;               /* Cards grow equally */
+    min-height: 100%;           /* Ensure all cards have equal height */
+    background-color: #f9f9f9;  /* Optional light background for consistency */
+    border: 1px solid #ddd;     /* Optional border for visual appeal */
+    border-radius: 5px;         /* Rounded corners */
+    padding: 10px;              /* Padding for inner spacing */
+}
+
+/* Thumbnail Styling */
+.product-div .thumbnail, 
+.room-div img {
+    width: 100%;                /* Ensure image takes full width */
+    height: auto;               /* Maintain aspect ratio */
+    max-height: 200px;          /* Limit image height */
+    object-fit: cover;          /* Crop to fill container */
+    border-radius: 5px;
+}
+
+/* Button Styling */
+.product-div .btn, 
+.room-div .btn {
+    margin-top: auto;           /* Push buttons to the bottom */
+    align-self: center;         /* Center-align buttons */
+}
+
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}

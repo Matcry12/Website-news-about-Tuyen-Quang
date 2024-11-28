@@ -1,197 +1,149 @@
 /* Custom Container with a Noticeable Background */
 .custom-container {
-    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Soft gradient */
+    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Light blue gradient */
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
-    overflow-y: auto; /* Allow scrolling if content exceeds the height */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
 }
 
 /* Table Wrapper Styling */
 .table-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    background-color: #ffffff; /* White for clean contrast */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Styling for Each Row in the Table */
 .table-row {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    background-color: #f1f8e9; /* Light green for subtle division */
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* Wrapper around the label and input */
 .field-wrapper {
-    display: flex;
-    flex-direction: column; /* Stack the label and input vertically */
-    gap: 5px; /* Space between the label and the input */
+    background-color: #eed919; /* Yellow for emphasis */
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* Styling for the strong tag */
 .table-cell strong {
-    font-size: 16px; /* Increase font size for better visibility */
-    font-weight: bold; /* Bold text */
-    color: #2c3e50; /* Dark color for text to ensure readability */
-    background-color: #f7f7f7; /* Light gray background for consistency */
-    padding: 8px 12px; /* Add padding for spacing */
-    border-radius: 5px; /* Rounded corners to match the input styling */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for emphasis */
+    background-color: #ffeb3b; /* Yellow to highlight text */
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Styling for the input field */
-.table-cell input[type="text"], .table-cell select, .table-cell input[type="date"] {
-    width: 100%; /* Full width of the cell */
-    padding: 8px 12px; /* Consistent padding with the strong tag */
-    border-radius: 5px; /* Rounded corners */
-    border: 1px solid #ccc; /* Light border color for input */
-    font-size: 14px; /* Font size for input */
-    font-weight: normal; /* Regular font weight */
-    background-color: #ffffff; /* White background for input */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+.table-cell input[type="text"], 
+.table-cell select, 
+.table-cell input[type="date"] {
+    background-color: #e8f5e9; /* Light green for inputs */
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Focused input styling to match the strong text emphasis */
-.table-cell input[type="text"]:focus, .table-cell select:focus, .table-cell input[type="date"]:focus {
-    border-color: #1E90FF; /* Border color on focus (blue) */
-    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5); /* Glow effect on focus */
+/* Focused input styling */
+.table-cell input[type="text"]:focus, 
+.table-cell select:focus, 
+.table-cell input[type="date"]:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.5);
 }
 
-/* Styling for buttons */
+/* Buttons */
 .btn-primary {
-    background-color: #00b30f;
+    background-color: #316ddd; /* Light green button */
     color: white;
     padding: 10px 20px;
-    font-size: 16px;
-    border: none;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #00b30f;
+    background-color: #316ddd; /* Darker green on hover */
 }
 
-/* Ensure that the divs inside .table-cell don't overlap or encroach */
+/* Table Cell Styling */
 .table-cell {
-    padding: 10px; /* Add padding to the table-cell for spacing */
-    background-color: #ffffff; /* White background to separate the fields visually */
-    border-radius: 5px; /* Rounded corners */
-    margin-bottom: 10px; /* Spacing between rows */
-}
-
-.table-cell strong {
-    font-size: 16px; /* Increase font size */
-    font-weight: bold; /* Bold text */
-    color: #2c3e50; /* Darker color for visibility */
-    background-color: #f1c40f; /* Background color to highlight the text */
-    padding: 5px 10px; /* Padding around the text */
-    border-radius: 5px; /* Slightly rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for emphasis */
-}
-
-.table-cell div {
-    font-size: 14px; /* Normal font size */
-    color: #333; /* Dark color for the content */
-    margin-top: 5px;
-    font-weight: 500; /* Slightly bold to improve readability */
-}
-
-/* Responsive behavior for small screens */
-@media screen and (max-width: 768px) {
-    .table-cell {
-        display: block; /* Stack elements vertically */
-    }
-
-    .field-wrapper {
-        flex-direction: column; /* Ensure label and input stack vertically */
-    }
-    .message-container {
-        padding: 15px;
-    }
-
-    .messages li {
-        font-size: 12px;
-    }
-
-    .btn-back {
-        font-size: 14px;
-    }
+    background-color: #f0f4c3; /* Light yellow for cells */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 /* Header Styling */
 h3.text-center {
-    color: white; /* Set the text color to white */
-    font-size: 1.5rem; /* Optional: Adjust font size */
-    font-weight: bold; /* Optional: Make the text bold */
+    background-color: #3949ab; /* Deep blue header */
+    color: white;
+    padding: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
 }
 
 /* Message Container */
 .message-container {
+    background-color: #ffeb3b; /* Yellow for messages */
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
-    display: inline-block;
-    text-align: center; /* Center the content inside */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 /* Message List */
 .messages {
     list-style: none;
     padding: 0;
+    background-color: #ffeb3b; /* Yellow for message list */
     margin-bottom: 20px;
+    border-radius: 5px;
 }
 
 .messages li {
-    background-color: #fffcf5;
+    background-color: #ffeb3b; /* Yellow for individual messages */
     padding: 10px;
     margin: 5px 0;
-    border: 1px solid #f4e1b2;
     border-radius: 4px;
     font-size: 14px;
     color: #333;
 }
 
-/* Button Container */
-.button-container {
-    display: flex;
-    justify-content: center; /* Center the buttons */
-    gap: 20px; /* Space between the buttons */
-}
-
 /* Buttons */
-.btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    width: 200px; /* Ensure both buttons have the same width */
-    text-align: center; /* Center text inside button */
-}
-
-/* Back Button */
 .btn-back {
-    background-color: #007bff;
+    background-color: #90caf9; /* Sky blue */
     color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
 .btn-back:hover {
-    background-color: #0056b3;
+    background-color: #1e88e5; /* Bright blue on hover */
 }
 
-/* View Room Button */
 .btn-view-room {
-    background-color: #28a745;
+    background-color: #1e88e5; /* Coral button */
     color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
     transition: background-color 0.3s ease;
 }
 
 .btn-view-room:hover {
-    background-color: #218838;
+    background-color: #1e88e5; /* Bold orange on hover */
 }

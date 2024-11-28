@@ -15,57 +15,56 @@
             <div class="message-container">
                 <ul class="messages">
                     {% for message in messages %}
-                        <li>{{ message }}</li>
+                        <li><strong>{{ message }}</strong></li>
                     {% endfor %}
                 </ul>
-                <!-- Show the "Trở lại" button to go back to the detail page -->
                 <div class="text-center mt-3">
-                    <a href="{% url 'detail' %}?id={{ product.id }}" class="btn btn-primary">Trở lại</a>
-                    <a href="{% url 'cart' %}" class="btn btn-view-room">Xem phòng</a>
+                    <a href="{% url 'detail' %}?id={{ product.id }}" class="btn btn-primary"><strong>Trở lại</strong></a>
+                    <a href="{% url 'cart' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
                 </div>
             </div>
-        {% else %} 
+        {% else %}
         <form method="POST">
             {% csrf_token %}
             
             <!-- Include room_id as a hidden field -->
             <input type="hidden" name="room_id" value="{{ room.id }}">
-            
-            <div class="table-row">
-                <div class="table-cell">
+
+            <div class="row mb-3">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Tên CS lưu trú:</strong>
                         <div>{{ room.product.name }}</div>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Mã Phòng:</strong>
                         <div>{{ room.roomCode }}</div>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Loại phòng:</strong>
                         <div>{{ room.get_room_type_display }}</div>
                     </div>
                 </div>
-                <div class="table-cell">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Giá tiền:</strong>
                         <div>{{ room.price|format_price }} Đồng</div>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>TT Tài khoản CS lưu trú:</strong>
                         <div>{{ room.product.owner }}</div>
                     </div>
                 </div>
-            </div>
-
-            <div class="table-row">
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Thanh toán:</strong>
                         <select class="form-select" name="payment_method" required>
@@ -74,51 +73,52 @@
                         </select>
                     </div>
                 </div>
-                <div class="table-cell">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Tên khách hàng:</strong>
                         <input type="text" class="form-control" name="customer_name" value="{{ order.cname }}" title="Vui lòng nhập tên của bạn" required>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Số CCCD:</strong>
                         <input type="text" class="form-control" name="cccd" pattern="\d{12}" title="Vui lòng nhập 12 chữ số" required>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Địa chỉ:</strong>
                         <input type="text" class="form-control" name="address" value="{{ order.address }}" title="Vui lòng nhập tên địa chỉ của bạn" required>
                     </div>
                 </div>
-                <div class="table-cell">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Số ĐT:</strong>
                         <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" title="Vui lòng nhập số điện thoại của bạn" required>
                     </div>
                 </div>
-                <div class="table-cell">
+                <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Ngày đặt phòng:</strong>
                         <input type="date" class="form-control" name="booking_date" value="{{ order.datebook|date:'Y-m-d' }}" title="Vui lòng nhập ngày đặt phòng" required>
                     </div>
                 </div>
-            </div>
-        
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary"><strong>Xác nhận đặt phòng</strong></button>
+                <div class="col-md-4 text-center">
+                    <button type="submit" class="btn btn-primary mt-4"><strong>Xác nhận đặt phòng</strong></button>
+                </div>
             </div>
         </form>    
-        {% endif %}        
+        {% endif %}
     </div>
-</div>  
-
+</div>
 <br><br>
-
 {% endblock %}
-
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -128,5 +128,4 @@
             cell.textContent = currentDate;
         });
     });
-
 </script>

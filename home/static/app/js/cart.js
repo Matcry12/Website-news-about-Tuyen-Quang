@@ -41,3 +41,24 @@ function updateUserComfirm(orderId, action) {
     })
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    //Save the scroll position before the page is unloaded
+    window.addEventListener("beforeunload", function () {
+        localStorage.setItem("scrollX", window.scrollX);
+        localStorage.setItem("scrollY", window.scrollY);
+    });
+
+    // Restore the scroll position
+    window.addEventListener("load", function () {
+        const scrollX = localStorage.getItem("scrollX");
+        const scrollY = localStorage.getItem("scrollY");
+
+        if (scrollX !== null && scrollY !== null) {
+            window.scrollTo(parseFloat(scrollX), parseFloat(scrollY));
+        }
+
+        // Clear the stored positions after restoring
+        localStorage.removeItem("scrollX");
+        localStorage.removeItem("scrollY");
+    });
+});

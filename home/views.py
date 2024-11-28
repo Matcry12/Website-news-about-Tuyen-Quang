@@ -9,6 +9,7 @@ from django.db.models import Case, When, IntegerField
 from django.db.models.functions import Cast
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.core.paginator import Paginator
 from home.templatetags.forms import RoomForm, RoomPicForm
 
 def news(request):
@@ -25,19 +26,30 @@ def Cart(request):
         user_profile = UserProfile.objects.get(user=customer)
         # Corrected the field name to `customer`
         order_instance = order.objects.filter(room__product__owner=customer)
-        order_customer = order.objects.filter(customer=customer)
+        if user_profile.role == "customer":
+            order_instance = order.objects.filter(customer=customer)
+        products = Product.objects.filter(owner=customer)
         user_not_login = "none"
+        rooms = Room.objects.filter(product__owner = customer)
+        
     else:
         order_instance = {}  # If the user is not authenticated, we don't need to query orders
-        order_customer = {} 
         user_not_login = "block"
         user_profile = None
+        products = None
+        rooms = None
+
+    paginator = Paginator(order_instance, 5)  # Show 5 orders per page
+    page_number = request.GET.get('page')  # Get current page number from URL
+    orders_page = paginator.get_page(page_number)
 
     context = {
+        'orders_page': orders_page,
         'user_not_login': user_not_login,
         'order_instance': order_instance,  # Add the orders to the context for use in the template
-        'order_customer': order_customer,
-        'profile': user_profile
+        'products': products,
+        'profile': user_profile,
+        'rooms': rooms
     }
 
     return render(request, 'apps/cart.html', context)
@@ -57,7 +69,6 @@ def updateOrder(request):
     Order.save()
 
     return JsonResponse("changed", safe=False)
-
 
 def checkout(request):
     if request.user.is_authenticated:
@@ -273,6 +284,7 @@ def booking(request, order_id=None):
             # Update existing order
             order_obj.cname = customer_name
             order_obj.address = address
+            order_obj.cccd = cccd
             order_obj.phonecall = phone_number
             order_obj.datebook = timezone.datetime.strptime(booking_date, "%Y-%m-%d")
             order_obj.room = get_object_or_404(Room, id=room_id)
@@ -284,6 +296,7 @@ def booking(request, order_id=None):
                 cname=customer_name,
                 address=address,
                 phonecall=phone_number,
+                cccd = cccd,
                 datebook=timezone.datetime.strptime(booking_date, "%Y-%m-%d"),
                 complete=False,  # Order is incomplete initially
                 room=get_object_or_404(Room, id=room_id)
@@ -343,3 +356,74 @@ def delete_order(request, order_id):
     messages.success(request, "Order deleted successfully")
     return redirect('cart')
     
+def return_room(request, order_id):
+    # Fetch the order
+    orderD = order.objects.get(id=order_id)
+    
+    # Save the order details to the history table
+    history.objects.create(
+        customer=orderD.customer,
+        dateOrder=orderD.dateOrder,
+        datebook=orderD.datebook,
+        address=orderD.address,
+        cname=orderD.cname,
+        cccd = orderD.cccd,
+        phonecall=orderD.phonecall,
+        room=orderD.room,
+    )
+    
+    messages.success(request, "Order complete successfully")
+    # Delete the order
+    orderD.delete()
+    
+    # Redirect to the cart page
+    return redirect('cart')
+def historylist(request):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        histories = history.objects.all()
+        name = request.GET.get('name')
+        if name:
+            histories = histories.filter(room__product__name__icontains=name)
+
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
+        if start_date and end_date:
+            histories = histories.filter(datebook__range=[start_date, end_date])
+        elif start_date:  # Filter from a specific start date
+            histories = histories.filter(datebook__gte=start_date)
+        elif end_date:  # Filter up to a specific end date
+            histories = histories.filter(datebook__lte=end_date)
+
+        cccd = request.GET.get('cccd')
+        if cccd:
+            histories = histories.filter(cccd=cccd)  
+        
+        phone = request.GET.get('phonecall')
+        if phone:
+            histories = histories.filter(phonecall=phone)  
+
+        customer = request.GET.get('cname')
+        if customer:
+            histories = histories.filter(cname__icontains=customer)  
+
+        min_price = request.GET.get('min_price')
+        max_price = request.GET.get('max_price')
+        if min_price and max_price:
+            histories = histories.filter(room__price__gte=min_price, room__price__lte=max_price)
+
+        histories = histories.filter(
+            customer=request.user
+        ) | histories.filter(
+            room__product__owner=request.user
+        )
+        
+        paginator = Paginator(histories, 10)  # Paginate results
+        page_number = request.GET.get('page')
+        histories_page = paginator.get_page(page_number)
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        histories_page = None
+    context = {'user_not_login': user_not_login, 'histories_page': histories_page,}
+    return render(request, 'apps/historylist.html', context)

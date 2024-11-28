@@ -1,0 +1,158 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Lịch sử đặt hàng{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/historylist.css' %}">
+{% endblock %}
+{% block extra_js %}
+{% endblock %}
+
+{% block history %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h5 class="text-center"><strong>Lịch sử đặt phòng</strong></h5>
+
+                    <div class="filter-section py-3">
+                        <form method="GET">
+                            <div class="row g-3 align-items-center">
+                                <!-- Filter by Name -->
+                                <div class="col-md-4">
+                                    <label for="name" class="form-label">Tên CS lưu trú</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                </div>
+                    
+                                <!-- Filter by Date -->
+                                <div class="col-md-4">
+                                    <label for="start_date" class="form-label">Từ ngày</label>
+                                    <input type="date" name="start_date" id="start_date" class="form-control" value="{{ request.GET.start_date }}">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="end_date" class="form-label">Đến ngày</label>
+                                    <input type="date" name="end_date" id="end_date" class="form-control" value="{{ request.GET.end_date }}">
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="cccd" class="form-label">CCCD</label>
+                                    <input type="text" name="cccd" id="cccd" class="form-control" value="{{ request.GET.cccd }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="phonecall" class="form-label">SĐT</label>
+                                    <input type="text" name="phonecall" id="phonecall" class="form-control" value="{{ request.GET.phonecall }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="cname" class="form-label">Người đặt phòng</label>
+                                    <input type="text" name="cname" id="cname" class="form-control" value="{{ request.GET.cname }}">
+                                </div>
+
+                                <!-- Filter by Price Range -->
+                                <div class="col-md-4">
+                                    <label for="price" class="form-label">Khoảng giá</label>
+                                    <div class="d-flex">
+                                        <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
+                                        <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Filter Buttons -->
+                            <div class="mt-3 text-end">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    
+
+                    <!-- Check if there are any histories -->
+                    {% if histories_page %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên CS lưu trú</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số ĐT</th>
+                                        <th>CCCD</th>
+                                        <th>Người Đặt phòng</th>
+                                        <th>Ngày đặt phòng</th>
+                                        <th>Ngày trả phòng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Mã phòng</th>
+                                        <th>Giá tiền</th>
+                                        <th>Xác nhận</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if histories_page %}
+                                        {% for history in histories_page %}
+                                            <tr>
+                                                <td>{{ history.room.product.name }}</td>
+                                                <td>{{ history.room.product.location }}</td>
+                                                <td>{{ history.phonecall }}</td>
+                                                <td>{{ history.cccd }}</td>
+                                                <td>{{ history.cname }}</td>
+                                                <td>{{ history.datebook|date:"d/m/Y" }}</td>
+                                                <td>{{ history.outdateOrder|date:"d/m/Y" }}</td>
+                                                <td>{{ history.room.roomName }}</td>
+                                                <td>{{ history.room.roomCode }}</td>
+                                                <td>{{ history.room.price|format_price }} Đồng</td>
+                                                <td>Đã trả</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>                                
+                            </table>
+                        </div>
+                    {% else %}
+                        <tr>
+                            <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td> <!-- Message inside the table -->
+                        </tr>
+                    {% endif %}
+
+                    <!-- Pagination Controls -->
+                    {% if histories_page %}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            <ul class="pagination">
+                                {% if histories_page.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ histories_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                    </li>
+                                {% endif %}
+                                {% for num in histories_page.paginator.page_range %}
+                                    <li class="page-item {% if histories_page.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% if histories_page.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ histories_page.next_page_number }}">Sang trang &#x2192;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

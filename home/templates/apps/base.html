@@ -89,7 +89,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
             <li><a class="dropdown-item" href="{% url 'cart' %}">Quản lí phòng</a></li>
-            <li><a class="dropdown-item" href="">Lịch sử đặt phòng</a></li>
+            <li><a class="dropdown-item" href="{% url 'historylist' %}">Lịch sử đặt phòng</a></li>
             <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
         </li>
@@ -120,6 +120,7 @@
   {% block content_checkout %}{% endblock %}
   {% block search %}{% endblock %}
   {% block booking %}{% endblock %}
+  {% block history %}{% endblock %}
   </br>
   <!-- footer -->
   <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">

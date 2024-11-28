@@ -16,109 +16,209 @@
         <div class="col-lg-12">
             <div class="box-element">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'hotel' %}">&#x2190; Trở lại</a>
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h5 class="text-center"><strong>Đơn đặt phòng</strong></h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tên CS lưu trú</th>
+                                    <th>Địa chỉ</th>
+                                    <th>Số ĐT</th>
+                                    <th>CCCD</th>
+                                    <th>Người Đặt phòng</th>
+                                    <th>Ngày đặt phòng</th>
+                                    <th>Loại phòng</th>
+                                    <th>Mã phòng</th>
+                                    <th>Giá tiền</th>
+                                    <th>Xác nhận</th>
+                                    {% if profile.role == 'seller' %}
+                                        <th>Trạng thái</th>
+                                    {% else %}
+                                        <th></th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if profile.role == 'seller' %}
+                                        {% for order in orders_page %}
+                                            {% if order.room.product.owner == request.user %}
+                                                <tr>
+                                                    <td>{{ order.room.product.name }}</td>
+                                                    <td>{{ order.room.product.location }}</td>
+                                                    <td>{{ order.phonecall }}</td>
+                                                    <td>{{ order.cccd}}</td>
+                                                    <td>{{ order.cname }}</td>
+                                                    <td>{{ order.datebook|date:"d/m/Y" }}</td>
+                                                    <td>{{ order.room.roomName }}</td>
+                                                    <td>{{ order.room.roomCode }}</td>
+                                                    <td>{{ order.room.price|format_price }} Đồng</td>
+                                                    <td>
+                                                        {% if order.confirm %}
+                                                            <button class="btn btn-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                                Xác Nhận
+                                                            </button>
+                                                            <button class="btn btn-outline-warning btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                                Chờ
+                                                            </button>
+                                                        {% else %}
+                                                            <button class="btn btn-outline-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                                Xác Nhận
+                                                            </button>
+                                                            <button class="btn btn-primary btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                                Chờ
+                                                            </button>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-danger">Trả</a>
+                                                        <a href="{% url 'update_room' room_id=order.room.id %}" class="btn btn-info">Sửa</a>
+                                                        <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for order in orders_page %}
+                                            <tr>
+                                                <td>{{ order.room.product.name }}</td>
+                                                <td>{{ order.room.product.location }}</td>
+                                                <td>{{ order.phonecall }}</td>
+                                                <td>{{ order.cname }}</td>
+                                                <td>{{ order.datebook|date:"d/m/Y" }}</td>
+                                                <td>{{ order.room.roomName }}</td>
+                                                <td>{{ order.room.roomCode }}</td>
+                                                <td>{{ order.room.price|format_price }} Đồng</td>
+                                                <td>
+                                                    {% if order.confirm %}
+                                                        Xác Nhận
+                                                    {% else %}
+                                                        Chờ
+                                                    {% endif %}
+                                                </td>
+                                                <td> 
+                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <div class="d-flex align-items-center">
-                        <h5 class="mb-0 me-3">Số lượng: <strong>
-                            {% if profile.role == 'seller' %}
-                                {{ order_instance|length }}
-                            {% else %}
-                                {{ order_customer|length }}
-                            {% endif %}
-                        </strong> phòng</h5>
+                    <!-- Pagination Controls -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            <ul class="pagination">
+                                {% if orders_page.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ orders_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                    </li>
+                                {% endif %}
+                                {% for num in orders_page.paginator.page_range %}
+                                    <li class="page-item {% if orders_page.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% if orders_page.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ orders_page.next_page_number }}">Sang trang &#x2192;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
                     </div>
                 </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Tên CS lưu trú</th>
-                            <th>Địa chỉ</th>
-                            <th>Số ĐT</th>
-                            <th>Người Đặt phòng</th>
-                            <th>Ngày đặt phòng</th>
-                            <th>Loại phòng</th>
-                            <th>Mã phòng</th>
-                            <th>Giá tiền</th>
-                            <th>Xác nhận</th>
-                            {% if profile.role == 'seller' %}
-                                <th>Trạng thái</th>
-                            {% else %}
-                                <th></th>
-                            {% endif %}
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if profile.role == 'seller' %}
-                            {% for order in order_instance %}
-                                {% if order.room.product.owner == request.user %}
+                
+
+                {% if profile.role == 'seller' %}
+                    <!-- Products Section -->
+                    <div class="col-12 mb-4">
+                        <h5 class="text-center"><strong>Cơ sở lưu trú</strong></h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
                                     <tr>
-                                        <td>{{ order.room.product.name }}</td>
-                                        <td>{{ order.room.product.location }}</td>
-                                        <td>{{ order.phonecall }}</td>
-                                        <td>{{ order.cname }}</td>
-                                        <td>{{ order.datebook|date:"d/m/Y" }}</td>
-                                        <td>{{ order.room.roomName }}</td>
-                                        <td>{{ order.room.roomCode }}</td>
-                                        <td>{{ order.room.price|format_price }} Đồng</td>
-                                        <td>
-                                            {% if order.confirm %}
-                                                <!-- Solid "Xác Nhận" button and outlined "Chờ" button -->
-                                                <button class="btn btn-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
-                                                    Xác Nhận
-                                                </button>
-                                                <button class="btn btn-outline-warning btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
-                                                    Chờ
-                                                </button>
-                                            {% else %}
-                                                <!-- Outlined "Xác Nhận" button and solid "Chờ" button -->
-                                                <button class="btn btn-outline-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
-                                                    Xác Nhận
-                                                </button>
-                                                <button class="btn btn-primary btn-cho update-status-btn" data-order="{{ order.id }}" data-action="false">
-                                                    Chờ
-                                                </button>
-                                            {% endif %}
-
-                                            <!-- <a>Trạng thái của khách: {{ order.confirm }}</a> -->
-
-                                        </td>
-                                        <td>
-                                            <a href="" class="btn btn-danger">Trả</a>
-                                            <a href="{% url 'update_room' room_id=order.room.id %}" class="btn btn-info">Sửa</a>
-                                            <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
-                                        </td>
+                                        <th>Tên CS lưu trú</th>
+                                        <th>Đánh giá</th>
+                                        <th>Tình trạng</th>
+                                        <th>Giá phòng</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Chỉnh sửa</th>
                                     </tr>
-                                {% endif %}
-                            {% endfor %}
-                        {% else %}
-                            {% for order in order_customer %}
-                                <tr>
-                                    <td>{{ order.room.product.name }}</td>
-                                    <td>{{ order.room.product.location }}</td>
-                                    <td>{{ order.phonecall }}</td>
-                                    <td>{{ order.cname }}</td>
-                                    <td>{{ order.datebook|date:"d/m/Y" }}</td>
-                                    <td>{{ order.room.roomName }}</td>
-                                    <td>{{ order.room.roomCode }}</td>
-                                    <td>{{ order.room.price|format_price }} Đồng</td>
-                                    <td>
-                                        {% if order.confirm %}
-                                            Xác Nhận
-                                        {% else %}
-                                            Chờ
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                        <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                        <tr>
+                                            <td><strong>{{ product.name }}</strong></td>
+                                            <td>
+                                                {% for _ in "1"|center:product.rate %}
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% if product.onSale %}
+                                                    Còn phòng
+                                                {% else %}
+                                                    Hết phòng
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ product.amountprice }} Đồng</td>
+                                            <td>{{ product.phonecall }}</td>
+                                            <td><a class="btn btn-primary" href="#">Chỉnh sửa</a></td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="6" class="text-center text-danger">Không có cơ sở lưu trú nào.</td>
+                                            <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm cơ sở lưu trú</a>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     
-                </table>
-                <br/>
+                    <!-- Rooms Section -->
+                    <div class="col-12 mb-4">
+                        <h5 class="text-center"><strong>Phòng</strong></h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Loại phòng</th>
+                                        <th>Mã phòng</th>
+                                        <th>Giá phòng</th>
+                                        <th>Tình trạng</th>
+                                        <th>Chỉnh sửa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for room in rooms %}
+                                        <tr>
+                                            <td><strong>{{ room.get_room_type_display }} - {{ room.room_code }}</strong></td>
+                                            <td>{{ room.roomCode }}</td>
+                                            <td>{{ room.price|format_price }} Đồng</td>
+                                            <td>SUSLORD</td>
+                                            <td>
+                                                <a class="btn btn-primary" href="{% url 'update_room' room_id=room.id %}">Chỉnh sửa</a>
+                                                <a href="{% url 'delete_order' order_id=room.id %}" class="btn btn-dark">Xóa</a>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center text-danger">Không có phòng nào.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm phòng</a>
+                        </div>
+                    </div>
+                {% endif %}
+        
             </div>
         </div>
     </div>

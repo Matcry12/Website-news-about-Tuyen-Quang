@@ -109,15 +109,30 @@ class order(models.Model):
     dateOrder = models.DateTimeField(auto_now_add=True)
     outdateOrder = models.DateTimeField(null=True, blank=True)
     complete = models.BooleanField(default=False)
+    confirm = models.BooleanField(default=False)
     address = models.CharField(max_length=255, blank=False, default="N/A")
     cname = models.CharField(max_length=255, blank=False, default="N/A")
     phonecall = models.CharField(max_length=255, blank=False, default='0')
+    cccd = models.CharField(max_length=255, blank=False, default='0')
     datebook = models.DateTimeField(null=True, blank=False)
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
-    confirm = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Order #{self.id} by {self.customer} ({'Complete' if self.complete else 'Pending'})"
+        return f"Order #{self.id} by {self.customer} ({'Complete' if self.confirm else 'Pending'})"
+
+class history(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
+    dateOrder = models.DateTimeField(null=True, blank=True)  # Original order creation date
+    outdateOrder = models.DateTimeField(auto_now_add=True)  # Timestamp of deletion
+    datebook = models.DateTimeField(null=True, blank=False)
+    address = models.CharField(max_length=255, blank=False, default="N/A")
+    cname = models.CharField(max_length=255, blank=False, default="N/A")
+    phonecall = models.CharField(max_length=255, blank=False, default="0")
+    cccd = models.CharField(max_length=255, blank=False, default='0')
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return f"History for Order #{self.id} - {self.customer}"
 
 # Cart model
 class cart(models.Model):
@@ -155,6 +170,7 @@ class UserProfile(models.Model):
     ROLE_TYPE_CHOICES = [
         ('seller', 'Chủ Khách Sạn'),
         ('customer', 'Khách Hàng'),
+        ('admin', 'Người quản lí'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=255, choices=ROLE_TYPE_CHOICES)
