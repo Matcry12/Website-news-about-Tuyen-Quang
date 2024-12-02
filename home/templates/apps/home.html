@@ -67,9 +67,9 @@
                 </form>                
 
                 <!-- Filter Options -->
-                <form id="serviceForm" method="POST">
+                <form id="filterForm" method="POST">
                     {% csrf_token %}
-                    <h6><strong>Tùy chọn bộ lọc</strong></h6>
+                    <h6><strong>Dịch vụ của khách sạn</strong></h6>
                     <table class="table">
                         <tbody>
                             {% for category in categories %}
@@ -77,14 +77,46 @@
                                 <td>{{ category.name }}</td>
                                 <td>
                                     <input type="checkbox" name="category" value="{{ category.name }}" 
-                                           onchange="document.getElementById('serviceForm').submit();"
                                            {% if category.name in selected_categories %} checked {% endif %}>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                </form>
+                
+                    <h6><strong>Các loại cơ sở lưu trú</strong></h6>
+                    <table class="table">
+                        <tbody>
+                            {% for product_type in product_types %}
+                            <tr>
+                                <td>{{ product_type.name }}</td>
+                                <td>
+                                    <input type="checkbox" name="product_type" value="{{ product_type.name }}" 
+                                           {% if product_type.name in selected_product_types %} checked {% endif %}>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                
+                    <h6><strong>Các loại phòng</strong></h6>
+                    <table class="table">
+                        <tbody>
+                            {% for room_type in room_types %}
+                            <tr>
+                                <td>{{ room_type.name }}</td>
+                                <td>
+                                    <input type="checkbox" name="room_type" value="{{ room_type.name }}" 
+                                           {% if room_type.name in selected_room_types %} checked {% endif %}>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                
+                    <!-- Submit Button -->
+                    <button type="submit" id="submitButton" class="btn btn-primary mt-3">Lọc dịch vụ</button>
+                </form>                
             </div>
         </div>
 

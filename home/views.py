@@ -11,6 +11,9 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator
 from home.templatetags.forms import RoomForm, RoomPicForm
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+
 
 def news(request):
     news = new.objects.all()
@@ -31,6 +34,10 @@ def Cart(request):
         products = Product.objects.filter(owner=customer)
         user_not_login = "none"
         rooms = Room.objects.filter(product__owner = customer)
+
+        paginator = Paginator(order_instance, 5)  # Show 5 orders per page
+        page_number = request.GET.get('page')  # Get current page number from URL
+        orders_page = paginator.get_page(page_number)
         
     else:
         order_instance = {}  # If the user is not authenticated, we don't need to query orders
@@ -38,10 +45,7 @@ def Cart(request):
         user_profile = None
         products = None
         rooms = None
-
-    paginator = Paginator(order_instance, 5)  # Show 5 orders per page
-    page_number = request.GET.get('page')  # Get current page number from URL
-    orders_page = paginator.get_page(page_number)
+        orders_page = None  
 
     context = {
         'orders_page': orders_page,
@@ -95,22 +99,37 @@ def home(request):
     query = request.GET.get('q', '')
     if query:
         products = products.filter(name__icontains=query)
-        # If a search is made, clear selected categories (optional, based on your requirement)
-        selected_categories = []
+        selected_categories = []  # Optional: Clear other filters if a search is performed
+        selected_product_types = []
+        selected_room_types = []
     else:
-        # If no search, use selected categories from session
+        # Retrieve filters from session if no search
         selected_categories = request.session.get('selected_categories', [])
+        selected_product_types = request.session.get('selected_product_types', [])
+        selected_room_types = request.session.get('selected_room_types', [])
 
     # Handle selected categories from POST request
     if request.method == 'POST':
         selected_categories = request.POST.getlist('category')
+        selected_product_types = request.POST.getlist('product_type')
+        selected_room_types = request.POST.getlist('room_type')
         # Store the selected categories in the session
         request.session['selected_categories'] = selected_categories
+        request.session['selected_product_types'] = selected_product_types
+        request.session['selected_room_types'] = selected_room_types
 
         if selected_categories:
             # Filter products that have all the selected categories
             for item in selected_categories:
                 products = products.filter(categories__name=item)
+        if selected_product_types:
+            # Filter products that have all the selected categories
+            for item in selected_product_types:
+                products = products.filter(product_type__name=item)
+        if selected_room_types:
+            # Filter products that have all the selected categories
+            for item in selected_room_types:
+                products = products.filter(room_types__name=item)
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         products_html = render_to_string('partials/product_list.html', {'products': products}, request)
@@ -119,17 +138,21 @@ def home(request):
 
     # Load all categories for the checkbox list
     categories = category.objects.all()  # Ensure the model name is correct
-
+    product_types = ProductType.objects.all()  # Ensure the model name is correct
+    room_types = RoomType.objects.all()  # Ensure the model name is correct
     # Check if the user is authenticated
     user_not_login = "none" if request.user.is_authenticated else "block"
 
     context = {
         'products': products,
         'categories': categories,
-        'selected_categories': selected_categories,  # Pass selected categories to the template
-        'user_not_login': user_not_login
+        'product_types': product_types,
+        'room_types': room_types,
+        'selected_categories': selected_categories,
+        'selected_product_types': selected_product_types,
+        'selected_room_types': selected_room_types,
+        'user_not_login': user_not_login,
     }
-
     return render(request, 'apps/home.html', context)
 
 
@@ -310,6 +333,8 @@ def booking(request, order_id=None):
             quantity=1,
         )
         messages.success(request, "Bạn đã đặt phòng thành công")
+        return redirect('completebooking')
+
     if order_obj:
         room_obj = order_obj.room  # Get the room associated with the order
     else:
@@ -427,3 +452,73 @@ def historylist(request):
         histories_page = None
     context = {'user_not_login': user_not_login, 'histories_page': histories_page,}
     return render(request, 'apps/historylist.html', context)
+
+def completebooking(request):
+    context = {}
+    return render(request, 'apps/completebooking.html', context)
+
+
+class AddRoomView(CreateView):
+    model = Room
+    form_class = RoomForm  # You can also specify the form class if you have a custom form
+    template_name = 'apps/add_room.html'
+    success_url = reverse_lazy('cart')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        # Get the user from the request
+        user = self.request.user
+        
+        # Fetch products that the user owns
+        products = Product.objects.filter(owner=user)
+
+        if products.exists():
+            # Set the initial value of the 'product' field to the first product the user owns
+            kwargs['initial'] = {
+                'product': products.first()
+            }
+        else:
+            kwargs['initial'] = {
+                'product': None  # No product if the user doesn't own any
+            }
+        
+        return kwargs
+
+    def form_valid(self, form):
+        # Get the current user and the product they selected
+        user = self.request.user
+        selected_product = form.cleaned_data['product']
+        
+        # Ensure that the selected product is one the user owns
+        if selected_product.owner != user:
+            # If the user doesn't own the selected product, raise a 403 forbidden error
+            return redirect('forbidden')  # Redirect to a "Forbidden" page (you can customize this)
+
+        # Proceed to save the room
+        room = form.save(commit=False)
+        room.owner = user  # Assign the logged-in user as the owner of the room
+        room.save()
+        
+        # Optionally handle image or other forms here
+
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            # Fetch the UserProfile for the authenticated user
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            # Get the list of products that the user owns
+            products = Product.objects.filter(owner=self.request.user)
+            context['profile'] = user_profile
+            context['user_not_login'] = "none"
+            context['room_form'] = self.get_form()  # The form with the initial data for the product field
+            context['pic_form'] = RoomPicForm()  # Optionally add the pic form
+        else:
+            context['user_not_login'] = "block"
+            context['room_form'] = RoomForm()
+            context['pic_form'] = RoomPicForm()
+            context['profile'] = None  # No profile available for non-logged-in users
+
+        return context

@@ -61,7 +61,7 @@
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>TT Tài khoản CS lưu trú:</strong>
-                        <div>{{ room.product.owner }}</div>
+                        <div>{{ room.product.owner.first_name }} {{ room.product.owner.last_name }}</div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -86,7 +86,7 @@
                     <div class="field-wrapper">
                         <strong>Số CCCD:</strong>
                         <input type="text" class="form-control" name="cccd" pattern="\d{12}" title="Vui lòng nhập 12 chữ số" required>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
@@ -100,8 +100,8 @@
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Số ĐT:</strong>
-                        <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" title="Vui lòng nhập số điện thoại của bạn" required>
-                    </div>
+                        <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" pattern="\d{10}" title="Vui lòng nhập số điện thoại gồm 10 chữ số" required>
+                    </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">

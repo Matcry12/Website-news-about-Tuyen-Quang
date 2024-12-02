@@ -30,6 +30,23 @@ class category(models.Model):
     def __str__(self):
         return self.name
 
+class RoomType(models.Model):
+    code = models.CharField(max_length=10, unique=True)  # Unique identifier for the room type
+    name = models.CharField(max_length=100)  # Display name for the room type
+    
+    class Meta:
+        verbose_name = "Room Type"
+        verbose_name_plural = "Room Types"
+
+    def __str__(self):
+        return self.name
+
+class ProductType(models.Model):
+    name = models.CharField(max_length=100)  # Display name for the room type
+
+    def __str__(self):
+        return self.name
+
 # Product model (Hotel)
 class Product(models.Model):
     name = models.CharField(max_length=1000)
@@ -39,6 +56,8 @@ class Product(models.Model):
     detail = models.TextField(null=True, blank=True)
     imageP = models.ImageField(null=True, blank=True)
     categories = models.ManyToManyField(category, blank=True)
+    room_types = models.ManyToManyField(RoomType, blank=True)  # Allows multiple room types
+    product_type = models.ManyToManyField(ProductType, blank=True)
     location = models.CharField(max_length=255)
     maplocation = models.CharField(max_length=255, default='N/A')
     rate = models.IntegerField(null=True)
@@ -54,28 +73,21 @@ class Product(models.Model):
         except:
             url = ''
         return url
+    
 
-# Room model linked to Product
 class Room(models.Model):
-    ROOM_TYPE_CHOICES = [
-        ('1', 'Phòng đơn'),
-        ('2', 'Phòng đôi'),
-        ('3', 'Phòng ba'),
-        ('2bed', 'Phòng 2 giường'),
-        ('3bed', 'Phòng 3 giường'),
-        ('vip', 'Phòng VIP'),
-    ]
-
     product = models.ForeignKey(Product, related_name='rooms', on_delete=models.CASCADE)  # Link each room to a hotel
     room_code = models.CharField(max_length=255)  # Unique code for each room
     price = models.IntegerField(null=True, default=0)
-    room_type = models.CharField(max_length=10, choices=ROOM_TYPE_CHOICES)  # Room type
+    room_type = models.ForeignKey(
+        RoomType, on_delete=models.SET_NULL, null=True, related_name='rooms', to_field='code'
+    )  # Reference the 'code' field of RoomType
     status = models.BooleanField(default=True)  # True if on sale
     rating = models.IntegerField(null=True)
     image = models.ImageField(null=True, blank=True, upload_to="rooms/")
 
     def __str__(self):
-        return f"{self.product.name} - {self.get_room_type_display()}"
+        return f"{self.product.name} - {self.room_type.name if self.room_type else 'Unknown'} - {self.room_code}"
 
     @property
     def imageURL(self):
@@ -84,6 +96,7 @@ class Room(models.Model):
         except:
             url = ''
         return url
+    
     def roomCode(self):
         # Remove "Khách sạn" from the hotel name if it exists
         product_name = self.product.name.replace('Khách sạn ', '')
@@ -93,14 +106,13 @@ class Room(models.Model):
         initials = ''.join([word[0].upper() for word in name_parts])  # Take the first letter of each word and convert to uppercase
         
         # Combine the initials and room type code
-        room_type_code = self.room_type
+        room_type_code = self.room_type.code if self.room_type else "NA"
         room_code = f"{initials}{room_type_code}"
         
         return room_code
     
     def roomName(self):
-        return f"{self.get_room_type_display()}"
-
+        return f"{self.room_type.name if self.room_type else 'Unknown'}"
         
     
 # Order model

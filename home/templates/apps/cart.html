@@ -43,6 +43,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% if orders_page %}
                                 {% if profile.role == 'seller' %}
                                         {% for order in orders_page %}
                                             {% if order.room.product.owner == request.user %}
@@ -104,6 +105,11 @@
                                                 </td>
                                             </tr>
                                         {% endfor %}
+                                {% endif %}
+                                {% else %}
+                                    <tr class="no-history-row">
+                                        <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                    </tr>  
                                 {% endif %}
                             </tbody>
                         </table>
@@ -173,11 +179,14 @@
                                     {% empty %}
                                         <tr>
                                             <td colspan="6" class="text-center text-danger">Không có cơ sở lưu trú nào.</td>
-                                            <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm cơ sở lưu trú</a>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            {% if products %}
+                            {% else %}
+                                <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm cơ sở lưu trú</a>
+                            {% endif %}
                         </div>
                     </div>
                     
@@ -214,7 +223,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm phòng</a>
+                            <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'add_room'%}">Thêm phòng</a>
                         </div>
                     </div>
                 {% endif %}

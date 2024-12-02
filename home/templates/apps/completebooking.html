@@ -1,0 +1,36 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Đặt phòng{% endblock %}
+{% load custom_filters %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/booking.css' %}">
+{% endblock %}
+
+{% block booking %}
+<div class="container mt-5 bg-light p-4 rounded shadow custom-container">
+    <h3 class="text-center mb-4">Thông Tin Đặt Phòng</h3>
+    <div class="table-wrapper">
+        <div class="message-container">
+            <ul class="messages">
+                    <li><strong>Bạn đã đặt phòng thành công</strong></li>
+            </ul>
+            <div class="text-center mt-3">
+                <a href="{% url 'detail' %}?id={{ product.id }}" class="btn btn-primary"><strong>Trở lại</strong></a>
+                <a href="{% url 'cart' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>
+{% endblock %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentDate = new Date().toLocaleDateString("vi-VN");
+        const dateCells = document.querySelectorAll('td[data-date="current"]');
+        dateCells.forEach(function(cell) {
+            cell.textContent = currentDate;
+        });
+    });
+</script>

@@ -16,7 +16,6 @@ class RoomForm(forms.ModelForm):
 
 class RoomPicForm(forms.ModelForm):
     image = forms.ImageField(label="Ảnh Phòng")
-    
     class Meta:
         model = Room
         fields = ('image', )
@@ -34,7 +33,7 @@ class ProductForm(forms.ModelForm):
             'rating': ('Đánh giá'),
         }
         
-class RoomPicForm(forms.ModelForm):
+class ProductPicForm(forms.ModelForm):
     image = forms.ImageField(label="Ảnh Phòng")
     
     class Meta:

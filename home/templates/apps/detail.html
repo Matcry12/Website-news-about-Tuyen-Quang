@@ -49,7 +49,7 @@
                         {% for category in product.categories.all %}
                             {{ category.name }}{% if not forloop.last %}, {% endif %}
                         {% empty %}
-                            No services available
+                            Không có dịch vụ nào
                         {% endfor %}
                     </p>
 

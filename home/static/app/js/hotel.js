@@ -10,6 +10,11 @@ function resetSearch() {
     if (serviceForm) {
         serviceForm.submit();
     }
+
+    const submitButton = document.getElementById("submitButton");
+    if (submitButton) {
+        submitButton.click(); // This will trigger the submit button
+    }
 }
 
 
@@ -34,29 +39,30 @@ document.addEventListener("DOMContentLoaded", function () {
     //     localStorage.removeItem("scrollX");
     //     localStorage.removeItem("scrollY");
     // });
-
-    const serviceForm = document.getElementById("serviceForm");
+    const forms = document.querySelectorAll("form"); // Select all forms
     const productContainer = document.getElementById("productContainer");
 
-    // Event listener for form changes
-    serviceForm.addEventListener("change", function (event) {
-        event.preventDefault();
+    // Add event listener to all forms
+    forms.forEach((form) => {
+        form.addEventListener("change", function (event) {
+            event.preventDefault();
 
-        const formData = new FormData(serviceForm);
+            const formData = new FormData(form);
 
-        fetch("{% url 'hotel' %}", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "X-Requested-With": "XMLHttpRequest", // Indicate it's an AJAX request
-            },
-            body: formData,
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                productContainer.innerHTML = data.products_html; // Replace product container
+            fetch("{% url 'hotel' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "X-Requested-With": "XMLHttpRequest", // Indicate it's an AJAX request
+                },
+                body: formData,
             })
-            .catch((error) => console.error("Error:", error));
+                .then((response) => response.json())
+                .then((data) => {
+                    productContainer.innerHTML = data.products_html; // Replace product container
+                })
+                .catch((error) => console.error("Error:", error));
+        });
     });
 });
 

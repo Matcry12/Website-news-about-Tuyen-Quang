@@ -23,7 +23,7 @@
 
                     <div class="filter-section py-3">
                         <form method="GET">
-                            <div class="row g-3 align-items-center">
+                            <div class="filter-fields d-flex flex-wrap gap-3">
                                 <!-- Filter by Name -->
                                 <div class="col-md-4">
                                     <label for="name" class="form-label">Tên CS lưu trú</label>
@@ -112,17 +112,38 @@
                                             </tr>
                                         {% endfor %}
                                     {% else %}
-                                        <tr>
+                                        <tr class="no-history-row">
                                             <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
-                                        </tr>
+                                        </tr>                                    
                                     {% endif %}
                                 </tbody>                                
                             </table>
                         </div>
                     {% else %}
-                        <tr>
-                            <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td> <!-- Message inside the table -->
-                        </tr>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên CS lưu trú</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số ĐT</th>
+                                        <th>CCCD</th>
+                                        <th>Người Đặt phòng</th>
+                                        <th>Ngày đặt phòng</th>
+                                        <th>Ngày trả phòng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Mã phòng</th>
+                                        <th>Giá tiền</th>
+                                        <th>Xác nhận</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="no-history-row">
+                                        <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                    </tr>   
+                                </tbody>                                
+                            </table>
+                        </div>                 
                     {% endif %}
 
                     <!-- Pagination Controls -->

@@ -192,3 +192,39 @@ textarea:focus {
     border-color: #6c757d;
     color: #fff;
 }
+
+.filter-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between fields */
+}
+
+.filter-fields > .col-md-4 {
+    flex: 0 0 calc(33.333% - 20px); /* 3 items per row */
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 calc(50% - 20px); /* 2 items per row on small screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 100%; /* Full-width fields on very small screens */
+    }
+}
+.no-history-row {
+    background-color: #f9f9f9; /* Light gray background */
+    color: #888; /* Subtle text color */
+    font-style: italic; /* Italic text for emphasis */
+    font-size: 16px; /* Adjust font size */
+    text-align: center; /* Center-align the text */
+    border: 1px solid #ddd; /* Optional border */
+}
+
+.no-history-row td {
+    padding: 15px; /* Adjust padding for better spacing */
+}
+
