@@ -1,17 +1,31 @@
 from django import forms
-from home.models import Room
+from home.models import Room, Product
 
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = ['product', 'room_code', 'price', 'room_type', 'status', 'rating']
         labels = {
-            'product': ('Sản phẩm'),
+            'product': ('Cơ sở lưu trú'),
             'room_code': ('Mã phòng'),
             'price': ('Giá'),
             'room_type': ('Loại phòng'),
             'status': ('Trạng thái'),
             'rating': ('Đánh giá'),
+        }
+
+class RoomFormCreate(forms.ModelForm):
+    class Meta:
+        model = Room
+        fields = ['product', 'room_code', 'price', 'room_type', 'status', 'rating', 'image']
+        labels = {
+            'product': ('Cơ sở lưu trú'),
+            'room_code': ('Mã phòng'),
+            'price': ('Giá'),
+            'room_type': ('Loại phòng'),
+            'status': ('Trạng thái'),
+            'rating': ('Đánh giá'),
+            'image': ('Ảnh phòng'),
         }
 
 class RoomPicForm(forms.ModelForm):
@@ -20,22 +34,72 @@ class RoomPicForm(forms.ModelForm):
         model = Room
         fields = ('image', )
 
+class ProductFormCreate(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = [
+            'name', 
+            'amountprice', 
+            'onSale', 
+            'detail', 
+            'imageP', 
+            'categories', 
+            'room_types', 
+            'product_type', 
+            'location', 
+            'maplocation', 
+            'rate', 
+            'phonecall'
+        ]
+        labels = {
+            'name': 'Tên cơ sở lưu trú',
+            'amountprice': 'Giá',
+            'onSale': 'Đang bán',
+            'detail': 'Chi tiết',
+            'imageP': 'Hình ảnh',
+            'categories': 'Danh mục',
+            'room_types': 'Loại phòng',
+            'product_type': 'Loại sản phẩm',
+            'location': 'Vị trí',
+            'maplocation': 'Bản đồ',
+            'rate': 'Đánh giá',
+            'phonecall': 'Số điện thoại',
+        }
+
 class ProductForm(forms.ModelForm):
     class Meta:
-        model = Room
-        fields = ['product', 'room_code', 'price', 'room_type', 'status', 'rating']
+        model = Product
+        fields = [
+            'name', 
+            'amountprice', 
+            'onSale', 
+            'detail', 
+            'categories', 
+            'room_types', 
+            'product_type', 
+            'location', 
+            'maplocation', 
+            'rate', 
+            'phonecall'
+        ]
         labels = {
-            'product': ('Sản phẩm'),
-            'room_code': ('Mã phòng'),
-            'price': ('Giá'),
-            'room_type': ('Loại phòng'),
-            'status': ('Trạng thái'),
-            'rating': ('Đánh giá'),
+            'name': 'Tên cơ sở lưu trú',
+            'amountprice': 'Giá',
+            'onSale': 'Đang bán',
+            'detail': 'Chi tiết',
+            'categories': 'Danh mục',
+            'room_types': 'Loại phòng',
+            'product_type': 'Loại sản phẩm',
+            'location': 'Vị trí',
+            'maplocation': 'Bản đồ',
+            'rate': 'Đánh giá',
+            'phonecall': 'Số điện thoại',
         }
+
         
 class ProductPicForm(forms.ModelForm):
-    image = forms.ImageField(label="Ảnh Phòng")
+    imageP = forms.ImageField(label="Ảnh Phòng")
     
     class Meta:
-        model = Room
-        fields = ('image', )
+        model = Product
+        fields = ('imageP', )

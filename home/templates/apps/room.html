@@ -12,7 +12,7 @@
                 <!-- Content Section -->
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h4 class="card-title"><strong>{{ room.get_room_type_display }}</strong></h4>
+                        <h4 class="card-title"><strong>{{ room.roomName }} - {{ room.room_code }}</strong></h4>
                         <p class="card-text"><strong>Mã phòng:</strong> {{ room.roomCode }}</p>
                         <p class="card-text"><strong>Giá: </strong>{{ room.price|format_price }} Đồng</p>
                         <p class="card-text"><strong>Đánh giá: </strong>

@@ -153,7 +153,9 @@
                                         <th>Tình trạng</th>
                                         <th>Giá phòng</th>
                                         <th>Số điện thoại</th>
-                                        <th>Chỉnh sửa</th>
+                                        {% if products %}
+                                            <th></th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -174,7 +176,11 @@
                                             </td>
                                             <td>{{ product.amountprice }} Đồng</td>
                                             <td>{{ product.phonecall }}</td>
-                                            <td><a class="btn btn-primary" href="#">Chỉnh sửa</a></td>
+                                            <td>
+                                                <a class="btn btn-primary" href="{% url 'update_hotel' hotel_id=product.id %}">Chỉnh sửa</a>
+                                                <a href="{% url 'delete_hotel' hotel_id=product.id %}" class="btn btn-dark">Xóa</a>
+                                            </td>
+                                            
                                         </tr>
                                     {% empty %}
                                         <tr>
@@ -185,7 +191,7 @@
                             </table>
                             {% if products %}
                             {% else %}
-                                <a class="btn btn-sm btn-outline-primary mt-2" href="#">Thêm cơ sở lưu trú</a>
+                                <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'add_hotel'%}">Thêm cơ sở lưu trú</a>
                             {% endif %}
                         </div>
                     </div>
@@ -201,19 +207,21 @@
                                         <th>Mã phòng</th>
                                         <th>Giá phòng</th>
                                         <th>Tình trạng</th>
-                                        <th>Chỉnh sửa</th>
+                                        {% if rooms %}
+                                            <th></th>
+                                        {% endif %}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for room in rooms %}
                                         <tr>
-                                            <td><strong>{{ room.get_room_type_display }} - {{ room.room_code }}</strong></td>
+                                            <td><strong>{{ room.roomName }} - {{ room.room_code }}</strong></td>
                                             <td>{{ room.roomCode }}</td>
                                             <td>{{ room.price|format_price }} Đồng</td>
                                             <td>SUSLORD</td>
                                             <td>
                                                 <a class="btn btn-primary" href="{% url 'update_room' room_id=room.id %}">Chỉnh sửa</a>
-                                                <a href="{% url 'delete_order' order_id=room.id %}" class="btn btn-dark">Xóa</a>
+                                                <a href="{% url 'delete_room' room_id=room.id %}" class="btn btn-dark">Xóa</a>
                                             </td>
                                         </tr>
                                     {% empty %}
@@ -223,7 +231,9 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            {% if products %}
                             <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'add_room'%}">Thêm phòng</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}

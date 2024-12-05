@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-9">
                 {% if profile %}
-                    <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                    <h2>{{ profile.user.last_name }} {{ profile.user.first_name }}</h2>
                     <p class="text-muted">Email: {{ profile.user.email }}</p>
                 {% else %}
                     <h2>Please log in to see your profile.</h2>
@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h5 class="text-uppercase">Personal Information</h5>
-                <p><strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                <p><strong>Full Name:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</p>
                 <p><strong>Username:</strong> {{ profile.user.username }}</p>
                 <p><strong>Bio:</strong> <!-- Add bio field if available in UserProfile --></p>
             </div>

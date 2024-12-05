@@ -96,17 +96,3 @@ h1 {
     max-width: 600px;
     margin: 0 auto;
 }
-
-/* Label Styling */
-.form-group label {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 8px;
-}
-
-/* Adding Spacing to Form Groups */
-.form-group {
-    margin-bottom: 20px;
-}
-

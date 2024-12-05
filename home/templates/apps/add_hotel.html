@@ -1,6 +1,6 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Thêm phòng{% endblock %}
+{% block title %}Thêm cơ sở lưu trú{% endblock %}
 
 {% block extra_js %}
 
@@ -13,7 +13,7 @@
 {% block detail %}
 
 <div class="custom-box">
-    <h1> Thêm phòng </h1>
+    <h1> Thêm cơ sở lưu trú </h1>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

@@ -10,7 +10,7 @@ from django.db.models.functions import Cast
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator
-from home.templatetags.forms import RoomForm, RoomPicForm
+from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 
@@ -372,6 +372,28 @@ def updateRoom(request, room_id):
     context = {'profile': user_profile, 'user_not_login': user_not_login, 'room': room, 'room_form': room_form, 'pic_form': pic_form}
     return render(request, 'apps/update_room.html', context)
 
+def updateHotel(request, hotel_id):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        user_profile = UserProfile.objects.get(user=request.user)
+        hotel =  Product.objects.get(id = hotel_id)
+        if hotel.owner != user_profile.user:  # Compare the actual User object
+            return redirect('home') 
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        user_profile = None  # No profile available for non-logged-in users
+        return redirect('login')
+    hotel_form = ProductForm(request.POST or None, request.FILES or None , instance=hotel)
+    pic_form = ProductPicForm(request.POST or None , request.FILES or None , instance=hotel)
+    if hotel_form.is_valid() and pic_form.is_valid():
+            hotel_form.save()
+            pic_form.save()
+
+            return redirect('cart')  # Redirect to room details page after saving
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'hotel': hotel, 'hotel_form': hotel_form, 'pic_form': pic_form}
+    return render(request, 'apps/update_hotel.html', context)
+
 def delete_order(request, order_id):
 
     user_profile = UserProfile.objects.get(user=request.user)
@@ -379,6 +401,24 @@ def delete_order(request, order_id):
     orderD = order.objects.get(id=order_id)
     orderD.delete()
     messages.success(request, "Order deleted successfully")
+    return redirect('cart')
+
+def delete_room(request, room_id):
+
+    user_profile = UserProfile.objects.get(user=request.user)
+    
+    room = Room.objects.get(id=room_id)
+    room.delete()
+    messages.success(request, "Room deleted successfully")
+    return redirect('cart')
+
+def delete_hotel(request, hotel_id):
+
+    user_profile = UserProfile.objects.get(user=request.user)
+    
+    hotel = Product.objects.get(id=hotel_id)
+    hotel.delete()
+    messages.success(request, "Hotel deleted successfully")
     return redirect('cart')
     
 def return_room(request, order_id):
@@ -457,68 +497,101 @@ def completebooking(request):
     context = {}
     return render(request, 'apps/completebooking.html', context)
 
-
 class AddRoomView(CreateView):
     model = Room
-    form_class = RoomForm  # You can also specify the form class if you have a custom form
+    form_class = RoomFormCreate
     template_name = 'apps/add_room.html'
     success_url = reverse_lazy('cart')
 
+    def dispatch(self, request, *args, **kwargs):
+        # Check if the user is authenticated
+        if not request.user.is_authenticated:
+            return redirect('login')  # Redirect to login if not authenticated
+
+        # Check if the user owns any products
+        products = Product.objects.filter(owner=request.user)
+        if not products.exists():  # If the user has no products
+            return redirect('cart')  # Redirect to the cart page
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        # Get the user from the request
         user = self.request.user
-        
-        # Fetch products that the user owns
         products = Product.objects.filter(owner=user)
 
         if products.exists():
-            # Set the initial value of the 'product' field to the first product the user owns
-            kwargs['initial'] = {
-                'product': products.first()
-            }
+            kwargs['initial'] = {'product': products.first()}
         else:
-            kwargs['initial'] = {
-                'product': None  # No product if the user doesn't own any
-            }
+            kwargs['initial'] = {'product': None}
         
         return kwargs
 
     def form_valid(self, form):
-        # Get the current user and the product they selected
         user = self.request.user
         selected_product = form.cleaned_data['product']
-        
-        # Ensure that the selected product is one the user owns
-        if selected_product.owner != user:
-            # If the user doesn't own the selected product, raise a 403 forbidden error
-            return redirect('forbidden')  # Redirect to a "Forbidden" page (you can customize this)
+        products = Product.objects.filter(owner=user)
 
-        # Proceed to save the room
+        # Validate that the selected product belongs to the user
+        if selected_product not in products:
+            form.add_error('product', 'Bạn không thể chọn cơ sở lưu trú không phải của mình.')
+            return self.form_invalid(form)
+
+        # Proceed to save the room if validation passes
         room = form.save(commit=False)
-        room.owner = user  # Assign the logged-in user as the owner of the room
+        room.owner = user
         room.save()
-        
-        # Optionally handle image or other forms here
 
         return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, "Có lỗi khi bạn gửi bài. Vui lòng kiểm tra biểu mẫu và thử lại.")
+        return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            # Fetch the UserProfile for the authenticated user
             user_profile = UserProfile.objects.get(user=self.request.user)
-            # Get the list of products that the user owns
             products = Product.objects.filter(owner=self.request.user)
             context['profile'] = user_profile
             context['user_not_login'] = "none"
-            context['room_form'] = self.get_form()  # The form with the initial data for the product field
-            context['pic_form'] = RoomPicForm()  # Optionally add the pic form
+            context['product'] = products
         else:
             context['user_not_login'] = "block"
-            context['room_form'] = RoomForm()
-            context['pic_form'] = RoomPicForm()
-            context['profile'] = None  # No profile available for non-logged-in users
+            context['profile'] = None
+            context['product'] = None
+
+        return context
+
+
+class AddHotelView(CreateView):
+    model = Product
+    form_class = ProductFormCreate  # Use your custom form if necessary
+    template_name = 'apps/add_hotel.html'
+    success_url = reverse_lazy('cart')
+
+    def form_valid(self, form):
+        user_profile = UserProfile.objects.get(user=self.request.user)
+
+        # Ensure the user is a seller (you can adjust this logic based on your app)
+        if user_profile.role != 'seller':
+            # Redirect to home or show a forbidden message if the user is not a seller
+            return redirect('home')
+
+        # Automatically assign the owner to the logged-in user
+        product = form.save(commit=False)
+        product.owner = self.request.user
+        product.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Add additional context if needed
+        if self.request.user.is_authenticated:
+            context['user_not_login'] = "none"
+        else:
+            context['user_not_login'] = "block"
+            return redirect('home')  # Redirect if user is not authenticated
 
         return context

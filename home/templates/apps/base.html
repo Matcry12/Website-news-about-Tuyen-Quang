@@ -32,6 +32,7 @@
   <script src="{%static 'app/js/myscript.js' %}"></script>
   <script type="text/javascript">
     var user = '{{ request.user }}'
+    var userName = '{{ request.user.last_name }} {{ request.user.first_name }}'
     var userRole = '{{ request.user.userprofile.role }}'
 
     function getCookie(name) {
