@@ -12,6 +12,10 @@ from django.utils import timezone
 from django.core.paginator import Paginator
 from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate
 from django.views.generic import CreateView
+import pandas as pd
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl import Workbook
+from openpyxl.styles import Border, Side, Font
 from django.urls import reverse_lazy
 
 
@@ -445,6 +449,7 @@ def return_room(request, order_id):
     return redirect('cart')
 def historylist(request):
     if request.user.is_authenticated:
+        user_profile = UserProfile.objects.get(user=request.user)
         user_not_login = "none"
         histories = history.objects.all()
         name = request.GET.get('name')
@@ -477,12 +482,16 @@ def historylist(request):
         if min_price and max_price:
             histories = histories.filter(room__price__gte=min_price, room__price__lte=max_price)
 
+        
         histories = histories.filter(
             customer=request.user
         ) | histories.filter(
             room__product__owner=request.user
         )
         
+        if user_profile.role == 'admin':
+            histories = history.objects.all()
+
         paginator = Paginator(histories, 10)  # Paginate results
         page_number = request.GET.get('page')
         histories_page = paginator.get_page(page_number)
@@ -595,3 +604,99 @@ class AddHotelView(CreateView):
             return redirect('home')  # Redirect if user is not authenticated
 
         return context
+    
+def export_history(request):
+    # Fetch history data
+    user_profile = UserProfile.objects.get(user=request.user)
+    hisotry_user = history.objects.all()
+    hisotry_user = hisotry_user.filter(
+            customer=request.user
+        ) | hisotry_user.filter(
+            room__product__owner=request.user
+        )
+        
+    if user_profile.role == 'admin':
+        hisotry_user = history.objects.all()
+    history_data = hisotry_user.values(
+        'room__product__name',
+        'room__room_code',  # Assuming Room model has a field 'room_code'
+        'room__room_type__name',
+        'room__price',
+        'dateOrder',
+        'outdateOrder',
+        'datebook',
+        'customer__username',  # Assuming 'username' is a field in your User model
+        'cname',
+        'address',
+        'phonecall',
+        'cccd',
+    )
+
+    # Convert QuerySet to DataFrame
+    df = pd.DataFrame(list(history_data))
+
+    # Rename columns for better readability
+    df.rename(columns={
+        'room__product__name': 'Cơ sở lưu trú',
+        'room__room_code': 'Mã phòng',
+        'room__room_type__name': 'Loại phòng',
+        'room__price': 'Giá phòng (đồng)',
+        'dateOrder': 'Ngày đặt phòng',
+        'datebook': 'Ngày nhận phòng',
+        'outdateOrder': 'Ngày trả phòng',
+        'customer__username': 'Biệt danh khách hàng',
+        'cname': 'Tên khách hàng',
+        'address': 'Địa chỉ',
+        'phonecall': 'Số điện thoại',
+        'cccd': 'Căn cước công dân',
+    }, inplace=True)
+
+    # Format datetime columns to 'yyyy-mm-dd h:mm:ss'
+    datetime_columns = ['Ngày đặt phòng', 'Ngày nhận phòng', 'Ngày trả phòng']
+    for column in datetime_columns:
+        if pd.api.types.is_datetime64_any_dtype(df[column]):  # Check if column is datetime
+            df[column] = df[column].dt.strftime('%Y-%m-%d %H:%M:%S')  # Apply format
+
+    # Create Excel response
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="history.xlsx"'
+
+    # Create an Excel workbook and write the DataFrame to it
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "History"
+
+    # Write DataFrame rows to the sheet
+    for r_idx, row in enumerate(dataframe_to_rows(df, index=False, header=True), 1):
+        for c_idx, value in enumerate(row, 1):
+            cell = ws.cell(row=r_idx, column=c_idx, value=value)
+
+            # Apply border to each cell
+            border = Border(
+                left=Side(border_style="thin"),
+                right=Side(border_style="thin"),
+                top=Side(border_style="thin"),
+                bottom=Side(border_style="thin")
+            )
+            cell.border = border
+
+            # Apply bold font to header row (first row)
+            if r_idx == 1:
+                cell.font = Font(bold=True)
+
+    # Fit column widths to content
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter  # Get the column name
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column].width = adjusted_width
+
+    # Save the Excel file to the response
+    wb.save(response)
+    return response

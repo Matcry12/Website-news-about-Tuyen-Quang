@@ -71,6 +71,7 @@
                                 <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
                             </div>
                         </form>
+                        <a href="{% url 'export_history' %}" class="btn btn-success">Tại xuống toàn bộ lịch sử</a>
                     </div>
                     
                     
@@ -82,15 +83,15 @@
                                 <thead>
                                     <tr>
                                         <th>Tên CS lưu trú</th>
+                                        <th>Mã phòng</th>
+                                        <th>Loại phòng</th>
+                                        <th>Giá tiền</th>
+                                        <th>Ngày đặt phòng</th>
+                                        <th>Ngày trả phòng</th>
+                                        <th>Người Đặt phòng</th>
                                         <th>Địa chỉ</th>
                                         <th>Số ĐT</th>
                                         <th>CCCD</th>
-                                        <th>Người Đặt phòng</th>
-                                        <th>Ngày đặt phòng</th>
-                                        <th>Ngày trả phòng</th>
-                                        <th>Loại phòng</th>
-                                        <th>Mã phòng</th>
-                                        <th>Giá tiền</th>
                                         <th>Xác nhận</th>
                                     </tr>
                                 </thead>
@@ -99,15 +100,15 @@
                                         {% for history in histories_page %}
                                             <tr>
                                                 <td>{{ history.room.product.name }}</td>
+                                                <td>{{ history.room.room_code }}</td>
+                                                <td>{{ history.room.roomName }}</td>
+                                                <td>{{ history.room.price|format_price }} Đồng</td>
+                                                <td>{{ history.datebook|date:"d/m/Y" }}</td>
+                                                <td>{{ history.outdateOrder|date:"d/m/Y" }}</td>
+                                                <td>{{ history.cname }}</td>
                                                 <td>{{ history.room.product.location }}</td>
                                                 <td>{{ history.phonecall }}</td>
                                                 <td>{{ history.cccd }}</td>
-                                                <td>{{ history.cname }}</td>
-                                                <td>{{ history.datebook|date:"d/m/Y" }}</td>
-                                                <td>{{ history.outdateOrder|date:"d/m/Y" }}</td>
-                                                <td>{{ history.room.roomName }}</td>
-                                                <td>{{ history.room.roomCode }}</td>
-                                                <td>{{ history.room.price|format_price }} Đồng</td>
                                                 <td>Đã trả</td>
                                             </tr>
                                         {% endfor %}
