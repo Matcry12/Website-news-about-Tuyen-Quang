@@ -139,6 +139,18 @@
                     </div>
                 </div>
                 
+                {% if profile.role == 'admin' %}
+                    <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_hotel'%}">Tải file excel mẫu cho cơ sở lưu trú</a>
+                    <br>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="field-wrapper">
+                            <label for="hotel_excel" class="form-label"><h5 class="text-center"><strong>Thêm cơ sở lưu trú bằng excel</strong></h5></label>
+                            <input type="file" name="hotel_excel" id="hotel_excel" accept=".xlsx, .xls" required class="form-control">
+                            <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                        </div>
+                    </form>
+                {% endif %}
 
                 {% if profile.role == 'seller' %}
                     <!-- Products Section -->
@@ -232,14 +244,55 @@
                                 </tbody>
                             </table>
                             {% if products %}
-                            <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'add_room'%}">Thêm phòng</a>
+                                <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'add_room'%}">Thêm phòng</a>
+
+                                <!-- "Xem thêm" button -->
+                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary mt-2" id="showMoreBtn">Tạo phòng nhanh</a>
+
+                                <!-- Content to show/hide -->
+                                <div id="extraContent" style="display: none;">
+                                    <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_room' %}">Tải file excel mẫu cho phòng</a>
+                                    </br>
+                                    <form method="POST" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="field-wrapper">
+                                            <label for="room_excel" class="form-label">
+                                                <h5 class="text-center"><strong>Thêm phòng bằng excel</strong></h5>
+                                            </label>
+                                            <input type="file" name="room_excel" id="room_excel" accept=".xlsx, .xls" required class="form-control">
+                                            <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             {% endif %}
                         </div>
                     </div>
                 {% endif %}
-        
+                <br>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const extraContent = document.getElementById('extraContent');
+
+        // Check if the button and content exist
+        if (showMoreBtn && extraContent) {
+            showMoreBtn.addEventListener('click', function () {
+                // Toggle the display style of the extra content
+                if (extraContent.style.display === 'none') {
+                    extraContent.style.display = 'block'; // Show the content
+                    showMoreBtn.innerHTML = 'Ẩn tính năng'; // Change the button text to "Hide"
+                } else {
+                    extraContent.style.display = 'none'; // Hide the content
+                    showMoreBtn.innerHTML = 'Tạo phòng nhanh'; // Change the button text back to "See more"
+                }
+            });
+        }
+    });
+</script>
 {% endblock cart_content %}

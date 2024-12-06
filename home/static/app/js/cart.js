@@ -18,6 +18,8 @@ for (let i = 0; i < updateButton.length; i++) {
     });
 }
 
+
+
 function updateUserComfirm(orderId, action) {
     console.log('orderId:', orderId, 'action:', action);
     console.log('user:', user);

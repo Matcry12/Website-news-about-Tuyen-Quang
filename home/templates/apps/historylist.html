@@ -71,10 +71,15 @@
                                 <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
                             </div>
                         </form>
-                        <a href="{% url 'export_history' %}" class="btn btn-success">Tại xuống toàn bộ lịch sử</a>
+                        {% if allowed %}
+                            <a href="{% url 'export_history' %}?{{ request.GET.urlencode }}" class="btn btn-success">Tải xuống lịch sử</a>
+                            <a href="{% url 'export_hotel' %}" class="btn btn-success">Tải xuống cơ sở lưu trú</a>
+                        {% else %}
+                            <a href="" class="btn btn-danger">Không thể tải lịch sử</a>
+                        {% endif %}
                     </div>
                     
-                    
+                    <h5 ><strong>Tổng số khách đặt phòng: {{ count }} </strong></h5>
 
                     <!-- Check if there are any histories -->
                     {% if histories_page %}

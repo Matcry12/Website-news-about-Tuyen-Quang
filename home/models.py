@@ -158,8 +158,6 @@ class cart(models.Model):
         room_id = self.room.id if self.room else "No Room"
         return f"Cart for Order #{order_id} (Room #{room_id}) - Added on {self.date_added}"
 
-
-
 # News model
 class new(models.Model):
     title = models.CharField(max_length=1000)

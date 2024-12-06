@@ -30,4 +30,8 @@ urlpatterns = [
     path('return-room/<order_id>/', views.return_room, name='return_room'),
     path('history-list/', views.historylist, name='historylist'),
     path('export-history/', views.export_history, name='export_history'),
+    path('export-hotel/', views.export_hotel, name='export_hotel'),
+    path('download_example_hotel/', views.generate_example_hotel, name='download_example_hotel'),
+    path('download_example_room/', views.generate_example_room, name='download_example_room'),
+    path('create-superuser/', views.create_superuser, name='create_superuser'),
 ]

@@ -28,22 +28,22 @@
         {% if profile %}
         <div class="row">
             <div class="col-md-6">
-                <h5 class="text-uppercase">Personal Information</h5>
-                <p><strong>Full Name:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</p>
-                <p><strong>Username:</strong> {{ profile.user.username }}</p>
-                <p><strong>Bio:</strong> <!-- Add bio field if available in UserProfile --></p>
+                <h5 class="text-uppercase">Thông tin người dùng</h5>
+                <p><strong>Họ và tên:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</p>
+                <p><strong>Tên tài khoản:</strong> {{ profile.user.username }}</p>
+                <p><strong>Giới thiệu:</strong> <!-- Add bio field if available in UserProfile --></p>
             </div>
             <div class="col-md-6">
-                <h5 class="text-uppercase">Account Information</h5>
-                <p><strong>Member Since:</strong> {{ profile.user.date_joined }}</p>
-                <p><strong>Last Login:</strong> {{ profile.user.last_login }}</p>
+                <h5 class="text-uppercase">Thông tin tài khoản</h5>
+                <p><strong>Tạo tài khoản từ:</strong> {{ profile.user.date_joined }}</p>
+                <p><strong>Lần cuối đăng nhập:</strong> {{ profile.user.last_login }}</p>
             </div>
         </div>
         {% endif %}
 
         <!-- Edit Profile Button -->
         <div class="mt-4 text-center">
-            <a href="{% url 'home' %}" class="btn btn-primary">Edit Profile</a>
+            <a href="{% url 'home' %}" class="btn btn-primary">Chỉnh sửa trang cá nhân</a>
         </div>
     </div>
 </div>

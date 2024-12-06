@@ -1,20 +1,30 @@
 {% extends 'apps/base.html' %}
 {% block title %}Đăng ký{% endblock %}
-{% block register %}
 
-<section class="vh-100 bg-image" style="background-color: #eee;">
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/register.css' %}">
+{% endblock %}
+
+{% block register %}
+<section class="vh-100 bg-image" style="background-color: #eee; min-height: 120vh">
+    <br>
     <div class="mask d-flex align-items-center h-100 gradient-custom-3">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div class="card" style="border-radius: 15px;">
-                        <div class="card-body p-5">
-                            <h2 class="text-uppercase text-center mb-5">Đăng ký tài khoản</h2>
+                    <!-- Added custom-form class to match login -->
+                    <div class="card custom-box" style="border-radius: 15px;">
+                        <h2 class="text-uppercase text-center mb-5">Đăng ký tài khoản</h2>  
+                        <div class="custom-form">
+                            
                             {% for message in messages %}
                                 <p id='message' class="text-center text-muted mt-5 mb-0"> {{ message }}</p>
                             {% endfor %}
                             <form method="POST" action="" id="register-form">
                                 {% csrf_token %}
+                                <!-- Form Fields -->
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="Username">Tên tài khoản:</label>
                                     {{ form.username }}
@@ -55,22 +65,23 @@
                                     </div>
                                 </div>
 
+                                <!-- Register Button -->
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body btn-rounded" style="border-radius: 10px;">Đăng ký</button>
+                                    <button type="submit" class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body btn-rounded" style="border-radius: 10px;">Đăng ký</button>
                                 </div>
 
-                                <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản rồi? <a href="{% url 'login' %}"
-                                        class="fw-bold text-body"><u>Đăng nhập ở đây</u></a></p>
+                                <!-- Login Link -->
+                                <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản rồi? <a href="{% url 'login' %}" class="fw-bold text-body"><u>Đăng nhập ở đây</u></a></p>
                             </form>
-
+                            <br>
                         </div>
                     </div>
+                    <br>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 <style>
     .btn-rounded {
         border-radius: 12px;

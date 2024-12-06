@@ -1,5 +1,5 @@
 from django import forms
-from home.models import Room, Product
+from home.models import Room, Product, User
 
 class RoomForm(forms.ModelForm):
     class Meta:
@@ -103,3 +103,25 @@ class ProductPicForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('imageP', )
+
+class SuperUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password']
+        labels = {
+            'username': 'Tên tài khoản',
+            'email': 'Email',
+            'password': 'Mật khẩu',
+        }
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        user.is_staff = True
+        user.is_superuser = True
+        if commit:
+            user.save()
+        return user

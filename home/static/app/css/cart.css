@@ -511,3 +511,18 @@ h3.text-center {
     color: #fff;
     border-color: #007bff;
 }
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Styling for the input file button to look like the outline button */
+#room_excel {
+    padding: 10px;
+    border: 2px solid #1E90FF; /* Match the button's border */
+    border-radius: 5px;
+    font-size: 16px;
+}
+
