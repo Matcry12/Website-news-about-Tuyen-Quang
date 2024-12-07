@@ -90,6 +90,9 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
             <li><a class="dropdown-item" href="{% url 'cart' %}">Quản lí phòng</a></li>
+            {% if profile.role == 'admin' %}
+              <li><a class="dropdown-item" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
+            {% endif %}
             <li><a class="dropdown-item" href="{% url 'historylist' %}">Lịch sử đặt phòng</a></li>
             <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
@@ -122,6 +125,10 @@
   {% block search %}{% endblock %}
   {% block booking %}{% endblock %}
   {% block history %}{% endblock %}
+  {% block update_hotel %}{% endblock %}
+  {% block manager %}{% endblock %}
+  {% block update_room %}{% endblock %}
+  {% block edit_profile %}{% endblock %}
   </br>
   <!-- footer -->
   <footer class="container-fluid bg-success text-center fixed-bottom p-2 mt-5">

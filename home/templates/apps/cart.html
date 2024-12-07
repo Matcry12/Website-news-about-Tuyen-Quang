@@ -166,7 +166,8 @@
                                         <th>Giá phòng</th>
                                         <th>Số điện thoại</th>
                                         {% if products %}
-                                            <th></th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
                                         {% endif %}
                                     </tr>
                                 </thead>
@@ -189,10 +190,15 @@
                                             <td>{{ product.amountprice }} Đồng</td>
                                             <td>{{ product.phonecall }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{% url 'update_hotel' hotel_id=product.id %}">Chỉnh sửa</a>
-                                                <a href="{% url 'delete_hotel' hotel_id=product.id %}" class="btn btn-dark">Xóa</a>
+                                                <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'update_hotel' hotel_id=product.id %}">
+                                                    <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>
+                                                </a>
                                             </td>
-                                            
+                                            <td>
+                                                <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'delete_hotel' hotel_id=product.id %}" >
+                                                    <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     {% empty %}
                                         <tr>
@@ -220,7 +226,8 @@
                                         <th>Giá phòng</th>
                                         <th>Tình trạng</th>
                                         {% if rooms %}
-                                            <th></th>
+                                            <th>Sửa</th>
+                                            <th>Xóa</th>
                                         {% endif %}
                                     </tr>
                                 </thead>
@@ -232,8 +239,14 @@
                                             <td>{{ room.price|format_price }} Đồng</td>
                                             <td>SUSLORD</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{% url 'update_room' room_id=room.id %}">Chỉnh sửa</a>
-                                                <a href="{% url 'delete_room' room_id=room.id %}" class="btn btn-dark">Xóa</a>
+                                                <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'update_room' room_id=room.id %}">
+                                                    <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'delete_room' room_id=room.id %}" >
+                                                    <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     {% empty %}

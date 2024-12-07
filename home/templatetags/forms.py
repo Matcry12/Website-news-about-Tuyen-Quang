@@ -1,5 +1,5 @@
 from django import forms
-from home.models import Room, Product, User
+from home.models import Room, Product, User, UserProfile
 
 class RoomForm(forms.ModelForm):
     class Meta:
@@ -124,4 +124,63 @@ class SuperUserForm(forms.ModelForm):
         user.is_superuser = True
         if commit:
             user.save()
+        return user
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['cccd', 'birthday', 'phonecall', 'profile_image']
+        labels = {
+            'cccd': 'Căn cước công dân',
+            'birthday': 'Ngày sinh',
+            'phonecall': 'Số điện thoại',
+            'profile_image': 'Ảnh đại diện',
+        }
+
+class UserEditForm(forms.ModelForm):
+    password1 = forms.CharField(
+        label='Mật khẩu mới',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Mật khẩu mới'}),
+        required=False
+    )
+    password2 = forms.CharField(
+        label='Xác nhận mật khẩu',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Xác nhận mật khẩu'}),
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        labels = {
+            'username': 'Tên tài khoản',
+            'email': 'Email',
+            'first_name': 'Tên riêng',
+            'last_name': 'Họ',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        # Check if both passwords match
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', 'Mật khẩu không khớp')
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        # Update password if password1 is provided
+        if self.cleaned_data['password1']:
+            user.set_password(self.cleaned_data['password1'])
+
+        if commit:
+            user.save()
+
         return user

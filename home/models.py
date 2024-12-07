@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-
+from django.utils.timezone import now
 # User Creation Form
 class CreationUserForm(UserCreationForm):
     class Meta:
@@ -18,10 +18,18 @@ class CreationUserForm(UserCreationForm):
         user = super().save(commit=False)
         if commit:
             user.save()
-        # Create UserProfile after saving user
-        role = self.cleaned_data.get('role', 'customer')  # Default role is 'customer'
-        UserProfile.objects.create(user=user, role=role)
+
+        # Get or create the UserProfile instance for this user
+        user_profile, created = UserProfile.objects.get_or_create(user=user)
+
+        # Update the UserProfile with the new role (and other fields if needed)
+        role = self.cleaned_data.get('role', 'customer', 'admin')  # Default role is 'customer'
+        user_profile.role = role
+        user_profile.save()
+
         return user
+
+
 
 # Category model
 class category(models.Model):
@@ -183,6 +191,10 @@ class UserProfile(models.Model):
         ('admin', 'Người quản lí'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cccd = models.CharField(max_length=255, blank=False, default='N/a')
+    birthday = models.DateTimeField(null=True, blank=False)
+    phonecall = models.CharField(max_length=255, blank=False, default="N/a")
+    date_created = models.DateTimeField(auto_now_add=True)
     role = models.CharField(max_length=255, choices=ROLE_TYPE_CHOICES)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
     data_modified = models.DateTimeField(auto_now=True)

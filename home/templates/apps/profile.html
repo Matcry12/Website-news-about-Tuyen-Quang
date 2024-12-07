@@ -43,7 +43,7 @@
 
         <!-- Edit Profile Button -->
         <div class="mt-4 text-center">
-            <a href="{% url 'home' %}" class="btn btn-primary">Chỉnh sửa trang cá nhân</a>
+            <a href="{% url 'edit_profile' user_id=profile.user.id %}" class="btn btn-primary">Chỉnh sửa trang cá nhân</a>
         </div>
     </div>
 </div>

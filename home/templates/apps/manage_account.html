@@ -1,0 +1,192 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Quản lí tài khoản{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/historylist.css' %}">
+{% endblock %}
+{% block extra_js %}
+{% endblock %}
+
+{% block manager %}
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box-element">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h5 class="text-center"><strong>Quản lí tài khoản</strong></h5>
+
+                    <div class="filter-section py-3">
+                        <form method="GET">
+                            <div class="filter-fields d-flex flex-wrap gap-3">
+                                <!-- Filter by Name -->
+                                <div class="col-md-4">
+                                    <label for="name" class="form-label">Tên tài khoản</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="fullname" class="form-label">Họ tên</label>
+                                    <input type="text" name="fullname" id="fullname" class="form-control" value="{{ request.GET.fullname }}">
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control" value="{{ request.GET.email }}">
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label for="cccd" class="form-label">CCCD</label>
+                                    <input type="text" name="cccd" id="cccd" class="form-control" value="{{ request.GET.cccd }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="phonecall" class="form-label">SĐT</label>
+                                    <input type="text" name="phonecall" id="phonecall" class="form-control" value="{{ request.GET.phonecall }}">
+                                </div>
+                                
+                            </div>
+                    
+                            <!-- Filter Buttons -->
+                            <div class="mt-3 text-end">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
+                            </div>
+                        </form>
+                        {% if allowed %}
+                            <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success">Tải xuống danh sách tài khoản</a>
+                        {% else %}
+                            <a href="" class="btn btn-danger">Không thể tải xuống</a>
+                        {% endif %}
+
+                        <a class="btn btn-outline-primary" href="{% url 'add_account'%}">Thêm tài khoản mới</a>
+
+                    </div>
+                    
+                    <h5 ><strong>{{ count }} tài khoản</strong></h5>
+
+                    <!-- Check if there are any histories -->
+                    {% if users_page %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên tài khoản</th>
+                                        <th>Họ và tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Email</th>
+                                        <th>Căn cước công dân</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if users_page %}
+                                        {% for profile in users_page %}
+                                            <tr>
+                                                <td>{{ profile.user }}</td>
+
+                                                {% if profile.user.last_name or profile.user.first_name %}
+                                                    <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
+                                                {% else %}
+                                                    <td> Không có </td>
+                                                {% endif %}
+
+                                                {% if profile.birthday %}
+                                                    <td>{{ profile.birthday|date:"d/m/Y" }}</td>
+                                                {% else %}
+                                                    <td> Không có </td>
+                                                {% endif %}
+
+                                                {% if profile.user.email %}
+                                                    <td>{{ profile.user.email }}</td>
+                                                {% else %}
+                                                    <td> Không có </td>
+                                                {% endif %}
+
+                                                <td>{{ profile.cccd }}</td>
+                                                <td>{{ profile.phonecall }}</td>
+                                                <td>{{ profile.date_created|date:"d/m/Y" }}</td>
+
+                                                <td>
+                                                    <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'edit_profile' user_id=profile.user.id %}">
+                                                        <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'delete_account' user_id=profile.user.id %}">
+                                                        <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr class="no-history-row">
+                                            <td colspan="11" class="text-center">Không có tài khoản.</td>
+                                        </tr>                                    
+                                    {% endif %}
+                                </tbody>                                
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên tài khoản</th>
+                                        <th>Họ và tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Email</th>
+                                        <th>Căn cước công dân</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Ngày tạo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="no-history-row">
+                                        <td colspan="11" class="text-center">Không có tài khoản nào.</td>
+                                    </tr>   
+                                </tbody>                                
+                            </table>
+                        </div>                 
+                    {% endif %}
+
+                    <!-- Pagination Controls -->
+                    {% if users_page %}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            <ul class="pagination">
+                                {% if users_page.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ histories_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                    </li>
+                                {% endif %}
+                                {% for num in users_page.paginator.page_range %}
+                                    <li class="page-item {% if histories_page.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% if users_page.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ histories_page.next_page_number }}">Sang trang &#x2192;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock manager %}
