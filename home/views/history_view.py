@@ -86,6 +86,7 @@ def export_history(request):
         'cname',
         'address',
         'phonecall',
+        'method',
         'cccd',
     )
 
@@ -105,6 +106,7 @@ def export_history(request):
         'cname': 'Tên khách hàng',
         'address': 'Địa chỉ',
         'phonecall': 'Số điện thoại',
+        'method': 'Phương thức thanh toán',
         'cccd': 'Căn cước công dân',
     }, inplace=True)
 

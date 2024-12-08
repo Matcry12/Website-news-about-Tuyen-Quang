@@ -47,6 +47,10 @@ class AddRoomView(CreateView):
 
         return super().form_valid(form)
     def form_invalid(self, form):
+        storage = get_messages(request)
+        for message in storage:
+            pass  # Iterating through storage clears it
+        
         messages.error(self.request, "Có lỗi khi bạn gửi bài. Vui lòng kiểm tra biểu mẫu và thử lại.")
         return super().form_invalid(form)
 

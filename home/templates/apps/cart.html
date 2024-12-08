@@ -34,12 +34,13 @@
                                     <th>Loại phòng</th>
                                     <th>Mã phòng</th>
                                     <th>Giá tiền</th>
-                                    <th>Xác nhận</th>
+                                    <th>Phương thức</th>
                                     {% if profile.role == 'seller' %}
+                                        <th>Xác nhận</th>
                                         <th>Trạng thái</th>
                                     {% else %}
                                         <th></th>
-                                    {% endif %}
+                                    {% endif %}           
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,6 +58,7 @@
                                                     <td>{{ order.room.roomName }}</td>
                                                     <td>{{ order.room.roomCode }}</td>
                                                     <td>{{ order.room.price|format_price }} Đồng</td>
+                                                    <td>{{ order.method }}</td>
                                                     <td>
                                                         {% if order.confirm %}
                                                             <button class="btn btn-primary btn-xacnhan update-status-btn" data-order="{{ order.id }}" data-action="true">
@@ -92,7 +94,7 @@
                                                 <td>{{ order.datebook|date:"d/m/Y" }}</td>
                                                 <td>{{ order.room.roomName }}</td>
                                                 <td>{{ order.room.roomCode }}</td>
-                                                <td>{{ order.room.price|format_price }} Đồng</td>
+                                                <td>{{ order.room.price|format_price }} Đồng</td> 
                                                 <td>
                                                     {% if order.confirm %}
                                                         Xác Nhận
@@ -100,6 +102,7 @@
                                                         Chờ
                                                     {% endif %}
                                                 </td>
+                                                <td>{{ order.method }}</td>
                                                 <td> 
                                                     <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-dark">Xóa</a>
                                                 </td>
@@ -108,7 +111,7 @@
                                 {% endif %}
                                 {% else %}
                                     <tr class="no-history-row">
-                                        <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                        <td colspan="12" class="text-center">Không có lịch sử đặt phòng.</td>
                                     </tr>  
                                 {% endif %}
                             </tbody>
@@ -237,7 +240,7 @@
                                             <td><strong>{{ room.roomName }} - {{ room.room_code }}</strong></td>
                                             <td>{{ room.roomCode }}</td>
                                             <td>{{ room.price|format_price }} Đồng</td>
-                                            <td>SUSLORD</td>
+                                            <td>{{ room.status.name }}</td>
                                             <td>
                                                 <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'update_room' room_id=room.id %}">
                                                     <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>

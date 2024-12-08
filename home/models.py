@@ -23,7 +23,7 @@ class CreationUserForm(UserCreationForm):
         user_profile, created = UserProfile.objects.get_or_create(user=user)
 
         # Update the UserProfile with the new role (and other fields if needed)
-        role = self.cleaned_data.get('role', 'customer', 'admin')  # Default role is 'customer'
+        role = self.cleaned_data.get('role', 'customer')  # Default role is 'customer'
         user_profile.role = role
         user_profile.save()
 
@@ -82,6 +82,11 @@ class Product(models.Model):
             url = ''
         return url
     
+class StatusType(models.Model):
+    name = models.CharField(max_length=100)  # Display name for the room type
+
+    def __str__(self):
+        return self.name
 
 class Room(models.Model):
     product = models.ForeignKey(Product, related_name='rooms', on_delete=models.CASCADE)  # Link each room to a hotel
@@ -90,7 +95,7 @@ class Room(models.Model):
     room_type = models.ForeignKey(
         RoomType, on_delete=models.SET_NULL, null=True, related_name='rooms', to_field='code'
     )  # Reference the 'code' field of RoomType
-    status = models.BooleanField(default=True)  # True if on sale
+    status = models.ForeignKey(StatusType, on_delete=models.SET_NULL, null=True, related_name='rooms')
     rating = models.IntegerField(null=True)
     image = models.ImageField(null=True, blank=True, upload_to="rooms/")
 
@@ -135,6 +140,7 @@ class order(models.Model):
     phonecall = models.CharField(max_length=255, blank=False, default='0')
     cccd = models.CharField(max_length=255, blank=False, default='0')
     datebook = models.DateTimeField(null=True, blank=False)
+    method = models.CharField(max_length=255, blank=False, default="N/A")
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
@@ -149,6 +155,7 @@ class history(models.Model):
     cname = models.CharField(max_length=255, blank=False, default="N/A")
     phonecall = models.CharField(max_length=255, blank=False, default="0")
     cccd = models.CharField(max_length=255, blank=False, default='0')
+    method = models.CharField(max_length=255, blank=False, default="N/A")
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):

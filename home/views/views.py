@@ -23,6 +23,7 @@ from django.db.models import Count
 from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse_lazy
 import openpyxl
+from django.contrib.messages import get_messages
 
 from django.views.generic import TemplateView
 
@@ -127,7 +128,8 @@ def detail(request):
         profile = None
     id = request.GET.get('id', '')
     product = get_object_or_404(Product, id=id)
-    rooms_on_sale = product.rooms.filter(status=True)
+    status = StatusType.objects.get(name = 'Trống')
+    rooms_on_sale = product.rooms.filter(status=status)
 
     # Set default sorting order
     price_order = 'price_numeric'
@@ -182,6 +184,9 @@ def profile(request):
     return render(request, 'apps/profile.html', context)
 
 def booking(request, order_id=None):
+    storage = get_messages(request)
+    for message in storage:
+        pass  # Iterating through storage clears it
     # Get the product_id and room_id from query parameters
     product_id = request.GET.get('product_id')
     room_id = request.GET.get('room_id')
@@ -232,6 +237,7 @@ def booking(request, order_id=None):
             order_obj.phonecall = phone_number
             order_obj.datebook = timezone.datetime.strptime(booking_date, "%Y-%m-%d")
             order_obj.room = get_object_or_404(Room, id=room_id)
+            order_obj.method = payment_method
             order_obj.save()
         else:
             # Create a new order
@@ -243,6 +249,7 @@ def booking(request, order_id=None):
                 cccd = cccd,
                 datebook=timezone.datetime.strptime(booking_date, "%Y-%m-%d"),
                 complete=False,  # Order is incomplete initially
+                method = payment_method,
                 room=get_object_or_404(Room, id=room_id)
             )
 
@@ -253,6 +260,9 @@ def booking(request, order_id=None):
             room=room,
             quantity=1,
         )
+        status_instance = StatusType.objects.get(name="Chờ")
+        room.status = status_instance
+        room.save()
         messages.success(request, "Bạn đã đặt phòng thành công")
         return redirect('completebooking')
 
@@ -345,7 +355,13 @@ def edit_profile(request, user_id):
     return render(request, 'apps/edit_profile.html', context)
 
 def return_room(request, order_id):
+
+    storage = get_messages(request)
+    for message in storage:
+        pass  # Iterating through storage clears it
+
     # Fetch the order
+    
     orderD = order.objects.get(id=order_id)
     
     # Save the order details to the history table
@@ -358,9 +374,14 @@ def return_room(request, order_id):
         cccd = orderD.cccd,
         phonecall=orderD.phonecall,
         room=orderD.room,
+        method = orderD.method,
     )
     
     messages.success(request, "Order complete successfully")
+
+    status_instance = StatusType.objects.get(name="Trống")
+    orderD.room.status = status_instance
+    orderD.room.save()
     # Delete the order
     orderD.delete()
     
@@ -369,34 +390,42 @@ def return_room(request, order_id):
 
 def filter_users(request, user_profile):
     users = UserProfile.objects.all()
+
+    # Filter by username (partial match)
     name = request.GET.get('name')
     if name:
-        users = users.filter(user__username=name)
+        users = users.filter(user__username__icontains=name)  # Use icontains for partial match
 
+    # Filter by CCCD (partial match)
     cccd = request.GET.get('cccd')
     if cccd:
-        users = users.filter(cccd=cccd)
+        users = users.filter(cccd__icontains=cccd)  # Use icontains for partial match
     
+    # Filter by phone number (partial match)
     phone = request.GET.get('phonecall')
     if phone:
-        users = users.filter(phonecall=phone)
+        users = users.filter(phonecall__icontains=phone)  # Use icontains for partial match
 
+    # Filter by full name (concatenated first and last name, partial match)
     fullname = request.GET.get('fullname')
     if fullname:
-        users = UserProfile.objects.annotate(
+        users = users.annotate(
             full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name'))
         ).filter(
-            Q(full_name__icontains=fullname)
+            full_name__icontains=fullname  # Partial match for full name
         )
 
+    # Filter by email (partial match)
     email = request.GET.get('email')
     if email:
-        users = users.filter(user__email=email)
+        users = users.filter(user__email__icontains=email)  # Use icontains for partial match
 
+    # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
         return None
     
     return users
+
 
 def manage_account(request):
     if request.user.is_authenticated:
@@ -416,6 +445,58 @@ def manage_account(request):
         users_page = None
         return redirect('home')
     
+    if request.method == 'POST':
+        if user_profile.role == 'admin':
+            excel_file = request.FILES['account_excel']
+            
+            # Open the uploaded Excel file
+            wb = openpyxl.load_workbook(excel_file)
+            sheet = wb.active
+            
+            # Define the column headers for products
+            headers = [
+                'Tên tài khoản (username)', 
+                'Email', 
+                'Tên riêng', 
+                'Tên đệm', 
+                'Số điện thoại',
+                'Mật khẩu',
+            ]
+            
+            # Iterate over the rows in the sheet
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                account_data = dict(zip(headers, row))
+
+                username = account_data.get('Tên tài khoản (username)', '').strip()
+
+                # Check if the username is not empty
+                if not username:
+                    continue  # Skip this row if username is missing or empty
+
+                # Check if the user already exists, if so, skip
+                try:
+                    user = User.objects.get(username=username)
+                except ObjectDoesNotExist:
+                    user = None  # If user does not exist, proceed with creating new user
+                
+                if not user:  # Only create a new user if it doesn't exist
+                    # Create the new user and set password
+                    user = User.objects.create_user(
+                        username=username,
+                        email=account_data['Email'],
+                        first_name=account_data['Tên riêng'],
+                        last_name=account_data['Tên đệm'],
+                        password=account_data['Mật khẩu'],  # Set password using 'create_user'
+                    )
+
+                    # Create the user profile
+                    UserProfile.objects.create(
+                        user=user,
+                        phonecall=account_data['Số điện thoại'],
+                    )
+
+        return redirect('manage_account')
+
     context = {'user_not_login': user_not_login, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
 
     return render(request, 'apps/manage_account.html', context)

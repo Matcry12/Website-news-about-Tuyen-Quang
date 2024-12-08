@@ -11,19 +11,6 @@
 <div class="container mt-5 bg-light p-4 rounded shadow custom-container">
     <h3 class="text-center mb-4">Thông Tin Đặt Phòng</h3>
     <div class="table-wrapper">
-        {% if messages %}
-            <div class="message-container">
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li><strong>{{ message }}</strong></li>
-                    {% endfor %}
-                </ul>
-                <div class="text-center mt-3">
-                    <a href="{% url 'detail' %}?id={{ product.id }}" class="btn btn-primary"><strong>Trở lại</strong></a>
-                    <a href="{% url 'cart' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
-                </div>
-            </div>
-        {% else %}
         <form method="POST">
             {% csrf_token %}
             
@@ -46,7 +33,7 @@
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>Loại phòng:</strong>
-                        <div>{{ room.get_room_type_display }}</div>
+                        <div>{{ room.room_type }}</div>
                     </div>
                 </div>
             </div>
@@ -68,8 +55,8 @@
                     <div class="field-wrapper">
                         <strong>Thanh toán:</strong>
                         <select class="form-select" name="payment_method" required>
-                            <option value="Thanh toán qua thẻ">Thanh toán chuyển khoản</option>
-                            <option value="Thanh toán khi nhận phòng">Thanh toán qua liên hệ</option>
+                            <option value="Thanh toán chuyển khoản">Thanh toán chuyển khoản</option>
+                            <option value="Thanh toán qua liên hệ">Thanh toán qua liên hệ</option>
                         </select>
                     </div>
                 </div>
@@ -114,7 +101,6 @@
                 </div>
             </div>
         </form>    
-        {% endif %}
     </div>
 </div>
 <br><br>

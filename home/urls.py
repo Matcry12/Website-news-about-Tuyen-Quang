@@ -37,5 +37,6 @@ urlpatterns = [
     path('export-hotel/', views.export_hotel, name='export_hotel'),
     path('download_example_hotel/', views.generate_example_hotel, name='download_example_hotel'),
     path('download_example_room/', views.generate_example_room, name='download_example_room'),
+    path('download_example_account/', views.generate_example_account, name='download_example_account'),
     path('create-superuser/', views.create_superuser, name='create_superuser'),
 ]

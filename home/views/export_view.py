@@ -66,30 +66,37 @@ def export_hotel(request):
 
 def filter_users(request, user_profile):
     users = UserProfile.objects.all()
+
+    # Filter by username (partial match)
     name = request.GET.get('name')
     if name:
-        users = users.filter(user__username=name)
+        users = users.filter(user__username__icontains=name)  # Use icontains for partial match
 
+    # Filter by CCCD (partial match)
     cccd = request.GET.get('cccd')
     if cccd:
-        users = users.filter(cccd=cccd)
+        users = users.filter(cccd__icontains=cccd)  # Use icontains for partial match
     
+    # Filter by phone number (partial match)
     phone = request.GET.get('phonecall')
     if phone:
-        users = users.filter(phonecall=phone)
+        users = users.filter(phonecall__icontains=phone)  # Use icontains for partial match
 
+    # Filter by full name (concatenated first and last name, partial match)
     fullname = request.GET.get('fullname')
     if fullname:
-        users = UserProfile.objects.annotate(
+        users = users.annotate(
             full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name'))
         ).filter(
-            Q(full_name__icontains=fullname)
+            full_name__icontains=fullname  # Partial match for full name
         )
 
+    # Filter by email (partial match)
     email = request.GET.get('email')
     if email:
-        users = users.filter(user__email=email)
+        users = users.filter(user__email__icontains=email)  # Use icontains for partial match
 
+    # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
         return None
     

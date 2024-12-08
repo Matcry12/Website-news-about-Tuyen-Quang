@@ -67,6 +67,26 @@
 
                         <a class="btn btn-outline-primary" href="{% url 'add_account'%}">Thêm tài khoản mới</a>
 
+                        <a href="javascript:void(0);" class="btn btn-outline-primary" id="showMoreBtn">Tạo tài khoản nhanh</a>
+
+                        <!-- Content to show/hide -->
+                        <div id="extraContent" style="display: none;">
+                            <br>
+                            <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
+                            <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}">Tải file excel mẫu cho tài khoản</a>
+                            </br>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="field-wrapper">
+                                    <label for="account_excel" class="form-label">
+                                        
+                                    </label>
+                                    <input type="file" name="account_excel" id="account_excel" accept=".xlsx, .xls" required class="form-control">
+                                    <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                     
                     <h5 ><strong>{{ count }} tài khoản</strong></h5>
@@ -188,5 +208,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const extraContent = document.getElementById('extraContent');
+
+        // Check if the button and content exist
+        if (showMoreBtn && extraContent) {
+            showMoreBtn.addEventListener('click', function () {
+                // Toggle the display style of the extra content
+                if (extraContent.style.display === 'none') {
+                    extraContent.style.display = 'block'; // Show the content
+                    showMoreBtn.innerHTML = 'Ẩn tính năng'; // Change the button text to "Hide"
+                } else {
+                    extraContent.style.display = 'none'; // Hide the content
+                    showMoreBtn.innerHTML = 'Tạo phòng nhanh'; // Change the button text back to "See more"
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock manager %}

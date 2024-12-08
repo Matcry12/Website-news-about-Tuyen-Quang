@@ -1,6 +1,10 @@
 from .views import *
 
 def loginPage(request):
+    storage = get_messages(request)
+    for message in storage:
+        pass  # Iterating through storage clears it
+
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
@@ -23,6 +27,9 @@ def logoutPage(request):
     return redirect('login')
 
 def register(request):
+    storage = get_messages(request)
+    for message in storage:
+        pass  # Iterating through storage clears it
     form = CreationUserForm()
     context = {'form': form}
     if request.user.is_authenticated:
