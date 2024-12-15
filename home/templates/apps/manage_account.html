@@ -3,101 +3,131 @@
 {% block title %}Quản lí tài khoản{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'app/css/historylist.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/manage_account.css' %}">
 {% endblock %}
 {% block extra_js %}
 {% endblock %}
 
 {% block manager %}
 
-<div class="container my-4">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="box-element">
+<div id = "center-box">
+    <div class="row" id = "wrapper">
+
+        <!-- filter card -->
+        <div class="card shadow-sm" id = "first">
+            <div class="card-body">
+                <h5 class="text-center"><strong>Quản lí tài khoản</strong></h5>
+
+                <div class="filter-section py-3">
+                    <form method="GET">
+                        <div class="filter-fields">
+                            <!-- Filter by Name -->
+                            <div class="">
+                                <label for="name" class="form-label">Tên tài khoản</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                            </div>
+
+                            <div class="">
+                                <label for="fullname" class="form-label">Họ tên</label>
+                                <input type="text" name="fullname" id="fullname" class="form-control" placeholder="Nhập họ tên tài khoản" value="{{ request.GET.fullname }}">
+                            </div>
+                            
+                            <div class="">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" name="email" id="email" class="form-control" placeholder="Nhập email" value="{{ request.GET.email }}">
+                            </div>
+
+
+                            <div class="">
+                                <label for="cccd" class="form-label">Căn cước công dân</label>
+                                <input type="text" name="cccd" id="cccd" class="form-control" placeholder="Nhập căn cước công dân" value="{{ request.GET.cccd }}">
+                            </div>
+
+                            <div class="">
+                                <label for="phonecall" class="form-label">Số điện thoại</label>
+                                <input type="text" name="phonecall" id="phonecall" class="form-control" placeholder="Nhập số điện thoại" value="{{ request.GET.phonecall }}">
+                            </div>
+                            
+                        </div>
+                
+                        <!-- Filter Buttons -->
+                        <div class="mt-3 ">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
+                        </div>
+                        <br>
+                    </form>
+                    
+
+                    {% if allowed %}
+                        <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success d-block mb-3">Tải xuống danh sách tài khoản</a>
+                    {% else %}
+                        <a href="" class="btn btn-danger d-block mb-3">Không thể tải xuống</a>
+                    {% endif %}
+
+                    <a class="btn btn-outline-primary d-block mb-3" href="{% url 'add_account' %}">Thêm tài khoản mới</a>
+
+                    <a href="javascript:void(0);" class="btn btn-outline-primary d-block mb-3" id="showMoreBtn">Tạo tài khoản nhanh</a>
+
+
+
+                    <!-- Content to show/hide -->
+                    <div id="extraContent" style="display: none;">
+                        <br>
+                        <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
+                        <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}">Tải file excel mẫu cho tài khoản</a>
+                        </br>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="field-wrapper">
+                                <label for="account_excel" class="form-label">
+                                    
+                                </label>
+                                <input type="file" name="account_excel" id="account_excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- account card -->
+        <div class="card shadow-sm" id = "second">
+            <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
                 </div>
                 
                 <div class="col-12 mb-4">
-                    <h5 class="text-center"><strong>Quản lí tài khoản</strong></h5>
-
-                    <div class="filter-section py-3">
-                        <form method="GET">
-                            <div class="filter-fields d-flex flex-wrap gap-3">
-                                <!-- Filter by Name -->
-                                <div class="col-md-4">
-                                    <label for="name" class="form-label">Tên tài khoản</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="fullname" class="form-label">Họ tên</label>
-                                    <input type="text" name="fullname" id="fullname" class="form-control" value="{{ request.GET.fullname }}">
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control" value="{{ request.GET.email }}">
-                                </div>
-
-
-                                <div class="col-md-4">
-                                    <label for="cccd" class="form-label">CCCD</label>
-                                    <input type="text" name="cccd" id="cccd" class="form-control" value="{{ request.GET.cccd }}">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="phonecall" class="form-label">SĐT</label>
-                                    <input type="text" name="phonecall" id="phonecall" class="form-control" value="{{ request.GET.phonecall }}">
-                                </div>
-                                
-                            </div>
                     
-                            <!-- Filter Buttons -->
-                            <div class="mt-3 text-end">
-                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
-                            </div>
-                        </form>
-                        {% if allowed %}
-                            <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success">Tải xuống danh sách tài khoản</a>
-                        {% else %}
-                            <a href="" class="btn btn-danger">Không thể tải xuống</a>
-                        {% endif %}
-
-                        <a class="btn btn-outline-primary" href="{% url 'add_account'%}">Thêm tài khoản mới</a>
-
-                        <a href="javascript:void(0);" class="btn btn-outline-primary" id="showMoreBtn">Tạo tài khoản nhanh</a>
-
-                        <!-- Content to show/hide -->
-                        <div id="extraContent" style="display: none;">
-                            <br>
-                            <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
-                            <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}">Tải file excel mẫu cho tài khoản</a>
-                            </br>
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <div class="field-wrapper">
-                                    <label for="account_excel" class="form-label">
-                                        
-                                    </label>
-                                    <input type="file" name="account_excel" id="account_excel" accept=".xlsx, .xls" required class="form-control">
-                                    <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-                    
-                    <h5 ><strong>{{ count }} tài khoản</strong></h5>
+                    <h5 ><strong>Số tài khoản: {{ count }}</strong></h5>
 
                     <!-- Check if there are any histories -->
+                    <div class="table-actions mb-3">
+                        <div class="d-flex align-items-center">
+                            <!-- Dropdown Selection -->
+                            <select id="action-select" class="form-control me-3" style="width: 200px;">
+                                <option value="">---------------------------</option>
+                                <option value="reset-login">Cấp lại mã đăng nhập</option>
+                                <option value="delete-account">Xóa tài khoản</option>
+                            </select>
+                    
+                            <!-- Action Button -->
+                            <button id="perform-action" class="btn btn-primary">Thực hiện</button>
+                        </div>
+                    </div>
+                    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); color: white; z-index: 9999; text-align: center; padding-top: 20%; font-size: 20px;">
+                        Đang xử lý... Vui lòng chờ.
+                    </div>
                     {% if users_page %}
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>Tên tài khoản</th>
+                                        <th>Vai trò</th>
                                         <th>Họ và tên</th>
                                         <th>Ngày sinh</th>
                                         <th>Email</th>
@@ -106,6 +136,7 @@
                                         <th>Ngày tạo</th>
                                         <th>Sửa</th>
                                         <th>Xóa</th>
+                                        <th><input type="checkbox" id="select-all" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,6 +144,7 @@
                                         {% for profile in users_page %}
                                             <tr>
                                                 <td>{{ profile.user }}</td>
+                                                <td>{{ profile.role}}</td>
 
                                                 {% if profile.user.last_name or profile.user.first_name %}
                                                     <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
@@ -146,11 +178,15 @@
                                                         <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
                                                     </a>
                                                 </td>
+                                                <td>
+                                                    <input type="checkbox" class="row-checkbox" value="{{ profile.user.id }}" />
+                                                </td>
+
                                             </tr>
                                         {% endfor %}
                                     {% else %}
                                         <tr class="no-history-row">
-                                            <td colspan="11" class="text-center">Không có tài khoản.</td>
+                                            <td colspan="7" class="text-center">Không có tài khoản.</td>
                                         </tr>                                    
                                     {% endif %}
                                 </tbody>                                
@@ -172,7 +208,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="no-history-row">
-                                        <td colspan="11" class="text-center">Không có tài khoản nào.</td>
+                                        <td colspan="7" class="text-center">Không có tài khoản nào.</td>
                                     </tr>   
                                 </tbody>                                
                             </table>
@@ -186,17 +222,17 @@
                             <ul class="pagination">
                                 {% if users_page.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ histories_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                        <a class="page-link" href="?page={{ users_page.previous_page_number }}">&#x2190; Trang trước</a>
                                     </li>
                                 {% endif %}
                                 {% for num in users_page.paginator.page_range %}
-                                    <li class="page-item {% if histories_page.number == num %}active{% endif %}">
+                                    <li class="page-item {% if users_page.number == num %}active{% endif %}">
                                         <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                                     </li>
                                 {% endfor %}
                                 {% if users_page.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ histories_page.next_page_number }}">Sang trang &#x2192;</a>
+                                        <a class="page-link" href="?page={{ users_page.next_page_number }}">Sang trang &#x2192;</a>
                                     </li>
                                 {% endif %}
                             </ul>
@@ -226,6 +262,123 @@
                     showMoreBtn.innerHTML = 'Tạo phòng nhanh'; // Change the button text back to "See more"
                 }
             });
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const actionSelect = document.getElementById('action-select');
+        const performActionButton = document.getElementById('perform-action');
+
+        // Handle "Select All" checkbox
+        selectAllCheckbox.addEventListener('change', function () {
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        // Handle individual checkbox change to update "Select All" state
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                if (!Array.from(rowCheckboxes).every(cb => cb.checked)) {
+                    selectAllCheckbox.checked = false;
+                } else {
+                    selectAllCheckbox.checked = true;
+                }
+            });
+        });
+
+        // Handle "Thực hiện" button click
+        performActionButton.addEventListener('click', function () {
+            const selectedAction = actionSelect.value;
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const selectedUsers = Array.from(rowCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            if (!selectedAction) {
+                alert('Vui lòng chọn một hành động!');
+                return;
+            }
+
+            if (selectedUsers.length === 0) {
+                alert('Vui lòng chọn ít nhất một tài khoản!');
+                return;
+            }
+            
+            if (selectedAction === 'delete-account') {
+                loadingOverlay.style.display = 'block';
+                fetch("{% url 'manage_account' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ users: selectedUsers, action: selectedAction }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    loadingOverlay.style.display = 'none';
+                    alert(data.message || "Người dùng đã được xóa!");
+                    location.reload(); // Refresh the page
+                })
+                .catch((error) => {
+                    loadingOverlay.style.display = 'none';
+                    
+                    console.error("Error:", error);
+                    
+                    alert("Xảy ra lỗi khi xóa tài khoản.");
+                });
+            }
+            if (selectedAction === 'reset-login') {
+                loadingOverlay.style.display = 'block';
+                fetch("{% url 'manage_account' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ users: selectedUsers, action: selectedAction }),
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    loadingOverlay.style.display = 'none';
+                    // Redirect to the home URL
+                    window.location.href = data.redirect_url;
+                })
+                .catch((error) => {
+                    loadingOverlay.style.display = 'none';
+
+                    console.error("Error:", error);
+                    
+                    
+                    alert('Có lỗi xảy ra khi thực hiện hành động.');
+                });
+            }
+        });
+
+
+        // Helper function to get CSRF token from cookies (if needed for AJAX)
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     });
 </script>

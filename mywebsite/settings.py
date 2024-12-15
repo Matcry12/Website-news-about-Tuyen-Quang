@@ -77,6 +77,13 @@ WSGI_APPLICATION = 'mywebsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'fdtywadw@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'ejxk avva eigf sidk'  # Replace with your email password
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -87,8 +94,10 @@ DATABASES = {
         'POST': '3306'
     }
 }
-
-
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',  # Default: Day/Month/Year
+    '%Y-%m-%d',  # Fallback: Default HTML5 date format
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

@@ -9,10 +9,31 @@ class CreationUserForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên tài khoản'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập email'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên riêng'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập tên họ'}),
+            'username': forms.TextInput(attrs={
+                'class': 'form-control form-outline', 
+                'placeholder': 'Nhập tên tài khoản', 
+                'required': 'required', 
+                'oninvalid': "this.setCustomValidity('Vui lòng nhập tên tài khoản')",
+                'oninput': "this.setCustomValidity('')"
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control form-outline', 
+                'placeholder': 'Nhập email', 
+            }),
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control form-outline', 
+                'placeholder': 'Nhập tên riêng', 
+                'required': 'required', 
+                'oninvalid': "this.setCustomValidity('Vui lòng nhập tên riêng')",
+                'oninput': "this.setCustomValidity('')"
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control form-outline', 
+                'placeholder': 'Nhập tên họ', 
+                'required': 'required', 
+                'oninvalid': "this.setCustomValidity('Vui lòng nhập tên họ')",
+                'oninput': "this.setCustomValidity('')"
+            }),
         }
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -81,6 +102,8 @@ class Product(models.Model):
         except:
             url = ''
         return url
+    def ownerName(self):
+        return f"{self.owner.last_name} {self.owner.first_name}"
     
 class StatusType(models.Model):
     name = models.CharField(max_length=100)  # Display name for the room type

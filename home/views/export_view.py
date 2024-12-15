@@ -1,19 +1,95 @@
 from .views import *
 
+def parse_amount_start(product):
+    # Extract and convert amount_start to a numeric value
+    amount_start = product.amountprice.split('-')[0]
+    return float(amount_start.replace(',', '').replace('.', ''))
+
+def filter_hotels(request):
+    hotels = Product.objects.annotate(room_count=Count('rooms'))
+    
+    # Filter by username (partial match)
+    name = request.GET.get('name')
+    if name:
+        hotels = hotels.filter(name__icontains=name)  # Use icontains for partial match
+
+    owner = request.GET.get('owner')
+    if owner:
+        hotels = hotels.filter(owner__icontains=owner)
+
+
+    price = request.GET.get('price')
+    if price and price != 'all':
+
+        start_price = None
+        end_price = None
+
+        if price == '1':
+            end_price = '500.000'
+        if price == '2':
+            start_price = '500.000'
+            end_price = '1.000.000'
+        if price == '3':
+            start_price = '1.000.000'
+
+        if end_price or start_price:  # Check if either price is provided
+            filtered_hotels = []
+
+            if end_price:
+                end = parse_price(end_price)
+                for item in hotels:
+                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
+                    if amount_start <= end:
+                        filtered_hotels.append(item)
+
+            if start_price:
+                start = parse_price(start_price)
+                for item in hotels:
+                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
+                    if start <= amount_start:
+                        filtered_hotels.append(item)
+
+            # Ensure only unique IDs are filtered when both conditions are applied
+            filtered_ids = list({hotel.id for hotel in filtered_hotels})
+            hotels = hotels.filter(id__in=filtered_ids)
+
+    category_ids = request.GET.getlist('category')
+    if category_ids and 'all' not in category_ids:
+        hotels = hotels.filter(categories__id__in=category_ids).distinct()
+
+    # Filter by selected room types (multiple selection allowed)
+    room_ids = request.GET.getlist('room')
+    if room_ids and 'all' not in room_ids:
+        hotels = hotels.filter(room_types__id__in=room_ids).distinct()
+
+    # Filter by selected hotel types
+    hotel_type_id = request.GET.get('hotel')
+    if hotel_type_id and hotel_type_id != 'all':
+        hotels = hotels.filter(product_type__id=hotel_type_id)
+
+    # Filter by rating
+    rate = request.GET.get('rate')
+    if rate and rate != 'all':
+        if rate.isdigit():
+            hotels = hotels.filter(rate__gte=int(rate))
+
+    sorted_hotels = sorted(hotels, key=parse_amount_start)
+    return sorted_hotels
+
 def export_hotel(request):
     user_profile = UserProfile.objects.get(user=request.user)
-    hotels = Product.objects.all()
+    
 
     if user_profile.role != 'admin':
         hotels = hotels.filter(owner=request.user)
-    hotels = Product.objects.annotate(room_count=Count('rooms'))
+    hotels = filter_hotels(request)
     hotel_data = []
     for hotel in hotels:
         room_types = ', '.join(room_type.name for room_type in hotel.room_types.all())
         try:
             full_owner_name = f"{hotel.owner.last_name} {hotel.owner.first_name}"
         except AttributeError:
-            full_owner_name = "Unknown Owner"
+            full_owner_name = "Vô chủ"
         hotel_data.append({
             'Tên cơ sở lưu trú': hotel.name,
             'Địa chỉ': hotel.location,
@@ -181,4 +257,68 @@ def export_account(request):
 
     # Save the Excel file to the response
     wb.save(response)
+    return response
+
+def export_new_password(request):
+    # Retrieve the reset results from the session
+    reset_results = request.session.get("reset_results", [])
+
+    # Generate the Excel file
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = "Password Resets"
+
+    # Add headers
+    headers = ["Tên tài khoản", "Tên đệm", "Tên riêng", "Email", "Mật khẩu mới"]
+    for col_num, header in enumerate(headers, 1):
+        cell = sheet.cell(row=1, column=col_num, value=header)
+
+        # Apply bold font to header row
+        cell.font = Font(bold=True)
+
+    # Add rows for each user
+    for row_num, result in enumerate(reset_results, start=2):  # Start from row 2
+        sheet.cell(row=row_num, column=1, value=result.get("account"))
+        sheet.cell(row=row_num, column=2, value=result.get("last_name"))
+        sheet.cell(row=row_num, column=3, value=result.get("first_name"))
+        sheet.cell(row=row_num, column=4, value=result.get("email"))
+        sheet.cell(row=row_num, column=5, value=result.get("new_password"))
+
+    # Define the border style
+    thin_border = Border(
+        left=Side(border_style="thin"),
+        right=Side(border_style="thin"),
+        top=Side(border_style="thin"),
+        bottom=Side(border_style="thin")
+    )
+
+    # Apply borders to all cells
+    for row in sheet.iter_rows():
+        for cell in row:
+            cell.border = thin_border
+
+    # Adjust column widths
+    for col in sheet.columns:
+        max_length = 0
+        column = col[0].column_letter  # Get the column name
+        for cell in col:
+            try:
+                if cell.value and len(str(cell.value)) > max_length:
+                    max_length = len(str(cell.value))
+            except:
+                pass
+        adjusted_width = max_length + 2  # Add extra space for better appearance
+        sheet.column_dimensions[column].width = adjusted_width
+
+    # Save the workbook to an in-memory file
+    excel_file = BytesIO()
+    workbook.save(excel_file)
+    excel_file.seek(0)  # Move to the beginning of the file
+
+    # Return the file as a response
+    response = HttpResponse(
+        excel_file,
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = "attachment; filename=Password_Resets.xlsx"
     return response

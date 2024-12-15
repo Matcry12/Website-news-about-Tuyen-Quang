@@ -13,11 +13,14 @@
 
 
 {% block extra_js %}
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-vi.js"></script>
 {% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'app/css/edit_profile.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
 {% block edit_profile %}
@@ -31,7 +34,6 @@
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
-
         <h3>Thông tin tài khoản</h3>
         <div class="form-group">
             <label for="{{ user_form.username.id_for_label }}">Tên tài khoản:</label>
@@ -96,7 +98,7 @@
 
         <div class="form-group">
             <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
-            {{ profile_form.birthday }}
+            <input type="text" id="datepicker" class="form-control" name="birthday" value="{{ profile_form.birthday.value|date:"d/m/Y" }}" title="Vui lòng nhập ngày sinh" required>
             {% if profile_form.birthday.errors %}
                 <div class="error">
                     {% for error in profile_form.birthday.errors %}
@@ -160,6 +162,11 @@
 
         <br/>
         <input type="submit" value="Cập nhật" class="btn btn-secondary">
+        {% if profile.role == 'admin' %}
+            <a class="btn btn-secondary" href="{% url 'manage_account'%}">Hủy bỏ</a>
+        {% else %}
+            <a class="btn btn-secondary" href="{% url 'profile'%}">Hủy bỏ</a>
+        {% endif %}
     </form>
 
     
@@ -167,4 +174,68 @@
 
 
 <br/><br/>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Custom pattern for password validation
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[a-zA-Z0-9!@#$%^&*?]{8,}$/;
+        
+        // Password fields
+        const password1Field = document.getElementById("id_password1");
+        const password2Field = document.getElementById("id_password2");
+
+        // Function to apply validation pattern
+        const applyValidation = (field) => {
+            // Set pattern, oninvalid and oninput attributes dynamically
+            field.setAttribute('pattern', passwordPattern);
+            field.setAttribute('oninvalid', "this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự')");
+            field.setAttribute('oninput', "this.setCustomValidity('')");
+        };
+
+        // Apply validation to the fields if they are filled
+        if (password1Field.value) {
+            applyValidation(password1Field);
+        }
+
+        if (password2Field.value) {
+            applyValidation(password2Field);
+        }
+
+        // Trigger validation when user types in the fields (only if they are filled)
+        password1Field.addEventListener('input', function() {
+            // Reset custom validity
+            this.setCustomValidity('');
+
+            // Apply validation only if the field has value
+            if (this.value && !this.value.match(passwordPattern)) {
+                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+            }
+        });
+
+        password2Field.addEventListener('input', function() {
+            // Reset custom validity
+            this.setCustomValidity('');
+
+            // Apply validation only if the field has value
+            if (this.value && !this.value.match(passwordPattern)) {
+                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+            }
+        });
+    });
+    $( function() {
+      $( "#datepicker" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            prevText: "Trước",
+            nextText: "Sau",
+            monthNamesShort: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"], // Short month names
+            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"], // Short day names
+            dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"], // Full day names
+            showMonthAfterYear: false,  // Show month before year in date format
+        });
+    } );
+</script>
+    
+
 {% endblock edit_profile %}

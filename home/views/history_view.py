@@ -1,13 +1,30 @@
 from .views import *
 
+def parse_price_start(history):
+    # Extract and convert amount_start to a numeric value
+    amount_start = history.room.price.split('-')[0]
+    return float(amount_start.replace(',', '').replace('.', ''))
+
 def filter_histories(request, user_profile):
     histories = history.objects.all()
     name = request.GET.get('name')
     if name:
         histories = histories.filter(room__product__name__icontains=name)
 
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
+    _start_date = request.GET.get('start_date')
+    _end_date = request.GET.get('end_date')
+
+    if _start_date != '' and _start_date != None:
+        start_date = datetime.strptime(_start_date, "%d/%m/%Y")
+    else:
+        start_date = _start_date
+
+    if _end_date != '' and _end_date != None:
+        end_date = datetime.strptime(_end_date, "%d/%m/%Y")
+    else:
+        end_date = _end_date
+        
+
     if start_date and end_date:
         histories = histories.filter(datebook__range=[start_date, end_date])
     elif start_date:
@@ -38,7 +55,6 @@ def filter_histories(request, user_profile):
         ) | histories.filter(
             room__product__owner=request.user
         )
-    
     return histories
 
 def historylist(request):
@@ -56,7 +72,7 @@ def historylist(request):
         user_not_login = "block"
         histories_page = None
         return redirect('home')
-    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count,}
+    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
     return render(request, 'apps/historylist.html', context)
 
 def completebooking(request):

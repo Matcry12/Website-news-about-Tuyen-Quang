@@ -1,23 +1,3 @@
-function resetSearch() {
-    // Uncheck all checkboxes
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(function (checkbox) {
-        checkbox.checked = false;
-    });
-
-    // Optionally submit the form to reflect the changes if necessary
-    const serviceForm = document.getElementById("serviceForm");
-    if (serviceForm) {
-        serviceForm.submit();
-    }
-
-    const submitButton = document.getElementById("submitButton");
-    if (submitButton) {
-        submitButton.click(); // This will trigger the submit button
-    }
-}
-
-
 // Preserve scroll position
 document.addEventListener("DOMContentLoaded", function () {
     // Save the scroll position before the page is unloaded
@@ -39,6 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
     //     localStorage.removeItem("scrollX");
     //     localStorage.removeItem("scrollY");
     // });
+    if (window.location.hash === '#hotel-section') {
+        const element = document.getElementById('hotel-section');
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to the element
+        }
+    }
     const forms = document.querySelectorAll("form"); // Select all forms
     const productContainer = document.getElementById("productContainer");
 
@@ -77,17 +63,19 @@ function openMapModal(mapLocationString, maptitle) {
     const [latitude, longitude] = mapLocationString.split(", ").map(Number);
     const hotelCoordinates = { lat: latitude, lng: longitude };
 
-    // Initialize the map if it's not already initialized
-    if (!map) {
-        map = new google.maps.Map(document.getElementById("bigMap"), {
-            zoom: 17,
-            center: hotelCoordinates,
-        });
-    } else {
-        map.setCenter(hotelCoordinates); // Center the map to new coordinates if map is already initialized
-    }
+    // Construct the Google Maps embed URL dynamically using the latitude and longitude
+    const mapSrc = `https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d502.437568808432!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1733844849741!5m2!1svi!2s`;
 
-    // If a marker already exists, remove it before creating a new one
+    //https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1309.5585609494601!2d105.21661813191884!3d21.81928036056359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1733844751938!5m2!1svi!2s
+    //https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2202.437568808432!2d105.21496987226264!3d21.817241889317526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1733844849741!5m2!1svi!2s
+    // Get the iframe element inside the modal
+    const iframe = document.getElementById('mapContainer').querySelector('iframe');
+
+    console.log(mapSrc);
+    
+    // Update the iframe src to the dynamically constructed map URL
+    iframe.src = mapSrc;
+
     if (marker) {
         marker.setMap(null);
     }

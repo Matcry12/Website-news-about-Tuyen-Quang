@@ -158,6 +158,36 @@ textarea:focus {
     text-align: left;
 }
 
+.custom-card {
+    height: 100%;               /* Ensure cards are equal height */
+    display: flex;              /* Use flexbox for vertical alignment */
+    flex-direction: column;     /* Stack child elements vertically */
+    justify-content: space-between; /* Space out children evenly */
+    overflow: hidden;           /* Hide overflow content */
+}
+
+.custom-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.custom-card img {
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-card .card-body {
+    padding: 15px;
+    text-align: left;
+}
+
+.custom-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 .filter-section {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -195,7 +225,7 @@ textarea:focus {
 
 .filter-fields {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 20px; /* Space between fields */
 }
 
@@ -228,3 +258,57 @@ textarea:focus {
     padding: 15px; /* Adjust padding for better spacing */
 }
 
+.btn {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    padding: 10px 20px; /* Consistent padding for all buttons */
+    font-size: 16px; /* Uniform font size */
+    border-radius: 5px; /* Same rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
+    display: inline-block; /* Prevent size changes due to content */
+    text-align: center; /* Center text in button */
+    box-sizing: border-box; /* Include border in button size calculation */
+    min-width: 120px; /* Ensure a consistent minimum width */
+}
+.btn-dark {
+    background-color: #333;
+    color: white;
+}
+
+.btn-dark:hover {
+    background-color: #000;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+#center-box{
+    width: 100%;
+    height: 100%;
+    display: flex; /* Enable flexbox layout */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+#wrapper {
+    position: relative;
+    text-align: center;
+    width: 150%;
+    height: 100%;
+    justify-content: center;
+}
+#first {
+    display: inline-block;
+    width:20%;
+    height:100%;
+}
+#second {
+    display: inline-block;
+    width:70%;
+    height:100%;
+}

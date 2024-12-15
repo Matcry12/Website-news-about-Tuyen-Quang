@@ -1,0 +1,43 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Lỗi đăng nhập{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/order.css' %}">
+{% endblock %}
+{% block extra_js %}
+{% endblock %}
+
+{% block order %}
+<div class="container my-4">
+    <div class="row">
+        
+        <div class="col-lg-12">
+            <div class="box-element">
+                <br>
+                <div class="alert alert-warning text-center" role="alert">
+                    <h3>Tài khoản hiện không hợp lệ</h3>
+                    <a href="{% url 'login' %}" class="btn btn-primary">Đăng nhập tài khoản</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    /* Center the alert message and button in the middle of the screen */
+    .alert {
+        text-align: center;
+    }
+    .btn {
+        width: 200px; 
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        display: inline-flex;
+    }
+</style>
+
+{% endblock order %}

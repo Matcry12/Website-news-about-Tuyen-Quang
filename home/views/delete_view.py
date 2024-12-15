@@ -40,7 +40,7 @@ def delete_hotel(request, hotel_id):
     user_profile = UserProfile.objects.get(user=request.user)
     
     hotel = Product.objects.get(id=hotel_id)
-    if hotel.owner != request.user:
+    if hotel.owner != request.user and user_profile.role != 'admin':
         return redirect('cart')
     hotel.delete()
     messages.success(request, "Hotel deleted successfully")

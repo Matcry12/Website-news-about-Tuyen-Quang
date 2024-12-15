@@ -15,11 +15,6 @@
                         <h4 class="card-title"><strong>{{ room.roomName }} - {{ room.room_code }}</strong></h4>
                         <p class="card-text"><strong>Mã phòng:</strong> {{ room.roomCode }}</p>
                         <p class="card-text"><strong>Giá: </strong>{{ room.price|format_price }} Đồng</p>
-                        <p class="card-text"><strong>Đánh giá: </strong>
-                            {% for _ in "1"|center:room.rating %}
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            {% endfor %}
-                        </p>
                         <a class="btn btn-primary" href="{% url 'booking' %}?product_id={{ product.id }}&room_id={{ room.id }}">Đặt phòng</a>
                     </div>
                 </div>

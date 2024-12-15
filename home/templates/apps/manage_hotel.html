@@ -1,0 +1,276 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Quản lí tài khoản{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/manage_account.css' %}">
+{% endblock %}
+{% block extra_js %}
+{% endblock %}
+
+{% block manager %}
+
+<div id = "center-box">
+    <div class="row" id = "wrapper">
+
+        <!-- filter card -->
+        <div class="card shadow-sm" id = "first">
+            <div class="card-body">
+                <h5 class="text-center"><strong>Quản lí tài khoản</strong></h5>
+
+                <div class="filter-section py-3">
+                    <form method="GET">
+                        {% csrf_token %}  
+                        <div class="filter-fields">
+                            <!-- Filter by Name -->
+                            <div class="">
+                                <label for="name" class="form-label">Tên cơ sở lưu trú</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hotel" class="form-label">Chọn loại cơ sở lưu trú:</label>
+                                <select name="hotel" id="hotel" class="form-control">
+                                    <option value="all">--Tất cả danh mục-- </option>
+                                    {% for type in hotel_type %}
+                                        <option value="{{ type.id }}" >
+                                            {{ type }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group" >
+                                <label for="price" class="form-label">Giá phòng</label>
+                                <select name="price" id="price" class="form-control">
+                                    <option value="all">--Tất cả giá-- </option>
+                                    <option value="1" > Dưới 500.000 VNĐ/đêm </option>
+                                    <option value="2" > 500.000 - 1.000.000 VNĐ/đêm </option>
+                                    <option value="3" > Trên 1.000.000 VNĐ/đêm </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="room" class="form-label">Chọn loại phòng:</label>
+                                <select name="room" id="room" class="form-control" data-mdb-select-init multiple>
+                                    <option value="all">--Tất cả danh mục-- </option>
+                                    {% for room in room_type %}
+                                        <option value="{{ room.id }}" >
+                                            {{ room.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category" class="form-label">Chọn dịch vụ:</label>
+                                <select name="category" id="category" class="form-control" data-mdb-select-init multiple>
+                                    <option value="all">--Tất cả danh mục-- </option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" >
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group" >
+                                <label for="rate" class="form-label">Chọn đánh giá:</label>
+                                <select name="rate" id="rate" class="form-control">
+                                    <option value="all">--Tất cả số sao-- </option>
+                                    <option value="2" > 2 sao trở lên </option>
+                                    <option value="3" > 3 sao trở lên </option>
+                                    <option value="4" > 4 sao trở lên </option>
+                                    <option value="5" > 5 sao trở lên </option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                
+                        <!-- Filter Buttons -->
+                        <div class="mt-3 ">
+                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
+                        </div>
+                        <br>
+                    </form>
+                    
+
+                    {% if allowed %}
+                        <a href="{% url 'export_hotel' %}?{{ request.GET.urlencode }}" class="btn btn-success d-block mb-3">Tải xuống cơ sở lưu trú</a>
+                    {% else %}
+                        <a href="" class="btn btn-danger d-block mb-3">Không thể tải xuống</a>
+                    {% endif %}
+
+                    <a href="javascript:void(0);" class="btn btn-outline-primary d-block mb-3" id="showMoreBtn">Tạo cơ sở lưu trú nhanh</a>
+
+
+
+                    <!-- Content to show/hide -->
+                    <div id="extraContent" style="display: none;">
+                        <br>
+                        <h5 class="text-center"><strong>Thêm cơ sở lưu trú bằng excel</strong></h5>
+                        <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_hotel' %}">Tải file excel mẫu cho cơ sở lưu trú</a>
+                        </br>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="field-wrapper">
+                                <label for="hotel_excel" class="form-label">
+                                    
+                                </label>
+                                <input type="file" name="hotel_excel" id="hotel_excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- account card -->
+        <div class="card shadow-sm" id = "second">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    
+                    <h5 ><strong>Số cơ sở lưu trú: {{ count }}</strong></h5>
+
+                    <!-- Check if there are any histories -->
+                    {% if hotels_page %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên cơ sở lưu trú</th>
+                                        <th>Chủ sở hữu</th>
+                                        <th>Giá niêm yết</th>
+                                        <th>Dịch vụ</th>
+                                        <th>Loại phòng</th>
+                                        <th>Loại cơ sở lưu trú</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Đánh giá</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if hotels_page %}
+                                        {% for hotel in hotels_page %}
+                                            <tr>
+                                                <td>{{hotel.name}}</td>
+                                                <td>{{hotel.ownerName}}</td>
+                                                <td>{{hotel.amountprice}}</td>
+                                                <td>
+                                                    {{ hotel.categories.all|join:", " }}
+                                                </td>
+                                                <td>
+                                                    {{ hotel.room_types.all|join:", " }}
+                                                </td>
+                                                <td>{{hotel.product_type.all|join:", "}}</td>
+                                                <td>{{hotel.location}}</td>
+                                                <td>{{hotel.phonecall}}</td>
+                                                <td>
+                                                    {% for _ in "1"|center:hotel.rate %}
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'update_hotel' hotel_id=hotel.id %}">
+                                                        <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'delete_hotel' hotel_id=hotel.id %}">
+                                                        <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr class="no-history-row">
+                                            <td colspan="11" class="text-center">Không có tài khoản.</td>
+                                        </tr>                                    
+                                    {% endif %}
+                                </tbody>                                
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tên tài khoản</th>
+                                        <th>Họ và tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Email</th>
+                                        <th>Căn cước công dân</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Ngày tạo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="no-history-row">
+                                        <td colspan="11" class="text-center">Không có tài khoản nào.</td>
+                                    </tr>   
+                                </tbody>                                
+                            </table>
+                        </div>                 
+                    {% endif %}
+
+                    <!-- Pagination Controls -->
+                    {% if hotels_page %}
+                    <div class="d-flex justify-content-center mt-4">
+                        <nav>
+                            <ul class="pagination">
+                                {% if hotels_page.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ hotels_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                    </li>
+                                {% endif %}
+                                {% for num in hotels_page.paginator.page_range %}
+                                    <li class="page-item {% if hotels_page.number == num %}active{% endif %}">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endfor %}
+                                {% if hotels_page.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ hotels_page.next_page_number }}">Sang trang &#x2192;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const extraContent = document.getElementById('extraContent');
+
+        // Check if the button and content exist
+        if (showMoreBtn && extraContent) {
+            showMoreBtn.addEventListener('click', function () {
+                // Toggle the display style of the extra content
+                if (extraContent.style.display === 'none') {
+                    extraContent.style.display = 'block'; // Show the content
+                    showMoreBtn.innerHTML = 'Ẩn tính năng'; // Change the button text to "Hide"
+                } else {
+                    extraContent.style.display = 'none'; // Hide the content
+                    showMoreBtn.innerHTML = 'Tạo phòng nhanh'; // Change the button text back to "See more"
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock manager %}
