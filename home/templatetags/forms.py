@@ -125,6 +125,10 @@ class SuperUserForm(forms.ModelForm):
         user.is_superuser = True
         if commit:
             user.save()
+            UserProfile.objects.create(
+                user=user,
+                role='admin'
+            )
         return user
 
 class UserProfileForm(forms.ModelForm):

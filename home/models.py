@@ -216,8 +216,8 @@ class new(models.Model):
 # User Profile model
 class UserProfile(models.Model):
     ROLE_TYPE_CHOICES = [
-        ('seller', 'Chủ Khách Sạn'),
-        ('customer', 'Khách Hàng'),
+        ('seller', 'Chủ cơ sở lưu tú'),
+        ('customer', 'Khách hàng'),
         ('admin', 'Người quản lí'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -225,7 +225,7 @@ class UserProfile(models.Model):
     birthday = models.DateTimeField(null=True, blank=False)
     phonecall = models.CharField(max_length=255, blank=False, default="N/a")
     date_created = models.DateTimeField(auto_now_add=True)
-    role = models.CharField(max_length=255, choices=ROLE_TYPE_CHOICES)
+    role = models.CharField(max_length=255, choices=ROLE_TYPE_CHOICES, default='customer',)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
     data_modified = models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(null=True, blank=True, upload_to="images/")

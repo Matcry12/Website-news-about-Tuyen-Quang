@@ -210,3 +210,13 @@
         flex: 0 0 100%; /* Full-width fields on very small screens */
     }
 }
+
+.custom-col-width {
+    flex: 0 0 30%; /* Roughly 3.5/12 of the grid */
+    max-width: 30%;
+}
+
+.custom-right-width {
+    flex: 0 0 70%; /* Adjust the right column to fit the remaining space */
+    max-width: 70%;
+}

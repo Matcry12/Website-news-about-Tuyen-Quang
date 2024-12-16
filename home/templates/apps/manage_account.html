@@ -10,6 +10,11 @@
 
 {% block manager %}
 
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="#" class="breadcrumbs__item is-active">Quản lí tài khoản</a> 
+</nav>
+
 <div id = "center-box">
     <div class="row" id = "wrapper">
 
@@ -52,22 +57,26 @@
                 
                         <!-- Filter Buttons -->
                         <div class="mt-3 ">
-                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                            <a href="?" class="btn btn-secondary">Xóa tìm kiếm</a>
+                            <button type="submit" class="btn btn-lg btn-primary px-2 py-2" id="submit">
+                                <i class="fas fa-search me-2"></i> Tìm kiếm
+                            </button>
+                            <a href="?" class="btn btn-lg btn-outline-secondary px-1 py-2">
+                                <i class="fas fa-times-circle me-2"></i> Xóa tìm kiếm
+                            </a>
                         </div>
                         <br>
                     </form>
                     
 
                     {% if allowed %}
-                        <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success d-block mb-3">Tải xuống danh sách tài khoản</a>
+                        <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success d-block mb-3"><i class="fas fa-download me-2"></i> Tải xuống danh sách tài khoản</a>
                     {% else %}
-                        <a href="" class="btn btn-danger d-block mb-3">Không thể tải xuống</a>
+                        <a href="" class="btn btn-danger d-block mb-3"><i class="fas fa-ban me-2"></i> Không thể tải xuống</a>
                     {% endif %}
 
-                    <a class="btn btn-outline-primary d-block mb-3" href="{% url 'add_account' %}">Thêm tài khoản mới</a>
+                    <a class="btn btn-outline-primary d-block mb-3" href="{% url 'add_account' %}"><i class="fas fa-plus-circle me-2"></i> Thêm tài khoản mới</a>
 
-                    <a href="javascript:void(0);" class="btn btn-outline-primary d-block mb-3" id="showMoreBtn">Tạo tài khoản nhanh</a>
+                    <a href="javascript:void(0);" class="btn btn-outline-primary d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i>  Tạo tài khoản nhanh</a>
 
 
 
@@ -75,7 +84,7 @@
                     <div id="extraContent" style="display: none;">
                         <br>
                         <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
-                        <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}">Tải file excel mẫu cho tài khoản</a>
+                        <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu cho tài khoản</a>
                         </br>
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -84,7 +93,7 @@
                                     
                                 </label>
                                 <input type="file" name="account_excel" id="account_excel" accept=".xlsx, .xls" required class="form-control">
-                                <button type="submit" class="btn btn-outline-primary mt-2">Thêm</button>
+                                <button type="submit" class="btn btn-outline-primary mt-2"><i class="fas fa-plus-circle me-2"></i> Thêm</button>
                             </div>
                         </form>
                     </div>
@@ -111,11 +120,13 @@
                             <select id="action-select" class="form-control me-3" style="width: 200px;">
                                 <option value="">---------------------------</option>
                                 <option value="reset-login">Cấp lại mã đăng nhập</option>
+                                <option value="provide-role">Cấp vai trò chủ cơ sở</option>
+                                <option value="reset-role">Bỏ vai trò chủ cơ sở</option>
                                 <option value="delete-account">Xóa tài khoản</option>
                             </select>
                     
                             <!-- Action Button -->
-                            <button id="perform-action" class="btn btn-primary">Thực hiện</button>
+                            <button id="perform-action" class="btn btn-primary"><i class="fas fa-play-circle"></i> Thực hiện</button>
                         </div>
                     </div>
                     <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); color: white; z-index: 9999; text-align: center; padding-top: 20%; font-size: 20px;">
@@ -144,7 +155,7 @@
                                         {% for profile in users_page %}
                                             <tr>
                                                 <td>{{ profile.user }}</td>
-                                                <td>{{ profile.role}}</td>
+                                                <td>{{ profile.get_role_display }}</td>
 
                                                 {% if profile.user.last_name or profile.user.first_name %}
                                                     <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
@@ -174,9 +185,33 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'delete_account' user_id=profile.user.id %}">
-                                                        <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
+                                                    <!-- Delete Button -->
+                                                    <a type="button" 
+                                                    class="btn" 
+                                                    style="border: none; background: transparent; padding: 10px;" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteAccountModal{{ profile.user.id }}">
+                                                    <i class="fas fa-trash" style="color: #dc3545; font-size: 24px;"></i>
                                                     </a>
+
+                                                    <!-- Confirmation Modal -->
+                                                    <div class="modal fade" id="deleteAccountModal{{ profile.user.id }}" tabindex="-1" aria-labelledby="deleteAccountModalLabel{{ profile.user.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteAccountModalLabel{{ profile.user.id }}">Xác nhận xóa tài khoản</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Bạn có chắc chắn muốn xóa tài khoản này không? Hành động này không thể hoàn tác.
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <a href="{% url 'delete_account' user_id=profile.user.id %}" class="btn btn-danger">Xóa</a>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <input type="checkbox" class="row-checkbox" value="{{ profile.user.id }}" />
@@ -256,10 +291,10 @@
                 // Toggle the display style of the extra content
                 if (extraContent.style.display === 'none') {
                     extraContent.style.display = 'block'; // Show the content
-                    showMoreBtn.innerHTML = 'Ẩn tính năng'; // Change the button text to "Hide"
+                    showMoreBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ẩn tính năng'; // Change the button text to "Hide"
                 } else {
                     extraContent.style.display = 'none'; // Hide the content
-                    showMoreBtn.innerHTML = 'Tạo phòng nhanh'; // Change the button text back to "See more"
+                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo tài khoản nhanh'; // Change the button text back to "See more"
                 }
             });
         }
@@ -331,6 +366,56 @@
                     alert("Xảy ra lỗi khi xóa tài khoản.");
                 });
             }
+            if (selectedAction === 'provide-role') {
+                loadingOverlay.style.display = 'block';
+                fetch("{% url 'manage_account' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ users: selectedUsers, action: selectedAction }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    loadingOverlay.style.display = 'none';
+                    alert(data.message || "Người dùng đã được cấp vai trò chủ cơ sở lưu trú!");
+                    location.reload(); // Refresh the page
+                })
+                .catch((error) => {
+                    loadingOverlay.style.display = 'none';
+                    
+                    console.error("Error:", error);
+                    
+                    alert("Xảy ra lỗi khi cấp vai trò cho tài khoản.");
+                });
+            }
+            if (selectedAction === 'reset-role') {
+                loadingOverlay.style.display = 'block';
+                fetch("{% url 'manage_account' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ users: selectedUsers, action: selectedAction }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                    loadingOverlay.style.display = 'none';
+                    alert(data.message || "Người dùng đã được đưa về vai trò khách hàng!");
+                    location.reload(); // Refresh the page
+                })
+                .catch((error) => {
+                    loadingOverlay.style.display = 'none';
+                    
+                    console.error("Error:", error);
+                    
+                    alert("Xảy ra lỗi khi loại bỏ vai trò cho tài khoản.");
+                });
+            }
             if (selectedAction === 'reset-login') {
                 loadingOverlay.style.display = 'block';
                 fetch("{% url 'manage_account' %}", {
@@ -382,5 +467,64 @@
         }
     });
 </script>
+
+<style>
+    .breadcrumbs {
+border: 1px solid #cbd2d9;
+border-radius: 0.3rem;
+display: inline-flex;
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+.breadcrumbs__item {
+background: #fff;
+color: #333;
+outline: none;
+padding: 0.75em 0.75em 0.75em 1.25em;
+position: relative;
+text-decoration: none;
+transition: background 0.2s linear;
+}
+
+.breadcrumbs__item:hover:after,
+.breadcrumbs__item:hover {
+background: #edf1f5;
+}
+
+.breadcrumbs__item:focus:after,
+.breadcrumbs__item:focus,
+.breadcrumbs__item.is-active:focus {
+background: #323f4a;
+color: #fff;
+}
+
+.breadcrumbs__item:after,
+.breadcrumbs__item:before {
+background: white;
+bottom: 0;
+clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+content: "";
+left: 100%;
+position: absolute;
+top: 0;
+transition: background 0.2s linear;
+width: 1em;
+z-index: 1;
+}
+
+.breadcrumbs__item:before {
+background: #cbd2d9;
+margin-left: 1px;
+}
+
+.breadcrumbs__item:last-child {
+border-right: none;
+}
+
+.breadcrumbs__item.is-active {
+background: #edf1f5;
+}
+</style>
 
 {% endblock manager %}

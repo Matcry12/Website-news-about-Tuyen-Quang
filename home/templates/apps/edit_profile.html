@@ -25,11 +25,31 @@
 
 {% block edit_profile %}
 
+{% if profile.role == 'admin' %}
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'manage_account' %}" class="breadcrumbs__item">Quản lý tài khoản</a> 
+    {% if allow %}
+        <a href="#" class="breadcrumbs__item is-active">Tạo tài khoản</a> 
+    {% else %}
+        <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+    {% endif %}
+
+    
+</nav>
+{% else %}
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'profile' %}" class="breadcrumbs__item">Trang cá nhân</a> 
+    <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+</nav>
+{% endif %}
+
 <div class="custom-box">
     {% if allow %}
-        <h1> Tạo hồ sơ </h1>
+        <h1> Tạo tài khoản </h1>
     {% else %}
-        <h1> Cập nhật hồ sơ </h1>
+        <h1> Cập nhật tài khoản </h1>
     {% endif %}
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
@@ -98,7 +118,7 @@
 
         <div class="form-group">
             <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
-            <input type="text" id="datepicker" class="form-control" name="birthday" value="{{ profile_form.birthday.value|date:"d/m/Y" }}" title="Vui lòng nhập ngày sinh" required>
+            <input type="text" id="datepicker" class="form-control" name="birthday" value="{{ profile_form.birthday.value|date:"d/m/Y" }}" title="Vui lòng nhập ngày sinh">
             {% if profile_form.birthday.errors %}
                 <div class="error">
                     {% for error in profile_form.birthday.errors %}
@@ -163,9 +183,9 @@
         <br/>
         <input type="submit" value="Cập nhật" class="btn btn-secondary">
         {% if profile.role == 'admin' %}
-            <a class="btn btn-secondary" href="{% url 'manage_account'%}">Hủy bỏ</a>
+            <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
         {% else %}
-            <a class="btn btn-secondary" href="{% url 'profile'%}">Hủy bỏ</a>
+            <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
         {% endif %}
     </form>
 
@@ -237,5 +257,63 @@
     } );
 </script>
     
+<style>
+        .breadcrumbs {
+border: 1px solid #cbd2d9;
+border-radius: 0.3rem;
+display: inline-flex;
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+.breadcrumbs__item {
+background: #fff;
+color: #333;
+outline: none;
+padding: 0.75em 0.75em 0.75em 1.25em;
+position: relative;
+text-decoration: none;
+transition: background 0.2s linear;
+}
+
+.breadcrumbs__item:hover:after,
+.breadcrumbs__item:hover {
+background: #edf1f5;
+}
+
+.breadcrumbs__item:focus:after,
+.breadcrumbs__item:focus,
+.breadcrumbs__item.is-active:focus {
+background: #323f4a;
+color: #fff;
+}
+
+.breadcrumbs__item:after,
+.breadcrumbs__item:before {
+background: white;
+bottom: 0;
+clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+content: "";
+left: 100%;
+position: absolute;
+top: 0;
+transition: background 0.2s linear;
+width: 1em;
+z-index: 1;
+}
+
+.breadcrumbs__item:before {
+background: #cbd2d9;
+margin-left: 1px;
+}
+
+.breadcrumbs__item:last-child {
+border-right: none;
+}
+
+.breadcrumbs__item.is-active {
+background: #edf1f5;
+}
+</style>
 
 {% endblock edit_profile %}

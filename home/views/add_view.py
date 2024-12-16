@@ -91,16 +91,20 @@ class AddHotelView(CreateView):
         product.save()
         return super().form_valid(form)
 
+    def dispatch(self, request, *args, **kwargs):
+        # Redirect unauthenticated users before reaching the view
+        if not request.user.is_authenticated:
+            return redirect('home')
+        return super().dispatch(request, *args, **kwargs)
+
+
     def get_context_data(self, **kwargs):
+        # Prepare context data for template
         context = super().get_context_data(**kwargs)
 
-        # Add additional context if needed
-        if self.request.user.is_authenticated:
-            context['user_not_login'] = "none"
-        else:
-            context['user_not_login'] = "block"
-            return redirect('home')  # Redirect if user is not authenticated
-
+        # Add additional context
+        context['page_name'] = "hotel_detail"
+        context['user_not_login'] = "none"  # Since user is authenticated at this point
         return context
     
 
@@ -122,14 +126,14 @@ class AddAccountView(TemplateView):
             'user_form': user_form,
             'profile_form': profile_form,
             'allow': allow,
-            'profile': user_profile
+            'profile': user_profile,
         })
 
     def post(self, request, *args, **kwargs):
         # Instantiate forms with POST data and files (for profile image)
         user_form = self.user_form_class(request.POST)
         profile_form = self.profile_form_class(request.POST, request.FILES)
-
+        user_profile = UserProfile.objects.get(user = request.user)
         if user_form.is_valid() and profile_form.is_valid():
             # Save the User model
             user = user_form.save(commit=False)
@@ -146,5 +150,6 @@ class AddAccountView(TemplateView):
             # Re-render with errors
             return render(request, self.template_name, {
                 'user_form': user_form,
-                'profile_form': profile_form
+                'profile_form': profile_form,
+                'profile': user_profile,
             })

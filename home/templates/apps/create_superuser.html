@@ -2,26 +2,88 @@
 {% load static %}
 {% block title %}Tạo tài khoản quản lí{% endblock %}
 
-{% block extra_js %}
-
-{% endblock %}
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'app/css/add_room.css' %}">
-{% endblock %}
+    <style>
+        /* Custom Styling */
+        .custom-box {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #007bff;;
+        }
+
+        .custom-box h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fbff00;
+        }
+
+        .custom-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .custom-form label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .custom-form input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            font-weight: bold;
+            border-radius: 25px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock extra_css %}
 
 {% block detail %}
-
 <div class="custom-box">
+    <!-- Page Title -->
     <h1>Tạo tài khoản quản lí</h1>
+
+    <!-- Form Section -->
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+        
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="id_username">{{ form.username.label }}</label>
+            {{ form.username }}
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+            <label for="id_email">{{ form.email.label }}</label>
+            {{ form.email }}
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="id_password">{{ form.password.label }}</label>
+            {{ form.password }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary shadow-sm">
+            <i class="fas fa-user-plus me-2"></i> Tạo tài khoản
+        </button>
     </form>
-
 </div>
-
-
-<br/><br/>
 {% endblock detail %}

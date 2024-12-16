@@ -74,9 +74,28 @@
           <li class="nav-item">
             <a class="nav-link active " aria-current="page" href="{% url 'home' %}">Trang chủ</a>
           </li>
+          
+          {% if profile.role != 'customer' and profile != none %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
+            </li>
+          {% endif %}
+
+          <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}">Đơn đặt phòng</a></li>
+
+          {% if profile.role == 'admin' %}
+              <li class="nav-item"><a class="nav-link active" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
+              <li class="nav-item"><a class="nav-link active" href="{% url 'listroom' %}">Thống kê phòng</a></li>
+          {% endif %}
+
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'historylist' %}">Lịch sử đặt phòng</a>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'news' %}">Tin tức</a>
           </li>
+
         </ul>
 
       </div>
@@ -95,19 +114,15 @@
             {% endif %}
             {% if profile.role == 'admin' %}
               <li><a class="dropdown-item" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
+              <li><a class="dropdown-item" href="{% url 'listroom' %}">Thống kê phòng</a></li>
             {% endif %}
             <li><a class="dropdown-item" href="{% url 'historylist' %}">Lịch sử đặt phòng</a></li>
             <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
         </li>
-
-          {% if profile.role != 'customer' and profile != none %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
+          {% if profile != none %}
           </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'order' %}">Đơn đặt phòng</a>
+            <li class="nav-item"><a class="nav-link active" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </li>
           {% endif %}
         </li>

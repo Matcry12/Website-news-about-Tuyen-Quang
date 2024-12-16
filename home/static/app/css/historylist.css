@@ -312,3 +312,12 @@ textarea:focus {
     width:70%;
     height:100%;
 }
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+* {
+    box-sizing: border-box; /* Ensures padding and borders are included in the element's width */
+}

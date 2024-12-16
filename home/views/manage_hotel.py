@@ -36,6 +36,7 @@ def Order(request):
         'order_instance': order_instance,  # Add the orders to the context for use in the template
         'profile': user_profile,
         'count': count,
+        'page_name': 'order'
     }
 
     return render(request, 'apps/order.html', context)
@@ -58,6 +59,10 @@ def filter_room(request, customer):
     if room_ids and 'all' not in room_ids:
         rooms = rooms.filter(room_type__id__in=room_ids).distinct()
 
+    status_ids = request.GET.getlist('status_type')
+    if status_ids and 'all' not in status_ids:
+        rooms = rooms.filter(status__id__in=status_ids).distinct()
+
     return rooms
 
 def Cart(request):
@@ -70,6 +75,7 @@ def Cart(request):
         rooms = filter_room(request, customer)
         categories = category.objects.all()
         room_type = RoomType.objects.all()
+        status_type = StatusType.objects.all()
         hotel_type = ProductType.objects.all()
 
         paginator = Paginator(rooms, 15)  # Show 5 orders per page
@@ -79,6 +85,8 @@ def Cart(request):
     else:
         user_not_login = "block"
         user_profile = None
+        room_type = None
+        status_type = None
         products = None
         rooms = None
         room_page = None  
@@ -222,8 +230,10 @@ def Cart(request):
         'user_not_login': user_not_login,
         'products': products,
         'room_types': room_type,
+        'status_types': status_type,
         'profile': user_profile,
         'rooms': rooms,
+        'page_name': 'cart'
     }
 
     return render(request, 'apps/cart.html', context)
@@ -438,3 +448,65 @@ def manage_hotel(request):
     context = {'user_not_login': user_not_login, 'hotels_page': hotels_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'categories': categories, 'hotel_type': hotel_type, 'room_type': room_type}
 
     return render(request, 'apps/manage_hotel.html', context)
+
+def filter_room_detail(request, hotel_id):
+    rooms = Room.objects.filter(product__id = hotel_id)
+
+    room_code = request.GET.get('room_code')
+    if room_code:
+        rooms = rooms.filter(room_code__icontains=room_code)  # Use icontains for partial match
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+
+    if min_price and max_price:
+        rooms = rooms.filter(price__gte=min_price, price__lte=max_price)
+
+    # Filter by selected room types (multiple selection allowed)
+    room_ids = request.GET.getlist('room_type')
+    if room_ids and 'all' not in room_ids:
+        rooms = rooms.filter(room_type__id__in=room_ids).distinct()
+
+    status_ids = request.GET.getlist('status_type')
+    if status_ids and 'all' not in status_ids:
+        rooms = rooms.filter(status__id__in=status_ids).distinct()
+
+    return rooms
+
+def detail_hotel(request, hotel_id):
+    if request.user.is_authenticated:
+        customer = request.user
+        user_profile = UserProfile.objects.get(user=customer)
+        # Corrected the field name to `customer`
+        products = Product.objects.filter(id=hotel_id)
+        user_not_login = "none"
+        rooms = filter_room_detail(request, hotel_id)
+        room_type = RoomType.objects.all()
+        status_type = StatusType.objects.all()
+        paginator = Paginator(rooms, 15)  # Show 5 orders per page
+        page_number = request.GET.get('page')  # Get current page number from URL
+        room_page = paginator.get_page(page_number)
+        
+    else:
+        user_not_login = "block"
+        user_profile = None
+        room_type = None
+        status_type = None
+        products = None
+        rooms = None
+        room_page = None  
+
+    if user_profile.role != 'admin':
+        return redirect('home')
+
+    context = {
+        'room_page': room_page,
+        'user_not_login': user_not_login,
+        'products': products,
+        'room_types': room_type,
+        'status_types': status_type,
+        'profile': user_profile,
+        'rooms': rooms,
+    }
+
+    return render(request, 'apps/detail_hotel.html', context)

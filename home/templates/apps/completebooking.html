@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block booking %}
+
 <div class="container mt-5 bg-light p-4 rounded shadow custom-container">
     <h3 class="text-center mb-4">Thông Tin Đặt Phòng</h3>
     <div class="table-wrapper">
@@ -17,7 +18,7 @@
             </ul>
             <div class="text-center mt-3">
                 <a href="{% url 'home' %}" class="btn btn-primary"><strong>Trở lại</strong></a>
-                <a href="{% url 'cart' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
+                <a href="{% url 'order' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
             </div>
         </div>
     </div>

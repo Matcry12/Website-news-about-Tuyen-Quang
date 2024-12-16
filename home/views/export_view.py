@@ -259,6 +259,103 @@ def export_account(request):
     wb.save(response)
     return response
 
+def filter_rooms(request):
+    rooms = Room.objects.all()
+
+    name_ids = request.GET.get('name')
+    if name_ids and 'all' not in name_ids:
+        rooms = rooms.filter(product__id__in=name_ids).distinct()
+
+    room_ids = request.GET.getlist('room_type')
+    if room_ids and 'all' not in room_ids:
+        rooms = rooms.filter(room_type__id__in=room_ids).distinct()
+
+    room_code = request.GET.get('room_code')
+    if room_code:
+        rooms = rooms.filter(room_code__icontains = room_code)
+
+    status_ids = request.GET.get('status_type')
+    if status_ids and 'all' not in status_ids:
+        rooms = rooms.filter(status__id__in=status_ids).distinct()
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    if min_price and max_price:
+        rooms = rooms.filter(price__gte=min_price, price__lte=max_price)
+
+    return rooms
+
+def export_room(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role != 'admin':
+        return redirect('home')
+    
+    rooms = filter_rooms(request)
+    
+    room_data = rooms.values(
+        'product__name',
+        'room_type__name',      
+        'room_code',
+        'price',
+        'status__name',
+    )
+
+    # Convert QuerySet to DataFrame
+    df = pd.DataFrame(list(room_data))
+
+    # Rename columns for better readability
+    df.rename(columns={
+        'product__name': 'Cơ sở lưu trú',
+        'room_type__name': 'Loại phòng',      
+        'room_code': 'Số phòng',
+        'price': 'Giá',
+        'status__name': 'Tình trạng',
+    }, inplace=True)
+
+    # Create Excel response
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename="rooms.xlsx"'
+
+    # Create an Excel workbook and write the DataFrame to it
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Rooms"
+
+    # Write DataFrame rows to the sheet
+    for r_idx, row in enumerate(dataframe_to_rows(df, index=False, header=True), 1):
+        for c_idx, value in enumerate(row, 1):
+            cell = ws.cell(row=r_idx, column=c_idx, value=value)
+
+            # Apply border to each cell
+            border = Border(
+                left=Side(border_style="thin"),
+                right=Side(border_style="thin"),
+                top=Side(border_style="thin"),
+                bottom=Side(border_style="thin")
+            )
+            cell.border = border
+
+            # Apply bold font to header row (first row)
+            if r_idx == 1:
+                cell.font = Font(bold=True)
+
+    # Fit column widths to content
+    for col in ws.columns:
+        max_length = 0
+        column = col[0].column_letter  # Get the column name
+        for cell in col:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2)
+        ws.column_dimensions[column].width = adjusted_width
+
+    # Save the Excel file to the response
+    wb.save(response)
+    return response
+
 def export_new_password(request):
     # Retrieve the reset results from the session
     reset_results = request.session.get("reset_results", [])

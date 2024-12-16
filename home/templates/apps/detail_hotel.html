@@ -1,20 +1,17 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}Quản lí cơ sở lưu trú{% endblock %}
+{% block title %}Chi tiết cơ sở lưu trú{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/cart.css' %}">
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'app/js/cart.js' %}"></script>
 {% endblock %}
 {% block cart_content %}
 
 <nav class="breadcrumbs">
     <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'cart' %}" class="breadcrumbs__item is-active">Quản lí cơ sở lưu trú</a> 
+    <a href="{% url 'cart' %}" class="breadcrumbs__item">Quản lí cơ sở lưu trú</a> 
+    <a href="#" class="breadcrumbs__item is-active">Chi tiết cơ sở lưu trú</a> 
 </nav>
 
 <div class="container my-4">
@@ -26,9 +23,9 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                            <a class="btn btn-outline-dark rounded-btn" href="{% url 'cart' %}">&#x2190; Trở lại</a>
                         </div>
-                        <h5 class="section-title">Cơ sở lưu trú của bạn</h5>
+                        <h5 class="section-title">Cơ sở lưu trú</h5>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -38,7 +35,6 @@
                                         <th>Tình trạng</th>
                                         <th>Giá</th>
                                         <th>Số điện thoại</th>
-                                        <th>Sửa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -55,11 +51,6 @@
                                             </td>
                                             <td>{{ product.amountprice }} Đồng</td>
                                             <td>{{ product.phonecall }}</td>
-                                            <td>
-                                                <a href="{% url 'update_hotel' hotel_id=product.id %}" class="text-success" >
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                            </td>
                                            
                                         </tr>
                                     {% empty %}
@@ -168,24 +159,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Thêm phòng -->
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="section-title">Thêm phòng nhanh</h5>
-                    <div class="text-center">
-                        <a class="btn btn-lg btn-outline-primary btn-rounded mb-3 px-4 py-2" href="{% url 'download_example_room' %}">
-                            <i class="fas fa-download me-2"></i> Tải file excel mẫu
-                        </a>
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="file" name="room_excel" id="room_excel" accept=".xlsx, .xls" class="form-control mb-3" required>
-                            <button type="submit" class="btn btn-lg btn-primary btn-rounded mb-3 px-4 py-2"><i class="fas fa-plus-circle me-2"></i> Thêm phòng</button>
-                            
-                        </form>
-                    </div>
-                </div>
-            </div>
+            
         </div>
 
         <div class="col-lg-8">
@@ -201,8 +175,6 @@
                                     <th>Số phòng</th>
                                     <th>Giá</th>
                                     <th>Tình trạng</th>
-                                    <th>Sửa</th>
-                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -212,33 +184,6 @@
                                         <td>{{ room.room_code }}</td>
                                         <td>{{ room.price|format_price }} Đồng</td>
                                         <td>{{ room.status.name }}</td>
-                                        <td>
-                                            <a href="{% url 'update_room' room_id=room.id %}" class="text-success">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="text-danger" data-bs-toggle="modal" data-bs-target="#deleteRoomModal{{ room.id }}">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            <div class="modal fade" id="deleteRoomModal{{ room.id }}" tabindex="-1" aria-labelledby="deleteRoomModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteRoomModalLabel">Xác nhận xóa</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Bạn có chắc chắn muốn xóa phòng này không?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                            <a href="{% url 'delete_room' room_id=room.id %}" class="btn btn-danger">Có, Xóa</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
                                     </tr>
                                 {% empty %}
                                     <tr>

@@ -97,3 +97,4 @@ function closeMapModal() {
         marker = null; // Reset the marker variable
     }
 }
+

@@ -55,7 +55,7 @@ def news(request):
     else:
         user_not_login = "block"
         profile = None
-    context = {'news': news, 'user_not_login': user_not_login, 'profile': profile}
+    context = {'news': news, 'user_not_login': user_not_login, 'profile': profile, 'page_name': 'news'}
     return render(request, 'apps/news.html', context)
 
 def parse_amount_start(product):
@@ -274,8 +274,8 @@ def booking(request, order_id=None):
         if not all([customer_name, cccd, address, phone_number, booking_date_obj, room_id]):
             return HttpResponse("Xảy ra sự cố lỗi trong quá trình nhập thông tin. Vui lòng kiểm tra lại", status=400)
 
-        if profile.role == 'admin':
-            return HttpResponse("Người quản lí không thể đặt phòng", status=400)
+        if profile.role != 'customer':
+            return HttpResponse("Tài khoản này không thể đặt phòng", status=400)
 
         # Handle order creation or update
         if order_obj:
@@ -453,7 +453,7 @@ def return_room(request, order_id):
     orderD.delete()
     
     # Redirect to the cart page
-    return redirect('cart')
+    return redirect('order')
 
 def filter_users(request, user_profile):
     users = UserProfile.objects.all()
@@ -571,6 +571,26 @@ def manage_account(request):
                     return JsonResponse({"message": f"Đã xóa thành công!"}, status=200)
                 except Exception as e:
                     return JsonResponse({"error": str(e)}, status=400)
+            if action == "provide-role":
+                data = json.loads(request.body)
+                selected_users = data.get("users", [])
+
+                try:
+                    users = UserProfile.objects.filter(user__id__in=selected_users)
+                    users.update(role='seller')
+                    return JsonResponse({"message": f"Đã cấp vai trò thành công!"}, status=200)
+                except Exception as e:
+                    return JsonResponse({"error": str(e)}, status=400)
+            if action == "reset-role":
+                data = json.loads(request.body)
+                selected_users = data.get("users", [])
+
+                try:
+                    users = UserProfile.objects.filter(user__id__in=selected_users)
+                    users.update(role='customer')
+                    return JsonResponse({"message": f"Đã loại bỏ vai trò thành công!"}, status=200)
+                except Exception as e:
+                    return JsonResponse({"error": str(e)}, status=400)
         if user_profile.role == 'admin' and 'account_excel' in request.FILES:
             excel_file = request.FILES['account_excel']
             
@@ -617,6 +637,7 @@ def manage_account(request):
                     # Create the user profile
                     UserProfile.objects.create(
                         user=user,
+                        role = 'seller',
                         phonecall=account_data['Số điện thoại'],
                     )
 
@@ -625,6 +646,62 @@ def manage_account(request):
     context = {'user_not_login': user_not_login, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
 
     return render(request, 'apps/manage_account.html', context)
+
+def filter_rooms(request):
+    rooms = Room.objects.all()
+
+    name_ids = request.GET.get('name')
+    if name_ids and 'all' not in name_ids:
+        rooms = rooms.filter(product__id__in=name_ids).distinct()
+
+    room_ids = request.GET.getlist('room_type')
+    if room_ids and 'all' not in room_ids:
+        rooms = rooms.filter(room_type__id__in=room_ids).distinct()
+
+    room_code = request.GET.get('room_code')
+    if room_code:
+        rooms = rooms.filter(room_code__icontains = room_code)
+
+    status_ids = request.GET.get('status_type')
+    if status_ids and 'all' not in status_ids:
+        rooms = rooms.filter(status__id__in=status_ids).distinct()
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    if min_price and max_price:
+        rooms = rooms.filter(price__gte=min_price, price__lte=max_price)
+
+    return rooms
+
+def listroom(request):
+
+    if request.user.is_authenticated:
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_not_login = "none"
+        rooms = filter_rooms(request)
+        allowed = rooms.exists()
+        count = rooms.count()
+        count_empty = rooms.filter(status="1").count()  # Count rooms with status "trống"
+        count_full = rooms.filter(status="3").count()    # Count rooms with status "hết"
+        count_waiting = rooms.filter(status="2").count() # Count rooms with status "Chờ"
+        room_type = RoomType.objects.all()
+        product_name = Product.objects.all()
+        status_type = StatusType.objects.all()
+        paginator = Paginator(rooms, 10)  # Paginate results
+        page_number = request.GET.get('page')
+        rooms_page = paginator.get_page(page_number)
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        rooms_page = None
+        return redirect('error_login')
+    
+    if user_profile.role != 'admin':
+        return redirect('error_login')
+
+    context = {'user_not_login': user_not_login,'count_empty': count_empty, 'count_full': count_full, 'count_waiting': count_waiting, 'product_names':product_name, 'rooms_page': rooms_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'room_types': room_type, 'status_types': status_type}
+
+    return render(request, 'apps/listroom.html', context)
 
 
 def create_superuser(request):

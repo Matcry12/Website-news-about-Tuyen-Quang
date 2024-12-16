@@ -12,6 +12,12 @@
 
 {% block update_room %}
 
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'cart' %}" class="breadcrumbs__item">Quản lí cơ sở lưu trú</a> 
+    <a href="#" class="breadcrumbs__item is-active">Cập nhật phòng</a> 
+</nav>
+
 <div class="custom-box">
     <h1> Cập nhật phòng </h1>
     <br/>
@@ -29,8 +35,69 @@
         {% endif %}
         <br/>
         <input type="submit" value="Cập nhật" class="btn btn-secondary">
+        <a class="btn btn-secondary" href="{% url 'cart'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
     </form>
 </div>
 
 <br/><br/>
+
+<style>
+    .breadcrumbs {
+    border: 1px solid #cbd2d9;
+    border-radius: 0.3rem;
+    display: inline-flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+    }
+
+    .breadcrumbs__item {
+    background: #fff;
+    color: #333;
+    outline: none;
+    padding: 0.75em 0.75em 0.75em 1.25em;
+    position: relative;
+    text-decoration: none;
+    transition: background 0.2s linear;
+    }
+
+    .breadcrumbs__item:hover:after,
+    .breadcrumbs__item:hover {
+    background: #edf1f5;
+    }
+
+    .breadcrumbs__item:focus:after,
+    .breadcrumbs__item:focus,
+    .breadcrumbs__item.is-active:focus {
+    background: #323f4a;
+    color: #fff;
+    }
+
+    .breadcrumbs__item:after,
+    .breadcrumbs__item:before {
+    background: white;
+    bottom: 0;
+    clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+    content: "";
+    left: 100%;
+    position: absolute;
+    top: 0;
+    transition: background 0.2s linear;
+    width: 1em;
+    z-index: 1;
+    }
+
+    .breadcrumbs__item:before {
+    background: #cbd2d9;
+    margin-left: 1px;
+    }
+
+    .breadcrumbs__item:last-child {
+    border-right: none;
+    }
+
+    .breadcrumbs__item.is-active {
+    background: #edf1f5;
+    }
+</style>
+
 {% endblock update_room %}

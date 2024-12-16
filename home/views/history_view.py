@@ -71,7 +71,7 @@ def historylist(request):
     else:
         user_not_login = "block"
         histories_page = None
-        return redirect('home')
+        return redirect('error_login')
     context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
     return render(request, 'apps/historylist.html', context)
 

@@ -1,7 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}Đơn hàng{% endblock %}
+{% block title %}Đơn đặt phòng{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/order.css' %}">
@@ -11,6 +11,12 @@
 {% endblock %}
 
 {% block order %}
+
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'order' %}" class="breadcrumbs__item is-active">Đơn đặt phòng</a> 
+</nav>
+
 <div class="container my-4">
     <div class="row">
         
@@ -57,17 +63,67 @@
                                                 <td>{{ order.method }}</td>
                                                 <td>
                                                     {% if order.confirm %}
-                                                        <button class="btn btn-sm btn-primary update-status-btn" data-order="{{ order.id }}" data-action="true">Xác Nhận</button>
-                                                        <button class="btn btn-sm btn-outline-warning update-status-btn" data-order="{{ order.id }}" data-action="false">Chờ</button>
+                                                        <!-- Confirmed State -->
+                                                        <button class="btn btn-sm btn-primary update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                            <i class="fas fa-check-circle me-2"></i> Xác Nhận
+                                                        </button>
+                                                        <button class="btn btn-sm btn-outline-warning update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                            <i class="fas fa-clock me-2"></i> Chờ
+                                                        </button>
                                                     {% else %}
-                                                        <button class="btn btn-sm btn-outline-primary update-status-btn" data-order="{{ order.id }}" data-action="true">Xác Nhận</button>
-                                                        <button class="btn btn-sm btn-warning update-status-btn" data-order="{{ order.id }}" data-action="false">Chờ</button>
+                                                        <!-- Pending State -->
+                                                        <button class="btn btn-sm btn-outline-primary update-status-btn" data-order="{{ order.id }}" data-action="true">
+                                                            <i class="fas fa-check-circle me-2"></i> Xác Nhận
+                                                        </button>
+                                                        <button class="btn btn-sm btn-warning update-status-btn" data-order="{{ order.id }}" data-action="false">
+                                                            <i class="fas fa-clock me-2"></i> Chờ
+                                                        </button>
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-sm btn-danger">Trả</a>
-                                                    <a href="{% url 'update_room' room_id=order.room.id %}" class="btn btn-sm btn-info">Sửa</a>
-                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-sm btn-dark">Xóa</a>
+                                                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#returnRoomModal{{ order.id }}">
+                                                        <i class="fas fa-undo-alt me-2"></i> Trả
+                                                    </a>
+                                                    <div class="modal fade" id="returnRoomModal{{ order.id }}" tabindex="-1" aria-labelledby="returnRoomModalLabel{{ order.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="returnRoomModalLabel{{ order.id }}">Xác nhận trả phòng</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-danger">Có, Trả</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="{% url 'update_room' room_id=order.room.id %}" class="btn btn-sm btn-info">
+                                                        <i class="fas fa-pencil-alt me-2"></i> Sửa
+                                                    </a>                                                    
+                                                    <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
+                                                        <i class="fas fa-trash me-2"></i> Xóa
+                                                    </a>
+                                                    <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Bạn có chắc chắn muốn xóa đơn hàng này không?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         {% endif %}
@@ -125,7 +181,26 @@
                                             </td>
                                             <td>{{ order.method }}</td>
                                             <td>
-                                                <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-sm btn-dark">Xóa</a>
+                                                <a href="#" class="btn btn-sm btn-danger w-100 py-2" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
+                                                    <i class="fas fa-trash-alt me-2"></i> Xóa
+                                                </a>
+                                                <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Bạn có chắc chắn muốn xóa đơn hàng này không?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -169,5 +244,63 @@
     </div>
 </div>
 
+<style>
+    .breadcrumbs {
+    border: 1px solid #cbd2d9;
+    border-radius: 0.3rem;
+    display: inline-flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+    }
+
+    .breadcrumbs__item {
+    background: #fff;
+    color: #333;
+    outline: none;
+    padding: 0.75em 0.75em 0.75em 1.25em;
+    position: relative;
+    text-decoration: none;
+    transition: background 0.2s linear;
+    }
+
+    .breadcrumbs__item:hover:after,
+    .breadcrumbs__item:hover {
+    background: #edf1f5;
+    }
+
+    .breadcrumbs__item:focus:after,
+    .breadcrumbs__item:focus,
+    .breadcrumbs__item.is-active:focus {
+    background: #323f4a;
+    color: #fff;
+    }
+
+    .breadcrumbs__item:after,
+    .breadcrumbs__item:before {
+    background: white;
+    bottom: 0;
+    clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+    content: "";
+    left: 100%;
+    position: absolute;
+    top: 0;
+    transition: background 0.2s linear;
+    width: 1em;
+    z-index: 1;
+    }
+
+    .breadcrumbs__item:before {
+    background: #cbd2d9;
+    margin-left: 1px;
+    }
+
+    .breadcrumbs__item:last-child {
+    border-right: none;
+    }
+
+    .breadcrumbs__item.is-active {
+    background: #edf1f5;
+    }
+</style>
 
 {% endblock order %}

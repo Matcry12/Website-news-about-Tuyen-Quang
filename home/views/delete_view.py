@@ -10,13 +10,13 @@ def delete_order(request, order_id):
     
     orderD = order.objects.get(id=order_id)
     if orderD.room.product.owner != request.user and orderD.customer != request.user:
-        return redirect('cart')
+        return redirect('order')
     status_instance = StatusType.objects.get(name="Trống")
     orderD.room.status = status_instance
     orderD.room.save()
     orderD.delete()
     messages.success(request, "Order deleted successfully")
-    return redirect('cart')
+    return redirect('order')
 
 def delete_room(request, room_id):
     storage = get_messages(request)
