@@ -291,17 +291,20 @@ def export_room(request):
         return redirect('home')
     
     rooms = filter_rooms(request)
+
     
     room_data = rooms.values(
+        'id',
         'product__name',
         'room_type__name',      
         'room_code',
         'price',
         'status__name',
     )
-
     # Convert QuerySet to DataFrame
     df = pd.DataFrame(list(room_data))
+
+    df.drop(columns=['id'], inplace=True)
 
     # Rename columns for better readability
     df.rename(columns={

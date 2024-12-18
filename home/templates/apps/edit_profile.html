@@ -54,139 +54,79 @@
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
-        <h3>Thông tin tài khoản</h3>
-        <div class="form-group">
-            <label for="{{ user_form.username.id_for_label }}">Tên tài khoản:</label>
-            {{ user_form.username }}
-            {% if user_form.username.errors %}
-                <div class="error">
-                    {% for error in user_form.username.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+        <div class="row">
+            <!-- Left Side (User Information) -->
+            <div class="col-md-6">
+                <h3>Thông tin tài khoản</h3>
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">Tên tài khoản:</label>
+                    {{ user_form.username }}
                 </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ user_form.email.id_for_label }}">Email:</label>
-            {{ user_form.email }}
-            {% if user_form.email.errors %}
-                <div class="error">
-                    {% for error in user_form.email.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+                <div class="form-group">
+                    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                    {{ user_form.email }}
                 </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ user_form.first_name.id_for_label }}">Tên riêng:</label>
-            {{ user_form.first_name }}
-            {% if user_form.first_name.errors %}
-                <div class="error">
-                    {% for error in user_form.first_name.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+                <div class="form-group">
+                    <label for="{{ user_form.first_name.id_for_label }}">Tên riêng:</label>
+                    {{ user_form.first_name }}
                 </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ user_form.last_name.id_for_label }}">Họ:</label>
-            {{ user_form.last_name }}
-            {% if user_form.last_name.errors %}
-                <div class="error">
-                    {% for error in user_form.last_name.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+                <div class="form-group">
+                    <label for="{{ user_form.last_name.id_for_label }}">Họ:</label>
+                    {{ user_form.last_name }}
                 </div>
-            {% endif %}
-        </div>
-
-        <h3>Thông tin hồ sơ</h3>
-        <div class="form-group">
-            <label for="{{ profile_form.cccd.id_for_label }}">Căn cước công dân:</label>
-            {{ profile_form.cccd }}
-            {% if profile_form.cccd.errors %}
-                <div class="error">
-                    {% for error in profile_form.cccd.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
-            <input type="text" id="datepicker" class="form-control" name="birthday" value="{{ profile_form.birthday.value|date:"d/m/Y" }}" title="Vui lòng nhập ngày sinh">
-            {% if profile_form.birthday.errors %}
-                <div class="error">
-                    {% for error in profile_form.birthday.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        <div class="form-group">
-            <label for="{{ profile_form.phonecall.id_for_label }}">Số điện thoại:</label>
-            {{ profile_form.phonecall }}
-            {% if profile_form.phonecall.errors %}
-                <div class="error">
-                    {% for error in profile_form.phonecall.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        <!-- Image input field -->
-        <div class="field-wrapper">
-            <label for="profile_image">Chọn ảnh mới:</label>
-            <input type="file" name="profile_image" id="profile_image" accept="image/*">
-        </div>
-        {% if profile_form.instance.profile_image %}
-            <label>Ảnh hiện tại:</label>
-            <div class="field-wrapper">
-                <label for="current-image"></label>
-                <img src="{{ profile_form.instance.profile_image.url }}" alt="Hotel Image" class="uploaded-image">
             </div>
-        {% endif %}
 
-        <br/>
-        <h3>Mật khẩu</h3>
-        <div class="form-group">
-            <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
-            {{ user_form.password1 }}
-            {% if user_form.password1.errors %}
-                <div class="error">
-                    {% for error in user_form.password1.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+            <!-- Right Side (Profile Information) -->
+            <div class="col-md-6">
+                <h3>Thông tin hồ sơ</h3>
+                <div class="form-group">
+                    <label for="{{ profile_form.cccd.id_for_label }}">Căn cước công dân:</label>
+                    {{ profile_form.cccd }}
                 </div>
-            {% endif %}
+                <div class="form-group">
+                    <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
+                    <input type="text" id="datepicker" class="form-control" name="birthday" 
+                           value="{{ profile_form.birthday.value|date:"d/m/Y" }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ profile_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    {{ profile_form.phonecall }}
+                </div>
+                <div class="form-group">
+                    <label for="profile_image">Ảnh hồ sơ:</label>
+                    <input type="file" name="profile_image" id="profile_image" class="form-control">
+                    {% if profile_form.instance.profile_image %}
+                        <img src="{{ profile_form.instance.profile_image.url }}" alt="Current Image" class="uploaded-image mt-2">
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
-            {{ user_form.password2 }}
-            {% if user_form.password2.errors %}
-                <div class="error">
-                    {% for error in user_form.password2.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
+        <!-- Password Fields -->
+        <h3 class="mt-4">Mật khẩu</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
+                    {{ user_form.password1 }}
                 </div>
-            {% endif %}
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
+                    {{ user_form.password2 }}
+                </div>
+            </div>
         </div>
-        
-
-        <br/>
         <input type="submit" value="Cập nhật" class="btn btn-secondary">
         {% if profile.role == 'admin' %}
             <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
         {% else %}
             <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
         {% endif %}
+        </div>
+        <br/>
+        
     </form>
 
     

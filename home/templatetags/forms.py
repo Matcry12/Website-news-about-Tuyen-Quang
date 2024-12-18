@@ -1,31 +1,50 @@
 from django import forms
-from home.models import Room, Product, User, UserProfile
+from home.models import Room, Product, User, UserProfile, order
 from django.conf import settings
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = order
+        fields = [
+            'address',
+            'cname',
+            'phonecall',
+            'cccd',
+            'datebook',
+            'method',
+            'room',
+        ]
+        labels = {
+            'address': 'Địa chỉ',
+            'cname': 'Tên khách hàng',
+            'phonecall': 'Số điện thoại',
+            'cccd': 'CCCD',
+            'datebook': 'Ngày nhận phòng',
+            'method': 'Phương thức thanh toán',
+            'room': 'Phòng',
+        }
+
 
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['product', 'room_code', 'price', 'room_type', 'status', 'rating']
+        fields = ['room_code', 'price', 'room_type', 'status']
         labels = {
-            'product': ('Cơ sở lưu trú'),
             'room_code': ('Mã phòng'),
             'price': ('Giá'),
             'room_type': ('Loại phòng'),
             'status': ('Trạng thái'),
-            'rating': ('Đánh giá'),
         }
 
 class RoomFormCreate(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['product', 'room_code', 'price', 'room_type', 'status', 'rating', 'image']
+        fields = ['room_code', 'price', 'room_type', 'status', 'image']
         labels = {
-            'product': ('Cơ sở lưu trú'),
             'room_code': ('Mã phòng'),
             'price': ('Giá'),
             'room_type': ('Loại phòng'),
             'status': ('Trạng thái'),
-            'rating': ('Đánh giá'),
             'image': ('Ảnh phòng'),
         }
 

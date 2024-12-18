@@ -91,7 +91,7 @@
                             <br>
                         </form>
                         {% if allowed %}
-                            <a href="{% url 'export_history' %}?{{ request.GET.urlencode }}" class="btn btn-lg btn-success w-150 py-2">
+                            <a href="{% url 'export_history' %}?{{ request.GET.urlencode }}" class="btn btn-lg btn orange w-150 py-2">
                                 <i class="fas fa-download me-2"></i> Tải xuống lịch sử
                             </a>
                         {% else %}
@@ -112,7 +112,7 @@
                 
                 <div class="col-12 mb-4">
    
-                        <h5 ><strong>Tổng số khách đặt phòng: {{ count }} </strong></h5>
+                        <h5 ><strong>Tổng số giao dịch: {{ count }} </strong></h5>
     
                         <!-- Check if there are any histories -->
                         {% if histories_page %}
@@ -194,17 +194,17 @@
                                 <ul class="pagination">
                                     {% if histories_page.has_previous %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ histories_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                            <a class="page-link" href="?page={{ histories_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
                                         </li>
                                     {% endif %}
                                     {% for num in histories_page.paginator.page_range %}
                                         <li class="page-item {% if histories_page.number == num %}active{% endif %}">
-                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            <a class="page-link" href="?page={{ num }}&{{ query_string }}">{{ num }}</a>
                                         </li>
                                     {% endfor %}
                                     {% if histories_page.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ histories_page.next_page_number }}">Sang trang &#x2192;</a>
+                                            <a class="page-link" href="?page={{ histories_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
                                         </li>
                                     {% endif %}
                                 </ul>

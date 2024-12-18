@@ -10,7 +10,7 @@ from django.db.models.functions import Cast, Substr, StrIndex, Concat
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator
-from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate, SuperUserForm, UserEditForm, UserProfileForm
+from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate, SuperUserForm, UserEditForm, UserProfileForm, OrderForm
 from django.contrib.auth.decorators import login_required
 import pandas as pd
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -23,6 +23,7 @@ from django.contrib.messages import get_messages
 from datetime import datetime
 from django.core.mail import send_mail
 from django.views.generic import TemplateView, CreateView
+from django.http import QueryDict
 from io import BytesIO
 
 from .history_view import *
@@ -350,6 +351,8 @@ def updateRoom(request, room_id):
             pic_form.save()
 
             return redirect('cart')  # Redirect to room details page after saving
+    else:
+        print(room_form.is_valid())
     context = {'profile': user_profile, 'user_not_login': user_not_login, 'room': room, 'room_form': room_form, 'pic_form': pic_form}
     return render(request, 'apps/update_room.html', context)
 
@@ -359,7 +362,7 @@ def updateHotel(request, hotel_id):
         user_profile = UserProfile.objects.get(user=request.user)
         hotel =  Product.objects.get(id = hotel_id)
         if hotel.owner != user_profile.user and user_profile.role != 'admin':  # Compare the actual User object
-            return redirect('cart') 
+            return redirect('home') 
         # Fetch the UserProfile for the authenticated user
     else:
         user_not_login = "block"
@@ -374,6 +377,32 @@ def updateHotel(request, hotel_id):
             return redirect('cart')  # Redirect to room details page after saving
     context = {'profile': user_profile, 'user_not_login': user_not_login, 'hotel': hotel, 'hotel_form': hotel_form, 'pic_form': pic_form}
     return render(request, 'apps/update_hotel.html', context)
+
+def updateTrade(request, order_id):
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        user_profile = UserProfile.objects.get(user=request.user)
+        Order =  order.objects.get(id = order_id)
+        product_room = order.objects.get(id = order_id)
+        if Order.room.product.owner != user_profile.user and Order.customer != user_profile.user:  # Compare the actual User object
+            return redirect('home') 
+        # Fetch the UserProfile for the authenticated user
+    else:
+        user_not_login = "block"
+        user_profile = None  # No profile available for non-logged-in users
+        return redirect('login')
+    order_form = OrderForm(request.POST or None, request.FILES or None , instance=Order)
+    if order_form.is_valid():
+        # Check if the selected room belongs to the same product
+        selected_room = order_form.cleaned_data['room']
+        if selected_room.product != product_room.room.product:
+            order_form.add_error('room', "Phòng được chọn không hợp lệ")
+        else:
+            # Save the form if validation passes
+            order_form.save()
+            return redirect('order')  # Redirect after successful update
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'order': Order, 'order_form': order_form}
+    return render(request, 'apps/update_order.html', context)
 
 @login_required
 def edit_profile(request, user_id=None):
@@ -526,6 +555,10 @@ def manage_account(request):
         paginator = Paginator(users, 10)  # Paginate results
         page_number = request.GET.get('page')
         users_page = paginator.get_page(page_number)
+
+        query_params = request.GET.copy()
+        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
+        query_string = query_params.urlencode()  # Generate a clean query string
         # Fetch the UserProfile for the authenticated user
     else:
         user_not_login = "block"
@@ -643,7 +676,7 @@ def manage_account(request):
 
         return redirect('manage_account')
 
-    context = {'user_not_login': user_not_login, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
+    context = {'user_not_login': user_not_login, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string,}
 
     return render(request, 'apps/manage_account.html', context)
 
@@ -690,6 +723,10 @@ def listroom(request):
         paginator = Paginator(rooms, 10)  # Paginate results
         page_number = request.GET.get('page')
         rooms_page = paginator.get_page(page_number)
+
+        query_params = request.GET.copy()
+        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
+        query_string = query_params.urlencode()  # Generate a clean query string
         # Fetch the UserProfile for the authenticated user
     else:
         user_not_login = "block"
@@ -699,7 +736,7 @@ def listroom(request):
     if user_profile.role != 'admin':
         return redirect('error_login')
 
-    context = {'user_not_login': user_not_login,'count_empty': count_empty, 'count_full': count_full, 'count_waiting': count_waiting, 'product_names':product_name, 'rooms_page': rooms_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'room_types': room_type, 'status_types': status_type}
+    context = {'user_not_login': user_not_login,'count_empty': count_empty, 'count_full': count_full, 'count_waiting': count_waiting, 'product_names':product_name, 'rooms_page': rooms_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'room_types': room_type, 'status_types': status_type, 'query_string': query_string,}
 
     return render(request, 'apps/listroom.html', context)
 

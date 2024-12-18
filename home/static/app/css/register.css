@@ -1,6 +1,6 @@
 /* Blue custom-box styling */
 .custom-box {
-    background-color: #007bff; /* Blue background for the card */
+    background-color: #D6722B; /* Blue background for the card */
     color: white; /* White text for the card */
     padding: 30px;
     border-radius: 15px;
@@ -24,7 +24,7 @@
 
 /* Custom Heading */
 h2 {
-    color: #fbff00;
+    color: #ffffff;
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 20px;
@@ -68,4 +68,12 @@ h2 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
 }

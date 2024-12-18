@@ -28,7 +28,7 @@
 <br /><br />
 
 <div>
-    <h2 class="text-center" id="hotel-section"><strong>Cơ sở lưu trú</strong></h2>
+    <h2 class="text-center color-text" id="hotel-section"><strong>Cơ sở lưu trú</strong></h2>
 </div>
 
 <br />
@@ -40,17 +40,17 @@
             <div class="card p-3 mb-4">
         
                 <!-- Filter Options -->
-                <h3 class="text-center">Tìm kiếm</h3>
+                <h3 class="text-center color-text"><strong>Tìm kiếm</strong></h3>
                 <div class="filter-section py-3">
                     <form id="filterForm" method="POST" action="#hotel-section">
                         {% csrf_token %}  
                         <div class="filter-fields">
-                            <h6><strong>Cơ sở lưu trú</strong></h6>
+                            <h6 class="form-label color-text"><strong>Cơ sở lưu trú</strong></h6>
                             <div class="form-group table">
                                 <input type="text" name="name" class="form-control search-input flex-grow-1" placeholder="Nhập cơ sở lưu trú">
                             </div>
         
-                            <h6><strong>Giá phòng</strong></h6>
+                            <h6 class="form-label color-text"><strong>Giá phòng</strong></h6>
                             <div class="form-group table" >
                                 <select name="price" id="price" class="form-control">
                                     <option value="all">--Tất cả giá-- </option>
@@ -60,7 +60,7 @@
                                 </select>
                             </div>
         
-                            <h6><strong>Dịch vụ của khách sạn</strong></h6>
+                            <h6 class="form-label color-text"><strong>Dịch vụ của khách sạn</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for category in categories %}
@@ -74,7 +74,7 @@
                                 </tbody>
                             </table>
                         
-                            <h6><strong>Các loại cơ sở lưu trú</strong></h6>
+                            <h6 class="form-label color-text"><strong>Các loại cơ sở lưu trú</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for product_type in product_types %}
@@ -88,7 +88,7 @@
                                 </tbody>
                             </table>
                         
-                            <h6><strong>Các loại phòng</strong></h6>
+                            <h6 class="form-label color-text"><strong>Các loại phòng</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for room_type in room_types %}
@@ -101,9 +101,8 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-        
+                            <h6 class="form-label color-text"><strong>Chọn đánh giá:</strong></h6>
                             <div class="form-group" >
-                                <label for="rate" class="form-label">Chọn đánh giá:</label>
                                 <select name="rate" id="rate" class="form-control">
                                     <option value="all">--Tất cả số sao-- </option>
                                     <option value="2" > 2 sao trở lên </option>
@@ -115,10 +114,10 @@
                         
                             <!-- Submit Button -->
                             <div class="mt-3 ">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn orange rounded-pill px-1">
                                     <i class="fas fa-search me-2"></i> Tìm kiếm
                                 </button>
-                                <a href="?" class="btn btn-secondary">
+                                <a href="?" class="btn btn-secondary rounded-pill px-1">
                                     <i class="fas fa-times-circle me-2"></i> Xóa tìm kiếm
                                 </a>
                             </div>
@@ -142,7 +141,7 @@
                                 <!-- Address Box -->
                                 <div class="box-group bordered-box flex-grow-1 me-2">
                                     <p><strong>Địa chỉ:</strong> {{ product.location }}</p>
-                                    <button class="btn btn-outline-primary view-map-btn" onclick="openMapModal('{{ product.maplocation }}', '{{ product.name }}')">Xem bản đồ</button>
+                                    <button class="btn btn-outline orange-outline view-map-btn" onclick="openMapModal('{{ product.maplocation }}', '{{ product.name }}')">Xem bản đồ</button>
                                 </div>
 
                                 <!-- Map Modal with a single, reusable ID -->
@@ -193,8 +192,8 @@
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <button 
-                                        class="btn btn-outline-primary chat-button" 
-                                        onclick="window.open('https://zalo.me/{{ zalo_number }}', '_blank')" 
+                                        class="btn btn-outline orange-outline chat-button" 
+                                        onclick="window.open('https://zalo.me/{{ product.phonecall }}', '_blank')" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="Chat với chúng tôi qua Zalo">
@@ -202,7 +201,7 @@
                                     </button>
 
                                     <a 
-                                        class="btn btn-outline-success rounded-pill detail-button" 
+                                        class="btn btn-outline orange-outline rounded-pill detail-button" 
                                         href="{% url 'detail' %}?id={{ product.id }}" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 

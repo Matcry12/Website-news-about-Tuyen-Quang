@@ -23,19 +23,49 @@
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ hotel_form.as_p }}
+        <div class="row">
+            <!-- Hotel Information -->
+            <div class="col-md-6">
+                <h3 class="section-title">Thông tin cơ sở lưu trú</h3>
+                <div class="form-group">
+                    <label for="{{ hotel_form.name.id_for_label }}">Tên cơ sở lưu trú:</label>
+                    {{ hotel_form.name }}
+                </div>
 
-        {{ pic_form.as_p }}
-        
-        {% if pic_form.instance.imageP %}
-            <div class="field-wrapper">
-                <label for="current-image">Ảnh hiện tại:</label>
-                <img src="{{ pic_form.instance.imageP.url }}" alt="Hotel Image" class="uploaded-image">
+                <div class="form-group">
+                    <label for="{{ hotel_form.amountprice.id_for_label }}">Giá:</label>
+                    {{ hotel_form.amountprice }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.location.id_for_label }}">Địa chỉ:</label>
+                    {{ hotel_form.location }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    {{ hotel_form.phonecall }}
+                </div>
             </div>
-        {% endif %}
-        <br/>
-        <input type="submit" value="Cập nhật" class="btn btn-secondary">
-        <a class="btn btn-secondary" href="{% url 'cart'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+
+            <!-- Image Upload and Preview -->
+            
+            <div class="col-md-6">
+                <h3 class="section-title">Cập nhật ảnh</h3>
+                <div class="form-group">
+                    <label for="profile_image">Cập nhật ảnh:</label>
+                    <input type="file" name="profile_image" id="profile_image" class="form-control">
+                    {% if pic_form.instance.imageP %}
+                        <img src="{{ pic_form.instance.imageP.url }}" alt="Current Image" class="uploaded-image mt-2">
+                    {% endif %}
+                </div>
+            </div>
+            
+            <input type="submit" value="Cập nhật" class="btn btn-secondary">
+            <a class="btn btn-secondary" href="{% url 'cart'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        </div>
+        
+        
     </form>
 </div>
 

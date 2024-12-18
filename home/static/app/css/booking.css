@@ -1,149 +1,109 @@
-/* Custom Container with a Noticeable Background */
-.custom-container {
-    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Light blue gradient */
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
-}
-
-/* Table Wrapper Styling */
-.table-wrapper {
-    background-color: #ffffff; /* White for clean contrast */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Styling for Each Row in the Table */
-.table-row {
-    background-color: #f1f8e9; /* Light green for subtle division */
-    padding: 10px;
-    border-radius: 5px;
-}
-
-/* Wrapper around the label and input */
-.field-wrapper {
-    background-color: #eed919; /* Yellow for emphasis */
-    padding: 10px;
-    border-radius: 5px;
-}
-
-/* Styling for the strong tag */
-.table-cell strong {
-    background-color: #ffeb3b; /* Yellow to highlight text */
-    padding: 8px 12px;
-    border-radius: 5px;
-    color: #2c3e50;
-    font-size: 16px;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Styling for the input field */
-.table-cell input[type="text"], 
-.table-cell select, 
-.table-cell input[type="date"] {
-    background-color: #e8f5e9; /* Light green for inputs */
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Focused input styling */
-.table-cell input[type="text"]:focus, 
-.table-cell select:focus, 
-.table-cell input[type="date"]:focus {
-    border-color: #1e88e5;
-    box-shadow: 0 0 5px rgba(30, 136, 229, 0.5);
-}
-
-/* Buttons */
-.btn-primary {
-    background-color: #316ddd; /* Light green button */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #316ddd; /* Darker green on hover */
-}
-
-/* Table Cell Styling */
-.table-cell {
-    background-color: #f0f4c3; /* Light yellow for cells */
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-}
-
-/* Header Styling */
-h3.text-center {
-    background-color: #3949ab; /* Deep blue header */
-    color: white;
-    padding: 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 5px;
-}
-
-/* Message Container */
-.message-container {
-    background-color: #ffeb3b; /* Yellow for messages */
-    padding: 20px;
-    border-radius: 8px;
-    margin-top: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-/* Message List */
-.messages {
-    list-style: none;
+/* General Reset */
+* {
+    margin: 0;
     padding: 0;
-    background-color: #ffeb3b; /* Yellow for message list */
-    margin-bottom: 20px;
-    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.messages li {
-    background-color: #ffeb3b; /* Yellow for individual messages */
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 4px;
-    font-size: 14px;
+/* Body and Container Styling */
+body {
+    line-height: 1.6;
+    background-color: #f8f9fa;
     color: #333;
 }
 
+.custom-container {
+    background: linear-gradient(135deg, #D6722B, #D6722B); /* Gradient */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+/* Table and Form Styling */
+.table-wrapper {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.field-wrapper {
+    background: #f9f9f9;
+    border: 2px solid #D6722B; /* Add a solid border with color */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    margin-bottom: 10px;
+}
+
+
+.field-wrapper strong {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Input and Select Styling */
+.form-control,
+.form-select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: black;
+    box-shadow: 0 0 5px rgba(106, 27, 154, 0.5);
+}
+
 /* Buttons */
-.btn-back {
-    background-color: #90caf9; /* Sky blue */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.btn-back:hover {
-    background-color: #1e88e5; /* Bright blue on hover */
-}
-
+.btn-primary,
 .btn-view-room {
-    background-color: #1e88e5; /* Coral button */
-    color: white;
-    padding: 10px 20px;
+    background-color: #D6722B;
+    color: #fff;
+    font-weight: bold;
+    border: none;
     border-radius: 5px;
-    text-align: center;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.btn-primary:hover,
 .btn-view-room:hover {
-    background-color: #1e88e5; /* Bold orange on hover */
+    background-color: #B6591F;
+    transform: scale(1.05);
+}
+
+.btn-outline-secondary {
+    color: black;
+    border: 2px solid black;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6A1B9A;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .row > .col-md-4 {
+        margin-bottom: 15px;
+    }
+    .breadcrumbs {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+
+h3{
+    color: rgb(255, 255, 255);
+}
+
+.orange-text{
+    color: #D6722B;
 }

@@ -60,7 +60,7 @@
 
                     <!-- Map and Zalo Buttons -->
                     <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-success"><i class="fas fa-comments"></i> Chat qua Zalo</button>
+                        <button class="btn btn-rounded btn orange" onclick="window.open('https://zalo.me/{{ product.phonecall }}', '_blank')" ><i class="fas fa-comments"></i> Chat qua Zalo</button>
                     </div>
 
                 </div>
@@ -88,7 +88,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Đắt đén rẻ</td>
+                                        <td>Đắt đến rẻ</td>
                                         <td>
                                             <input type="checkbox" name="priceSort" value="desc" onchange="submitSortForm(this)" 
                                                 {% if request.POST.priceSort == 'desc' %}checked{% endif %}>
@@ -169,6 +169,67 @@ border-right: none;
 
 .breadcrumbs__item.is-active {
 background: #edf1f5;
+}
+
+/* General Card Styling */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Product Image */
+
+/* Product Title */
+h2.text-uppercase {
+    font-size: 1.8rem;
+    color: #333; /* Dark text for contrast */
+    font-weight: bold;
+}
+
+/* Price Styling */
+.price .text-success {
+    font-size: 1.6rem;
+    color: #6A1B9A;
+    font-weight: bold;
+}
+
+/* "Chat qua Zalo" and "Đặt phòng" Buttons */
+.btn-rounded {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #FFFFFF;
+    background-color: #D6722B; /* Orange color */
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-rounded:hover {
+    background-color: #B6591F; /* Darker orange on hover */
+    box-shadow: 0 4px 8px rgba(214, 114, 43, 0.5);
+}
+
+.table input[type="checkbox"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.orange-outline{
+    border-color: #D6722B;
+    color: #D6722B;
+}
+.orange-outline:hover{
+    background-color: #D6722B;
+    color: white;
 }
 </style>
 {% endblock detail %}

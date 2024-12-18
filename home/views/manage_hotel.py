@@ -81,6 +81,10 @@ def Cart(request):
         paginator = Paginator(rooms, 15)  # Show 5 orders per page
         page_number = request.GET.get('page')  # Get current page number from URL
         room_page = paginator.get_page(page_number)
+
+        query_params = request.GET.copy()
+        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
+        query_string = query_params.urlencode()  # Generate a clean query string
         
     else:
         user_not_login = "block"
@@ -233,7 +237,7 @@ def Cart(request):
         'status_types': status_type,
         'profile': user_profile,
         'rooms': rooms,
-        'page_name': 'cart'
+        'query_string': query_string,
     }
 
     return render(request, 'apps/cart.html', context)
@@ -375,6 +379,10 @@ def manage_hotel(request):
         paginator = Paginator(sorted_hotels, 10)  # Paginate results
         page_number = request.GET.get('page')
         hotels_page = paginator.get_page(page_number)
+
+        query_params = request.GET.copy()
+        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
+        query_string = query_params.urlencode()  # Generate a clean query string
         # Fetch the UserProfile for the authenticated user
     else:
         user_not_login = "block"
@@ -445,7 +453,7 @@ def manage_hotel(request):
                         product.product_type.add(product_type)
             return redirect('manage_hotel')
     
-    context = {'user_not_login': user_not_login, 'hotels_page': hotels_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'categories': categories, 'hotel_type': hotel_type, 'room_type': room_type}
+    context = {'user_not_login': user_not_login, 'hotels_page': hotels_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'categories': categories, 'hotel_type': hotel_type, 'room_type': room_type, 'query_string': query_string,}
 
     return render(request, 'apps/manage_hotel.html', context)
 

@@ -67,12 +67,16 @@ def historylist(request):
         paginator = Paginator(histories, 10)  # Paginate results
         page_number = request.GET.get('page')
         histories_page = paginator.get_page(page_number)
+
+        query_params = request.GET.copy()
+        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
+        query_string = query_params.urlencode()  # Generate a clean query string
         # Fetch the UserProfile for the authenticated user
     else:
         user_not_login = "block"
         histories_page = None
         return redirect('error_login')
-    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile}
+    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string,}
     return render(request, 'apps/historylist.html', context)
 
 def completebooking(request):

@@ -18,7 +18,7 @@
                 <br>
                 <div class="alert alert-warning text-center" role="alert">
                     <h3>Tài khoản hiện không hợp lệ</h3>
-                    <a href="{% url 'login' %}" class="btn btn-primary">Đăng nhập tài khoản</a>
+                    <a href="{% url 'login' %}" class="btn btn orange">Đăng nhập tài khoản</a>
                 </div>
             </div>
         </div>
@@ -37,6 +37,14 @@
         align-items: center;
         text-align: center;
         display: inline-flex;
+    }
+    .orange{
+        background-color: #D6722B;
+        color: white;
+    }
+    .orange:hover{
+        background-color: #D6722B;
+        color: white;
     }
 </style>
 

@@ -249,3 +249,46 @@ textarea:focus {
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Blue glow effect */
 }
 
+.table thead th {
+    background-color: #D6722B;
+}
+
+.page-link{
+    color: #D6722B;
+    
+}
+.page-link:hover{
+    color: #D6722B;
+}
+.page-item.active .page-link {
+    color: white; /* White text for active page */
+    background-color: #D6722B; /* Orange background */
+    border-color: #D6722B; /* Orange border */
+}
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.purple{
+    border-color: #D6722B;
+    color: #D6722B;
+}
+.purple:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.purple-btn{
+    background-color: #D6722B;
+    color: white;
+}
+.purple-btn:hover{
+    background-color: #D6722B;
+    color: white;
+}

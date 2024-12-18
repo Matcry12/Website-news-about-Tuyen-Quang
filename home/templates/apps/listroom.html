@@ -1,7 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}Lịch sử đặt hàng{% endblock %}
+{% block title %}Thống kê phòng{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'app/css/historylist.css' %}">
@@ -103,7 +103,7 @@
                             <br>
                         </form>
                         {% if allowed %}
-                            <a href="{% url 'export_room' %}?{{ request.GET.urlencode }}" class="btn btn-lg btn-success w-150 py-2">
+                            <a href="{% url 'export_room' %}?{{ request.GET.urlencode }}" class="btn btn-lg btn orange w-150 py-2">
                                 <i class="fas fa-download me-2"></i> Tải xuống danh sách phòng
                             </a>
                         {% else %}
@@ -185,17 +185,17 @@
                                 <ul class="pagination">
                                     {% if rooms_page.has_previous %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ rooms_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                            <a class="page-link" href="?page={{ rooms_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
                                         </li>
                                     {% endif %}
                                     {% for num in rooms_page.paginator.page_range %}
                                         <li class="page-item {% if rooms_page.number == num %}active{% endif %}">
-                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            <a class="page-link" href="?page={{ num }}&{{ query_string }}">{{ num }}</a>
                                         </li>
                                     {% endfor %}
                                     {% if rooms_page.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ rooms_page.next_page_number }}">Sang trang &#x2192;</a>
+                                            <a class="page-link" href="?page={{ rooms_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
                                         </li>
                                     {% endif %}
                                 </ul>
@@ -265,15 +265,7 @@ border-right: none;
 .breadcrumbs__item.is-active {
 background: #edf1f5;
 }
-body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-}
 
-* {
-    box-sizing: border-box; /* Ensures padding and borders are included in the element's width */
-}
 </style>
 
 {% endblock %}

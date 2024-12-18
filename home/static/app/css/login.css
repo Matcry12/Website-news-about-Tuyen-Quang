@@ -1,6 +1,6 @@
 /* Container Box Styling */
 .custom-box {
-    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Soft gradient */
+    background: linear-gradient(135deg, #D6722B, #D6722B); /* Soft gradient */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
@@ -58,7 +58,7 @@ button.btn.btn-primary:hover {
 
 /* Heading Styling */
 h2 {
-    color: #fbff00; /* Yellow color for the h2 */
+    color: #ffffff; /* Yellow color for the h2 */
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 20px;
@@ -67,7 +67,7 @@ h2 {
 /* Secondary Button Styling */
 .btn-secondary {
     background-color: #f8f9fa;
-    color: #333;
+    color: #ffffff;
     padding: 10px 20px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -98,4 +98,13 @@ button.btn.btn-primary:hover {
 /* Ensure other buttons and links in the form don't override */
 button.btn-primary .text-body {
     color: white !important; /* Force text color for the button */
+}
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
 }

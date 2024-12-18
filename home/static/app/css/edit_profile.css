@@ -1,5 +1,5 @@
 .custom-box {
-    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Soft gradient */
+    background: linear-gradient(135deg, #D6722B, #D6722B); /* Soft gradient */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
@@ -42,8 +42,8 @@
 }
 
 .btn-secondary:hover {
-    background-color: #1E90FF;
-    color: white;
+    background-color: #f8f9fa;
+    color: black;
 }
 
 /* Styling for the image */
@@ -66,7 +66,7 @@
 
 
 h1 {
-    color: #fbff00;
+    color: #ffffff;
     font-size: 2.5rem;
     text-align: center;
 }
@@ -145,7 +145,7 @@ input[type="file"] {
 input[type="submit"] {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #D6722B;
     color: white;
     border: none;
     border-radius: 5px;
@@ -155,7 +155,7 @@ input[type="submit"] {
 
 /* Button hover effect */
 input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #D6722B;
 }
 
 /* Custom image display section */

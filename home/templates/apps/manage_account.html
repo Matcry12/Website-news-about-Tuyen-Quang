@@ -69,14 +69,14 @@
                     
 
                     {% if allowed %}
-                        <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn-success d-block mb-3"><i class="fas fa-download me-2"></i> Tải xuống danh sách tài khoản</a>
+                        <a href="{% url 'export_account' %}?{{ request.GET.urlencode }}" class="btn btn orange d-block mb-3"><i class="fas fa-download me-2"></i> Tải xuống danh sách tài khoản</a>
                     {% else %}
                         <a href="" class="btn btn-danger d-block mb-3"><i class="fas fa-ban me-2"></i> Không thể tải xuống</a>
                     {% endif %}
 
-                    <a class="btn btn-outline-primary d-block mb-3" href="{% url 'add_account' %}"><i class="fas fa-plus-circle me-2"></i> Thêm tài khoản mới</a>
+                    <a class="btn btn-outline purple d-block mb-3" href="{% url 'add_account' %}"><i class="fas fa-plus-circle me-2"></i> Thêm tài khoản mới</a>
 
-                    <a href="javascript:void(0);" class="btn btn-outline-primary d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i>  Tạo tài khoản nhanh</a>
+                    <a href="javascript:void(0);" class="btn btn-outline purple d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i>  Tạo tài khoản nhanh</a>
 
 
 
@@ -84,7 +84,7 @@
                     <div id="extraContent" style="display: none;">
                         <br>
                         <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
-                        <a class="btn btn-sm btn-outline-primary mt-2" href="{% url 'download_example_account' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu cho tài khoản</a>
+                        <a class="btn btn-sm btn-outline purple mt-2" href="{% url 'download_example_account' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu cho tài khoản</a>
                         </br>
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -93,7 +93,7 @@
                                     
                                 </label>
                                 <input type="file" name="account_excel" id="account_excel" accept=".xlsx, .xls" required class="form-control">
-                                <button type="submit" class="btn btn-outline-primary mt-2"><i class="fas fa-plus-circle me-2"></i> Thêm</button>
+                                <button type="submit" class="btn btn-outline purple mt-2"><i class="fas fa-plus-circle me-2"></i> Thêm</button>
                             </div>
                         </form>
                     </div>
@@ -126,7 +126,7 @@
                             </select>
                     
                             <!-- Action Button -->
-                            <button id="perform-action" class="btn btn-primary"><i class="fas fa-play-circle"></i> Thực hiện</button>
+                            <button id="perform-action" class="btn orange "><i class="fas fa-play-circle"></i> Thực hiện</button>
                         </div>
                     </div>
                     <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); color: white; z-index: 9999; text-align: center; padding-top: 20%; font-size: 20px;">
@@ -257,22 +257,22 @@
                             <ul class="pagination">
                                 {% if users_page.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ users_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                        <a class="page-link" href="?page={{ users_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
                                     </li>
                                 {% endif %}
                                 {% for num in users_page.paginator.page_range %}
                                     <li class="page-item {% if users_page.number == num %}active{% endif %}">
-                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        <a class="page-link" href="?page={{ num }}&{{ query_string }}">{{ num }}</a>
                                     </li>
                                 {% endfor %}
                                 {% if users_page.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ users_page.next_page_number }}">Sang trang &#x2192;</a>
+                                        <a class="page-link" href="?page={{ users_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
                                     </li>
                                 {% endif %}
                             </ul>
                         </nav>
-                    </div>
+                    </div>         
                     {% endif %}
                 </div>
             </div>

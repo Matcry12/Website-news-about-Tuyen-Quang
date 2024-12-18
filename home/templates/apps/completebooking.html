@@ -8,22 +8,21 @@
 {% endblock %}
 
 {% block booking %}
-
-<div class="container mt-5 bg-light p-4 rounded shadow custom-container">
-    <h3 class="text-center mb-4">Thông Tin Đặt Phòng</h3>
+<div class="container mt-5 p-4 rounded shadow custom-container">
+    <h3 class="text-center mb-4 text-white"><strong>Thông Tin Đặt Phòng</strong></h3>
+    
     <div class="table-wrapper">
         <div class="message-container">
-            <ul class="messages">
-                    <li><strong>Bạn đã đặt phòng thành công</strong></li>
-            </ul>
-            <div class="text-center mt-3">
-                <a href="{% url 'home' %}" class="btn btn-primary"><strong>Trở lại</strong></a>
+            <div class="text-center">
+                <p class="h4 text orange-text"><strong>Bạn đã đặt phòng thành công</strong></p>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'home' %}" class="btn btn-primary me-3"><strong>Trở lại</strong></a>
                 <a href="{% url 'order' %}" class="btn btn-view-room"><strong>Xem phòng</strong></a>
             </div>
         </div>
     </div>
 </div>
-<br><br>
 {% endblock %}
 
 <script>

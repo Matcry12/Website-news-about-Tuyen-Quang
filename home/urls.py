@@ -24,6 +24,7 @@ urlpatterns = [
     path('dat-phong/', views.booking, name="booking"),
     path('dat-phong-thanh-cong/', views.completebooking, name='completebooking'),
     path('cap-nhat-phong/<room_id>', views.updateRoom, name="update_room"),
+    path('cap-nhat-don-dat-phong/<order_id>', views.updateTrade, name="update_trade"),
     path('cap-nhat-co-so/<hotel_id>', views.updateHotel, name="update_hotel"),
     path('chinh-sua-thong-tin/<user_id>', views.edit_profile, name="edit_profile"),
     path('them-phong-moi/', AddRoomView.as_view(), name="add_room"),

@@ -10,6 +10,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
 
   <!-- css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="{%static 'app/css/style.css' %}" rel="stylesheet" />
   <link href="{%static 'app/css/owl.carousel.min.css' %}" rel="stylesheet" />
   <link href="{%static 'app/css/all.min.css' %}" rel="stylesheet" />
@@ -80,9 +81,9 @@
               <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
             </li>
           {% endif %}
-
-          <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}">Đơn đặt phòng</a></li>
-
+          {% if profile.role != 'admin' %}
+            <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}">Đơn đặt phòng</a></li>
+          {% endif %}
           {% if profile.role == 'admin' %}
               <li class="nav-item"><a class="nav-link active" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
               <li class="nav-item"><a class="nav-link active" href="{% url 'listroom' %}">Thống kê phòng</a></li>
@@ -106,7 +107,9 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
+            {% if profile.role != 'admin' %}
             <li><a class="dropdown-item" href="{% url 'order' %}">Đơn đặt phòng</a></li>
+            {% endif %}
             {% if profile.role != 'customer' and profile != none %}
             <li>
               <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
@@ -158,17 +161,59 @@
   </br>
   <!-- footer -->
   </br></br></br>
-  <footer class="container-fluid bg-success text-center fixed-bottom py-2">
+  <footer class="container-fluid bg-purple text-light text-center fixed-bottom py-2">
       <small>
-          <strong>Địa chỉ:</strong> Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh Tuyên Quang |
-          <strong>Điện thoại:</strong> 0335788907 |
-          <strong>Email:</strong> fdtywadw@gmail.com
-          <br>
-          <strong>Thiết kế:</strong> Nguyễn Anh Triết, Hoàng Quang Huy |
-          <strong>Người hướng dẫn:</strong> Nguyễn Thu Thủy
+          <div>
+              <strong>Địa chỉ:</strong> Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh Tuyên Quang |
+              <strong>Điện thoại:</strong> 0335788907 |
+              <strong>Email:</strong> <a href="mailto:fdtywadw@gmail.com" class="">fdtywadw@gmail.com</a>
+          </div>
+          <div>
+              <strong>Thiết kế:</strong> Nguyễn Anh Triết, Hoàng Quang Huy |
+              <strong>Người hướng dẫn:</strong> Nguyễn Thu Thủy
+          </div>
       </small>
   </footer>
 
+<style>
+  /* Footer Styling */
+.bg-purple {
+    background-color: #D6722B; /* Deep Purple */
+    color: #FFFFFF; /* White text */
+    font-size: 0.9rem;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Subtle top shadow for depth */
+}
+
+footer a {
+    color: white; /* Warm Orange for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: white; /* Brighter Gold on hover */
+}
+
+footer div {
+    margin-bottom: 5px; /* Space between lines */
+    line-height: 1.6; /* Improved line spacing */
+}
+
+/* Fixed Bottom Styling */
+.fixed-bottom {
+    padding: 10px 0; /* Vertical padding for better spacing */
+    z-index: 1030; /* Ensure it stays above other content */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    footer {
+        font-size: 0.8rem;
+        text-align: center;
+    }
+}
+
+</style>
 
 
   <script src="{%static 'app/js/cart.js' %}"></script>

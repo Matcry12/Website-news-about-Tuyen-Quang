@@ -28,7 +28,7 @@
                 {% else %}
                     <img src="https://www.gravatar.com/avatar/658a364d199fda38ad7c509b769ca939?d=identicon&s=150" class="img-thumbnail rounded-circle mb-3" alt="Default Profile Image" width="150">
                 {% endif %}
-                <h4 class="text-primary">{{ profile.user.username }}</h4>
+                <h4 class="text purple-text">{{ profile.user.username }}</h4>
             </div>
             <!-- User Info -->
             <div class="col-md-9">
@@ -50,7 +50,7 @@
         <div class="row gx-5">
             <!-- Left Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase text-primary fw-bold">Thông tin người dùng</h5>
+                <h5 class="text-uppercase text fw-bold purple-text">Thông tin người dùng</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Họ và tên:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</li>
                     <li class="list-group-item"><strong>Ngày sinh:</strong> {{ profile.birthday|date:"d/m/Y" }}</li>
@@ -61,7 +61,7 @@
             </div>
             <!-- Right Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase text-primary fw-bold">Thông tin tài khoản</h5>
+                <h5 class="text-uppercase text purple-text fw-bold">Thông tin tài khoản</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><strong>Tên tài khoản:</strong> {{ profile.user.username }}</li>
                     <li class="list-group-item"><strong>Tạo tài khoản từ:</strong> {{ profile.user.date_joined|date:"d/m/Y" }}</li>
@@ -73,7 +73,7 @@
 
         <!-- Edit Profile Button -->
         <div class="mt-4 text-center">
-            <a href="{% url 'edit_profile' user_id=profile.user.id %}" class="btn btn-primary btn-lg rounded-pill px-4">
+            <a href="{% url 'edit_profile' user_id=profile.user.id %}" class="btn btn purple btn-lg rounded-pill px-4">
                 <i class="fas fa-edit me-2"></i> Chỉnh sửa trang cá nhân
             </a>
         </div>
@@ -136,6 +136,18 @@
 
     .breadcrumbs__item.is-active {
     background: #edf1f5;
+    }
+    .purple{
+        background-color: #D6722B;
+        color: white;
+    }
+    .purple:hover{
+        background-color: #D6722B;
+        color: white;
+    }
+
+    .purple-text{
+        color: #D6722B;
     }
 </style>
 {% endblock profile %}

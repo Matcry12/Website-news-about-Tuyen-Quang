@@ -7,14 +7,26 @@
 
 /* Outlined Primary Button */
 .btn-outline-primary {
-    color: #007bff;
-    border-color: #007bff;
+    color: #D6722B;
+    border-color: #D6722B;
     transition: all 0.3s ease;
 }
 
 .btn-outline-primary:hover {
-    background-color: #007bff;
+    background-color: #D6722B;
     color: white;
+}
+.page-link{
+    color: #D6722B;
+    
+}
+.page-link:hover{
+    color: #D6722B;
+}
+.page-item.active .page-link {
+    color: white; /* White text for active page */
+    background-color: #D6722B; /* Orange background */
+    border-color: #D6722B; /* Orange border */
 }
 
 /* Flexbox Layout for the Row */
@@ -50,6 +62,10 @@
     border-radius: 8px;
 }
 
+h5{
+    color:#D6722B;
+}
+
 /* Table Row Hover Effect */
 .table tbody tr:hover {
     background-color: #f1f1f1; /* Light background on hover for table rows */
@@ -57,7 +73,7 @@
 
 /* Table Header Styling */
 .table th {
-    background-color: #007bff; /* Primary blue background */
+    background-color: #D6722B; /* Primary blue background */
     color: white;
     font-size: 16px; /* Slightly larger font for header */
     padding: 12px;
@@ -68,7 +84,7 @@ input[type="text"]:focus,
 input[type="email"]:focus, 
 input[type="password"]:focus, 
 textarea:focus {
-    border-color: #007bff;
+    border-color: #D6722B;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Blue glow effect */
 }
 
@@ -94,7 +110,7 @@ textarea:focus {
     }
 
     .table th {
-        background-color: #0056b3; /* Darker background for table header */
+        background-color: #D6722B; /* Darker background for table header */
     }
 
     .table td {
@@ -139,7 +155,7 @@ textarea:focus {
 
 /* Custom Button Styling */
 .custom-button {
-    background-color: #007bff;
+    background-color: #D6722B;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -148,8 +164,16 @@ textarea:focus {
     transition: all 0.3s ease-in-out;
 }
 
+.btn-success{
+    background-color: #D6722B;
+}
+.btn-success:hover{
+    background-color: #D6722B;
+}
+
+
 .custom-button:hover {
-    background-color: #0056b3;
+    background-color: #D6722B;
 }
 
 /* Card Body Styling */
@@ -198,7 +222,7 @@ textarea:focus {
 
 .filter-section .form-label {
     font-weight: bold;
-    color: #333;
+    color: #D6722B;
 }
 
 .filter-section .form-control {
@@ -212,10 +236,29 @@ textarea:focus {
 }
 
 .filter-section .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #D6722B;
+    border-color: #D6722B;
     color: #fff;
 }
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.purple{
+    border-color: #D6722B;
+    color: #D6722B;
+}
+.purple:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
 
 .filter-section .btn-secondary {
     background-color: #6c757d;
@@ -336,4 +379,84 @@ body {
     padding-top: 20%;
     font-size: 20px;
     font-family: Arial, sans-serif;
+}
+
+
+/* Default Layout for Desktop */
+#center-box{
+    width: 100%;
+    height: 100%;
+    display: flex; /* Enable flexbox layout */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+#wrapper {
+    position: relative;
+    text-align: center;
+    width: 150%;
+    height: 100%;
+    justify-content: center;
+}
+#first {
+    display: inline-block;
+    width:20%;
+    height:100%;
+}
+#second {
+    display: inline-block;
+    width:70%;
+    height:100%;
+}
+/* Responsive Layout for Tablets and Phones */
+@media (max-width: 992px) {
+    #first {
+        flex: 0 0 100%; /* Full width for filter card */
+        max-width: 100%;
+        order: -1; /* Ensure filter card appears above the table */
+    }
+
+    #second {
+        flex: 0 0 100%; /* Full width for table card */
+        max-width: 100%;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+    }
+    
+    * {
+        box-sizing: border-box; /* Ensures padding and borders are included in the element's width */
+    }
+}
+
+/* Improve Card Styling */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+h5.color-text {
+    color: #D6722B;
+}
+
+/* Buttons */
+.btn-primary, .btn-outline-secondary {
+    width: 100%; /* Full width on smaller screens */
+    margin-bottom: 10px;
+}
+
+/* Table Responsiveness */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table thead th {
+    white-space: nowrap;
 }

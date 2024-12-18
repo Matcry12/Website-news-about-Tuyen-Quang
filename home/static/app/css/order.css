@@ -564,3 +564,20 @@ h3.text-center {
 .btn-small-width {
     width: 150px;  /* Set the desired width */
 }
+
+.table thead th {
+    background-color: #D6722B;
+}
+
+.page-link{
+    color: #D6722B;
+    
+}
+.page-link:hover{
+    color: #D6722B;
+}
+.page-item.active .page-link {
+    color: white; /* White text for active page */
+    background-color: #D6722B; /* Orange background */
+    border-color: #D6722B; /* Orange border */
+}
