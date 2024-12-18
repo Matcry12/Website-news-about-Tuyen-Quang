@@ -1,0 +1,23 @@
+{% extends 'apps/base.html' %}
+{% block title %}Tin tức{% endblock %}
+
+{% block news %}
+<div class="container mt-5 mb-5">
+    {% for new in news %}
+    <div class="card mb-4">
+        <div class="row g-0">
+            <div class="col-md-4 d-flex align-items-center">
+                <img src="{{ new.imageURL }}" class="img-fluid rounded-start" alt="News Image" width="100%">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ new.title }}</h5>
+                    <p class="card-text">{{ new.detail }}</p>
+                    <a href="{% url 'home' %}" class="btn btn-outline-dark rounded-btn">&#x2190; Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock news %}

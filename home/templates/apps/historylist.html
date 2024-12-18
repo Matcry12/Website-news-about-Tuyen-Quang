@@ -1,0 +1,309 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block title %}Lịch sử đặt phòng{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/historylist.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        .card { border-radius: 8px; }
+        .section-title { font-size: 1.5rem; font-weight: bold; color: #1E90FF; text-align: center; margin-bottom: 20px; }
+        .table th { background-color: #1E90FF; color: #fff; text-align: center; }
+        .table td, .table th { vertical-align: middle; }
+        .btn { margin: 5px 0; }
+        .filter-fields .form-control { margin-bottom: 10px; }
+    </style>
+{% endblock %}
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-vi.js"></script>
+{% endblock %}
+
+{% block history %}
+
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="#" class="breadcrumbs__item is-active">Lịch sử đặt phòng</a> 
+</nav>
+
+<div id = "center-box">
+    <div class="row" id = "wrapper">
+
+        <!-- filter card -->
+        <div class="card shadow-sm" id = "first">
+            <div class="card-body">
+                <h5 class="text-center"><strong>Lịch sử đặt phòng</strong></h5>
+
+                    <div class="filter-section py-3">
+                        <form method="GET">
+                            <div class="filter-fields">
+                                <!-- Filter by Name -->
+                                <div class="">
+                                    <label for="name" class="form-label">Tên CS lưu trú</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                </div>
+                    
+                                <!-- Filter by Date -->
+                                <div class="" id = "date">
+                                    <label for="date" class="form-label">Khoảng ngày nhận phòng</label>
+                                    <div class="d-flex">
+                                        <input type="text" name="start_date" id="start_date" class="form-control me-2" placeholder="Bắt đầu" value="{{ request.GET.start_date }}">
+                                        <input type="text" name="end_date" id="end_date" class="form-control" placeholder="Kết thúc"  value="{{ request.GET.end_date }}">
+                                    </div>
+                                </div>
+                                
+                                <div class="">
+                                    <label for="cccd" class="form-label">Căn cước công dân</label>
+                                    <input type="text" name="cccd" id="cccd" class="form-control" placeholder="Nhập căn cước công dân"  value="{{ request.GET.cccd }}">
+                                </div>
+
+                                <div class="">
+                                    <label for="phonecall" class="form-label">Số điện thoại</label>
+                                    <input type="text" name="phonecall" id="phonecall" class="form-control" placeholder="Nhập số điện thoại"  value="{{ request.GET.phonecall }}">
+                                </div>
+
+                                <div class="">
+                                    <label for="cname" class="form-label">Người đặt phòng</label>
+                                    <input type="text" name="cname" id="cname" class="form-control" placeholder="Nhập người đặt phòng"  value="{{ request.GET.cname }}">
+                                </div>
+
+                                <!-- Filter by Price Range -->
+                                <div class="" id = "price">
+                                    <label for="price" class="form-label">Khoảng giá</label>
+                                    <div class="d-flex">
+                                        <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
+                                        <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                    </div>
+                                </div>
+                            </div>
+                    
+                            <!-- Filter Buttons -->
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-lg btn-primary px-2 py-2" id="submit">
+                                    <i class="fas fa-search me-2"></i> Tìm kiếm
+                                </button>
+                                <a href="?" class="btn btn-lg btn-outline-secondary px-2 py-2">
+                                    <i class="fas fa-times-circle me-2"></i> Xóa tìm kiếm
+                                </a>
+                            </div>
+                            <br>
+                        </form>
+                        {% if allowed %}
+                            <a href="{% url 'export_history' %}?{{ request.GET.urlencode }}" class="btn btn-lg btn orange w-150 py-2">
+                                <i class="fas fa-download me-2"></i> Tải xuống lịch sử
+                            </a>
+                        {% else %}
+                            <a href="#" class="btn btn-lg btn-danger w-100 py-2">
+                                <i class="fas fa-ban me-2"></i> Không thể tải lịch sử
+                            </a>
+                        {% endif %}
+                    </div>
+            </div>
+        </div>
+
+        <!-- History card -->
+        <div class="card shadow-sm" id = "second">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                </div>
+                
+                <div class="col-12 mb-4">
+   
+                        <h5 ><strong>Tổng số giao dịch: {{ count }} </strong></h5>
+    
+                        <!-- Check if there are any histories -->
+                        {% if histories_page %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên CS lưu trú</th>
+                                            <th>Số phòng</th>
+                                            <th>Loại phòng</th>
+                                            <th>Giá tiền</th>
+                                            <th>Ngày nhận phòng</th>
+                                            <th>Ngày trả phòng</th>
+                                            <th>Người Đặt phòng</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Số ĐT</th>
+                                            <th>CCCD</th>
+                                            <th>Phương thức</th>
+                                            <th>Xác nhận</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if histories_page %}
+                                            {% for history in histories_page %}
+                                                <tr>
+                                                    <td>{{ history.room.product.name }}</td>
+                                                    <td>{{ history.room.room_code }}</td>
+                                                    <td>{{ history.room.roomName }}</td>
+                                                    <td>{{ history.room.price|format_price }} Đồng</td>
+                                                    <td>{{ history.datebook|date:"d/m/Y" }}</td>
+                                                    <td>{{ history.outdateOrder|date:"d/m/Y" }}</td>
+                                                    <td>{{ history.cname }}</td>
+                                                    <td>{{ history.room.product.location }}</td>
+                                                    <td>{{ history.phonecall }}</td>
+                                                    <td>{{ history.cccd }}</td>
+                                                    <td>{{ history.method }}</td>
+                                                    <td>Đã trả</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr class="no-history-row">
+                                                <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                            </tr>                                    
+                                        {% endif %}
+                                    </tbody>                                
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên CS lưu trú</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Số ĐT</th>
+                                            <th>CCCD</th>
+                                            <th>Người Đặt phòng</th>
+                                            <th>Ngày đặt phòng</th>
+                                            <th>Ngày trả phòng</th>
+                                            <th>Loại phòng</th>
+                                            <th>Mã phòng</th>
+                                            <th>Giá tiền</th>
+                                            <th>Xác nhận</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="no-history-row">
+                                            <td colspan="11" class="text-center">Không có lịch sử đặt phòng.</td>
+                                        </tr>   
+                                    </tbody>                                
+                                </table>
+                            </div>                 
+                        {% endif %}
+    
+                        <!-- Pagination Controls -->
+                    {% if histories_page %}
+                        <div class="d-flex justify-content-center mt-4">
+                            <nav>
+                                <ul class="pagination">
+                                    {% if histories_page.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ histories_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for num in histories_page.paginator.page_range %}
+                                        <li class="page-item {% if histories_page.number == num %}active{% endif %}">
+                                            <a class="page-link" href="?page={{ num }}&{{ query_string }}">{{ num }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    {% if histories_page.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ histories_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        // Initialize datepicker for both start_date and end_date
+        $('#start_date').datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            prevText: "Trước",
+            nextText: "Sau",
+            monthNamesShort: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"], // Short month names
+            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"], // Short day names
+            dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"], // Full day names
+            showMonthAfterYear: false,  // Show month before year in date format
+        });
+
+        $('#end_date').datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            prevText: "Trước",
+            nextText: "Sau",
+            monthNamesShort: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"], // Short month names
+            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"], // Short day names
+            dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"], // Full day names
+            showMonthAfterYear: false,  // Show month before year in date format
+        });
+    });
+</script>
+
+<style>
+    .breadcrumbs {
+border: 1px solid #cbd2d9;
+border-radius: 0.3rem;
+display: inline-flex;
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+.breadcrumbs__item {
+background: #fff;
+color: #333;
+outline: none;
+padding: 0.75em 0.75em 0.75em 1.25em;
+position: relative;
+text-decoration: none;
+transition: background 0.2s linear;
+}
+
+.breadcrumbs__item:hover:after,
+.breadcrumbs__item:hover {
+background: #edf1f5;
+}
+
+.breadcrumbs__item:focus:after,
+.breadcrumbs__item:focus,
+.breadcrumbs__item.is-active:focus {
+background: #323f4a;
+color: #fff;
+}
+
+.breadcrumbs__item:after,
+.breadcrumbs__item:before {
+background: white;
+bottom: 0;
+clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+content: "";
+left: 100%;
+position: absolute;
+top: 0;
+transition: background 0.2s linear;
+width: 1em;
+z-index: 1;
+}
+
+.breadcrumbs__item:before {
+background: #cbd2d9;
+margin-left: 1px;
+}
+
+.breadcrumbs__item:last-child {
+border-right: none;
+}
+
+.breadcrumbs__item.is-active {
+background: #edf1f5;
+}
+</style>
+
+{% endblock %}

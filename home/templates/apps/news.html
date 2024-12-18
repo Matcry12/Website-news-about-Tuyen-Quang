@@ -1,23 +1,79 @@
 {% extends 'apps/base.html' %}
+{% load static %}
 {% block title %}Tin tức{% endblock %}
 
-{% block news %}
-<div class="container mt-5 mb-5">
-    {% for new in news %}
-    <div class="card mb-4">
-        <div class="row g-0">
-            <div class="col-md-4 d-flex align-items-center">
-                <img src="{{ new.imageURL }}" class="img-fluid rounded-start" alt="News Image" width="100%">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">{{ new.title }}</h5>
-                    <p class="card-text">{{ new.detail }}</p>
-                    <a href="{% url 'home' %}" class="btn btn-outline-dark rounded-btn">&#x2190; Back to Home</a>
-                </div>
+
+{% block banner_slider %}
+
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'app/images/banner/Finalllll@72x-100(resize).jpg' %}" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block main-content %}
+
+<br /><br />
+
+<div>
+    <h2 class="text-center"><strong> Tin tức</strong></h2>
+</div>
+
+<br />
+<div class="container">
+    <div class="row text-center">
+        {% for new in news %}
+        <div class="col-12 col-md-6 col-lg-4 mx-auto">
+            <img class="thumbnail" src="{{ new.imageURL }}" alt="Tour du lịch">
+            <div class="box-element product">
+                <h6><strong>{{ new.title }}</strong></h6>
+                <hr>
+                <p class="detail-text">
+                    {{ new.detail|truncatewords:15 }} <!-- Limiting the text to 15 words -->
+                </p>
+                <a class="btn btn-outline-success" href="{% url 'news' %}?id={{new.id}}">Xem chi tiết</a>
             </div>
         </div>
+        {% if forloop.counter|divisibleby:3 %}
     </div>
-    {% endfor %}
+    <div class="row text-center">
+        {% endif %}
+        {% endfor %}
+    </div>
 </div>
-{% endblock news %}
+
+
+<br /><br /><br />
+
+
+<style>
+    .thumbnail {
+        width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        max-height: 200px; /* Optional: set a maximum height */
+        object-fit: cover; /* Ensures the image covers the area without distortion */
+        /* border-radius: 8px; /* Optional: add rounded corners */
+    }
+
+    .box-element {
+        padding: 15px;
+        border: 1px solid #ddd;
+        /* border-radius: 8px; /* Optional: add rounded corners */
+        background-color: #fff;
+        margin-bottom: 20px; /* Space between items */
+    }
+
+    .detail-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+</style>
+
+{% endblock %}

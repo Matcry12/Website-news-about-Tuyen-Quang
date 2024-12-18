@@ -5,7 +5,7 @@ if (nameUser === "AnonymousUser") {
     console.log("User are not logged");
 } 
 else {
-    nameUser = user
+    nameUser = userName
 }
 
 var customerName = document.getElementById('customerDef');

@@ -1,0 +1,583 @@
+/* Custom Container with a Noticeable Background */
+.custom-container {
+    background: linear-gradient(135deg, #1E90FF, #1E90FF); /* Soft gradient */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
+    overflow-y: auto; /* Allow scrolling if content exceeds the height */
+}
+
+/* Table Wrapper Styling */
+.table-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Styling for Each Row in the Table */
+.table-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Wrapper around the label and input */
+.field-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack the label and input vertically */
+    gap: 5px; /* Space between the label and the input */
+}
+
+/* Styling for the strong tag */
+.table-cell strong {
+    font-size: 18px; /* Increase font size for better visibility */
+    font-weight: 700; /* Bold and heavy font weight for emphasis */
+    color: #ffffff; /* White color for contrast */
+    background-color: #e74c3c; /* Red background for high visibility */
+    padding: 10px 15px; /* Add padding for better spacing */
+    border-radius: 8px; /* Rounded corners to match the input styling */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow for prominence */
+    text-transform: uppercase; /* Make the text uppercase for additional emphasis */
+    letter-spacing: 1px; /* Add spacing between letters */
+}
+
+/* Styling for the input field */
+.table-cell input[type="text"], .table-cell select, .table-cell input[type="date"] {
+    width: 100%; /* Full width of the cell */
+    padding: 8px 12px; /* Consistent padding with the strong tag */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border color for input */
+    font-size: 14px; /* Font size for input */
+    font-weight: normal; /* Regular font weight */
+    background-color: #ffffff; /* White background for input */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for depth */
+}
+
+/* Focused input styling to match the strong text emphasis */
+.table-cell input[type="text"]:focus, .table-cell select:focus, .table-cell input[type="date"]:focus {
+    border-color: #1E90FF; /* Border color on focus (blue) */
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5); /* Glow effect on focus */
+}
+
+/* Base styling for all buttons */
+.btn {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    padding: 10px 20px; /* Consistent padding for all buttons */
+    font-size: 16px; /* Uniform font size */
+    border-radius: 5px; /* Same rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Smooth transitions for hover effects */
+    display: inline-block; /* Prevent size changes due to content */
+    text-align: center; /* Center text in button */
+    box-sizing: border-box; /* Include border in button size calculation */
+    min-width: 120px; /* Ensure a consistent minimum width */
+}
+
+/* Solid "Xác Nhận" button */
+.btn-xacnhan {
+    background-color: #1E90FF; /* Blue background for "Xác Nhận" */
+    color: white; /* White text */
+    border: 2px solid #1E90FF; /* Add a border for consistency */
+}
+
+.btn-xacnhan:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Outlined "Xác Nhận" button */
+.btn-outline-primary.btn-xacnhan {
+    background-color: transparent; /* Transparent background */
+    color: #1E90FF; /* Blue text */
+    border: 2px solid #1E90FF; /* Same border thickness as solid button */
+}
+
+.btn-outline-primary.btn-xacnhan:hover {
+    background-color: #1E90FF; /* Blue background on hover */
+    color: white; /* White text on hover */
+}
+
+/* Solid "Chờ" button */
+.btn-cho {
+    background-color: #f44336; /* Red background for "Chờ" */
+    color: white;
+    border: 2px solid #f44336; /* Add a border for consistency */
+}
+
+.btn-cho:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Outlined "Chờ" button */
+.btn-outline-warning.btn-cho {
+    background-color: transparent; /* Transparent background */
+    color: #f44336; /* Red text */
+    border: 2px solid #f44336; /* Same border thickness as solid button */
+}
+
+.btn-outline-warning.btn-cho:hover {
+    background-color: #f44336; /* Red background on hover */
+    color: white; /* White text on hover */
+}
+
+/* Ensure that the divs inside .table-cell don't overlap or encroach */
+.table-cell {
+    padding: 15px; /* Add padding to the table-cell for spacing */
+    background-color: #ffffff; /* White background to separate the fields visually */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 10px; /* Spacing between rows */
+}
+
+/* Header Styling */
+h3.text-center {
+    color: white; /* Set the text color to white */
+    font-size: 2rem; /* Larger font size */
+    font-weight: bold; /* Optional: Make the text bold */
+    text-transform: uppercase; /* Make the header more noticeable */
+    letter-spacing: 2px; /* Add spacing between letters */
+}
+
+/* Button Styles */
+.btn {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+/* Primary button styles */
+.btn-success {
+    background-color: #f9a825;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #f57f17;
+}
+
+.btn-info {
+    background-color: #2196f3;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #1976d2;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e53935;
+}
+
+.btn-dark {
+    background-color: #333;
+    color: white;
+}
+
+.btn-dark:hover {
+    background-color: #000;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 20px; /* Space between the buttons */
+}
+
+/* Back Button */
+.btn-back {
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+}
+
+/* View Room Button */
+.btn-view-room {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-view-room:hover {
+    background-color: #218838;
+}
+
+/* Table Styling */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-striped thead {
+    background-color: #2196f3;
+    color: white;
+}
+
+/* Hover Effects for Table Rows */
+.table tbody tr:hover {
+    background-color: #c5e1a5; /* Slightly darker yellow for hover */
+}
+
+/* Message Container */
+.message-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: inline-block;
+    text-align: center; /* Center the content inside */
+}
+
+/* Message List */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    background-color: #fffcf5;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #f4e1b2;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Responsive behavior for small screens */
+@media screen and (max-width: 768px) {
+    .table-cell {
+        display: block; /* Stack elements vertically */
+    }
+
+    .field-wrapper {
+        flex-direction: column; /* Ensure label and input stack vertically */
+    }
+    .message-container {
+        padding: 15px;
+    }
+
+    .messages li {
+        font-size: 12px;
+    }
+
+    .btn-back {
+        font-size: 14px;
+    }
+}
+
+/* Responsive Table Styling */
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.responsive-table thead {
+    display: none; /* Hide table headers on smaller screens */
+}
+
+.responsive-table tbody tr {
+    display: block; /* Stack rows vertically */
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 15px;
+}
+
+.responsive-table tbody tr td {
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Align text to the left */
+    padding: 10px 5px;
+    border: none; /* Remove default borders */
+}
+
+.responsive-table tbody tr td .table-cell {
+    font-weight: bold; /* Label style */
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.responsive-table tbody tr td:last-child {
+    margin-top: 10px;
+}
+
+/* Add Borders and Shadows */
+.responsive-table tbody tr {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (min-width: 768px) {
+    .responsive-table thead {
+        display: table-header-group; /* Show table headers for larger screens */
+    }
+
+    .responsive-table tbody tr {
+        display: table-row; /* Revert to default table-row */
+        border: none;
+        box-shadow: none;
+    }
+
+    .responsive-table tbody tr td {
+        display: table-cell; /* Revert to default table-cell */
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+}
+
+/* Styling for table headers */
+.table th {
+    background-color: #1E90FF; /* Light blue background */
+    color: white; /* White text color for contrast */
+    text-align: center; /* Align text to the left */
+    padding: 12px; /* Add padding for spacing */
+    border: 1px solid #ddd; /* Add a border for separation */
+    font-size: 14px; /* Adjust font size */
+    text-transform: uppercase; /* Capitalize headers */
+}
+
+/* Styling for table rows without background */
+.table td {
+    padding: 12px; /* Add padding for spacing */
+    border: 1px solid #ddd; /* Border for separation */
+}
+
+/* Styling for the entire table */
+.table {
+    width: 99%; /* Full-width table */
+    border-collapse: collapse; /* Avoid double borders */
+    margin: 0 auto;
+}
+
+/* Hover effect for rows */
+.table tbody tr:hover {
+    background-color: #000000; /* Slightly lighter blue for hover */
+}
+
+/* Add responsiveness for smaller screens */
+@media screen and (max-width: 768px) {
+    .table th, .table td {
+        display: block; /* Stack each column vertically */
+        width: 100%; /* Full width for each cell */
+    }
+
+    .table th {
+        background-color: #007bff; /* Different shade for visibility */
+    }
+}
+
+/* Ensure Product Div Matches Room Div Height */
+.product-div, .room-div {
+    display: flex;              /* Flexbox for consistent alignment */
+    flex-direction: column;     /* Stack elements vertically */
+    justify-content: space-between; /* Evenly space elements */
+    height: 100%;               /* Equalize heights */
+    background-color: #f9f9f9;  /* Optional light background for consistency */
+    border: 1px solid #ddd;     /* Optional border to match styling */
+    border-radius: 5px;         /* Rounded corners for a cohesive design */
+}
+
+/* Fix Product Image Dimensions */
+.product-div .thumbnail, 
+.room-div img {
+    width: 100%;                /* Image takes up full width */
+    height: auto;               /* Maintain aspect ratio */
+    max-height: 200px;          /* Limit height for consistency */
+    object-fit: cover;          /* Crops and fills the image within its container */
+    border-radius: 5px;         /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for uniform design */
+}
+
+/* Ensure Consistent Button Alignment */
+.product-div .btn, 
+.room-div .btn {
+    margin-top: auto;           /* Push buttons to the bottom of the div */
+    align-self: center;         /* Center-align buttons */
+}
+
+/* Match Card Styling for Products and Rooms */
+.custom-card {
+    height: 100%;               /* Ensure cards are equal height */
+    display: flex;              /* Use flexbox for vertical alignment */
+    flex-direction: column;     /* Stack child elements vertically */
+    justify-content: space-between; /* Space out children evenly */
+    overflow: hidden;           /* Hide overflow content */
+}
+
+.custom-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.custom-card img {
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-card .card-body {
+    padding: 15px;
+    text-align: left;
+}
+
+.custom-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.custom-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+    background-color: #0056b3;
+}
+
+/* Flex Parent for Consistent Height */
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to avoid layout breaking */
+}
+
+/* Product and Room Cards */
+.product-div, .room-div {
+    display: flex;              /* Use flexbox for vertical alignment */
+    flex-direction: column;     /* Stack elements vertically */
+    justify-content: space-between; /* Space content evenly */
+    flex-grow: 1;               /* Cards grow equally */
+    min-height: 100%;           /* Ensure all cards have equal height */
+    background-color: #f9f9f9;  /* Optional light background for consistency */
+    border: 1px solid #ddd;     /* Optional border for visual appeal */
+    border-radius: 5px;         /* Rounded corners */
+    padding: 10px;              /* Padding for inner spacing */
+}
+
+/* Thumbnail Styling */
+.product-div .thumbnail, 
+.room-div img {
+    width: 100%;                /* Ensure image takes full width */
+    height: auto;               /* Maintain aspect ratio */
+    max-height: 200px;          /* Limit image height */
+    object-fit: cover;          /* Crop to fill container */
+    border-radius: 5px;
+}
+
+/* Button Styling */
+.product-div .btn, 
+.room-div .btn {
+    margin-top: auto;           /* Push buttons to the bottom */
+    align-self: center;         /* Center-align buttons */
+}
+
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Styling for the input file button to look like the outline button */
+#room_excel {
+    padding: 10px;
+    border: 2px solid #1E90FF; /* Match the button's border */
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.card {
+    height: auto;  /* Let the card expand naturally based on content */
+    min-height: 200px;  /* Ensure a minimum height so the card isn't too small */
+    min-width: 300px;  /* Ensure cards won't shrink below a reasonable size */
+}
+
+.card-body {
+    padding: 20px;  /* Optional: Adjust padding inside the card */
+}
+
+@media (max-width: 768px) {
+    .card {
+        min-height: 400px;  /* Adjust the minimum height for smaller screens */
+        min-width: 250px;   /* Allow the card to shrink a little on smaller screens */
+    }
+}
+
+/* Flexbox setup to avoid cards wrapping unexpectedly */
+.container .row {
+    display: flex;
+    flex-wrap: wrap;  /* Allow the cards to wrap on smaller screens */
+    gap: 20px;  /* Space between the cards */
+}
+
+.container .col-lg-6 {
+    flex: 1 1 45%;  /* Allow the card to take up 45% of the width on larger screens */
+    box-sizing: border-box;  /* Ensure padding does not affect width */
+}
+
+@media (max-width: 768px) {
+    .container .col-lg-6 {
+        flex: 1 1 100%;  /* Make the card take up full width on smaller screens */
+    }
+}
+
+.btn-small-width {
+    width: 150px;  /* Set the desired width */
+}
+
+.table thead th {
+    background-color: #D6722B;
+}
+
+.page-link{
+    color: #D6722B;
+    
+}
+.page-link:hover{
+    color: #D6722B;
+}
+.page-item.active .page-link {
+    color: white; /* White text for active page */
+    background-color: #D6722B; /* Orange background */
+    border-color: #D6722B; /* Orange border */
+}

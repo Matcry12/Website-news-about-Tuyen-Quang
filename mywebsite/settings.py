@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-v+v$e=9waxf(u6wr7l!3pf@_kf0s1tty#!y2$b=u@iuz&gz=4+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '8a7a-116-107-21-207.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://8a7a-116-107-21-207.ngrok-free.app']
 
 
 # Application definition
@@ -38,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'home'
+
 ]
 
 MIDDLEWARE = [
@@ -75,18 +78,27 @@ WSGI_APPLICATION = 'mywebsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'fdtywadw@gmail.com'  # Replace with your email
+EMAIL_HOST_PASSWORD = 'ejxk avva eigf sidk'  # Replace with your email password
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'website1',
+        'NAME': 'tqweb',
         'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',  
-        'PORT': '3306',   
+        'PASSWORD': 'Nguyenanhtriet12',
+        'HOST': 'localhost',
+        'POST': '3306'
     }
 }
-
-
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',  # Default: Day/Month/Year
+    '%Y-%m-%d',  # Fallback: Default HTML5 date format
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -127,6 +139,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]

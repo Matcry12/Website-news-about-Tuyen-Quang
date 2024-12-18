@@ -1,0 +1,135 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Cập nhật phòng{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/update_room.css' %}">
+{% endblock %}
+
+{% block update_room %}
+
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'cart' %}" class="breadcrumbs__item">Quản lí cơ sở lưu trú</a> 
+    <a href="#" class="breadcrumbs__item is-active">Cập nhật phòng</a> 
+</nav>
+
+<div class="custom-box">
+    <h1> Cập nhật phòng </h1>
+    <br/>
+    <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Room Information -->
+            <div class="col-md-6">
+                <h3 class="section-title">Thông tin phòng</h3>
+                <div class="form-group">
+                    <label for="{{ room_form.product.id_for_label }}">Cơ sở lưu trú:</label>
+                    <p>{{ room.product.name }}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ room_form.room_code.id_for_label }}">Mã phòng:</label>
+                    {{ room_form.room_code }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ room_form.price.id_for_label }}">Giá:</label>
+                    {{ room_form.price }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ room_form.room_type.id_for_label }}">Loại phòng:</label>
+                    {{ room_form.room_type }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ room_form.status.id_for_label }}">Trạng thái:</label>
+                    {{ room_form.status }}
+                </div>
+            </div>
+
+            <!-- Image Upload and Preview -->
+            <div class="col-md-6">
+                <h3 class="section-title">Cập nhật ảnh</h3>
+                <div class="form-group">
+                    <label for="room_image">Cập nhật ảnh:</label>
+                    <input type="file" name="room_image" id="room_image" class="form-control">
+                    {% if pic_form.instance.image %}
+                        <img src="{{ pic_form.instance.image.url }}" alt="Room Image" class="uploaded-image mt-2">
+                    {% endif %}
+                </div>
+            </div>
+            <br/>
+        <input type="submit" value="Cập nhật" class="btn btn-secondary">
+        <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        </div>
+    </form>
+</div>
+
+<br/><br/>
+
+<style>
+    .breadcrumbs {
+        border: 1px solid #cbd2d9;
+        border-radius: 0.3rem;
+        display: inline-flex;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .breadcrumbs__item {
+        background: #fff;
+        color: #333;
+        outline: none;
+        padding: 0.75em 0.75em 0.75em 1.25em;
+        position: relative;
+        text-decoration: none;
+        transition: background 0.2s linear;
+    }
+
+    .breadcrumbs__item:hover:after,
+    .breadcrumbs__item:hover {
+        background: #edf1f5;
+    }
+
+    .breadcrumbs__item:focus:after,
+    .breadcrumbs__item:focus,
+    .breadcrumbs__item.is-active:focus {
+        background: #323f4a;
+        color: #fff;
+    }
+
+    .breadcrumbs__item:after,
+    .breadcrumbs__item:before {
+        background: white;
+        bottom: 0;
+        clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+        content: "";
+        left: 100%;
+        position: absolute;
+        top: 0;
+        transition: background 0.2s linear;
+        width: 1em;
+        z-index: 1;
+    }
+
+    .breadcrumbs__item:before {
+        background: #cbd2d9;
+        margin-left: 1px;
+    }
+
+    .breadcrumbs__item:last-child {
+        border-right: none;
+    }
+
+    .breadcrumbs__item.is-active {
+        background: #edf1f5;
+    }
+</style>
+
+{% endblock update_room %}

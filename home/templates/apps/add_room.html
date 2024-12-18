@@ -1,0 +1,28 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+{% block title %}Thêm phòng{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/add_room.css' %}">
+{% endblock %}
+
+{% block detail %}
+
+<div class="custom-box">
+    <h1> Thêm phòng </h1>
+    <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+    
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>    
+
+</div>
+
+
+<br/><br/>
+{% endblock detail %}

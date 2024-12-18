@@ -1,38 +1,294 @@
-.d-flex {
+/* General Container Styling */
+.custom-container {
+    background: linear-gradient(135deg, #1E90FF, #87CEEB); /* Soft gradient */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
     display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 20px; /* Add space between elements */
 }
 
-.align-items-center {
-    align-items: center;
-}
-
-.justify-content-between {
-    justify-content: space-between;
-}
-
-.btn {
-    height: 48px;
+/* Cards for Sections */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 20px;
     display: flex;
-    align-items: center;
-    padding: 0 15px;
+    flex-direction: column; /* Stack content vertically */
+    gap: 15px; /* Space between elements inside the card */
+}
+
+/* Headings */
+h3.text-center {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
     text-align: center;
 }
 
-.row-image {
-    width: 100px;
-    height: auto;
+/* Forms */
+form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 10px; /* Space between inputs */
 }
 
-.quantity-controls img {
-    cursor: pointer;
+#submit {
+    width: 55%; /* Full width */
 }
 
-.box-element {
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    padding: 15px;
+input:focus,
+select:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
+/* Tables */
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table thead {
+    background-color: #1E90FF; /* Old header blue color */
+    color: white; /* White text for contrast */
+}
+
+.table th {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    text-transform: uppercase; /* Optional: Capitalize headers */
+    border: 1px solid #ddd; /* Match table cell border */
+    font-weight: bold; /* Bold text for headers */
+    letter-spacing: 0.5px; /* Slight spacing for readability */
+}
+
+.table tbody tr:nth-of-type(odd) {
     background-color: #f9f9f9;
+}
+
+.table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+
+/* Buttons */
+.btn {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    color: #1E90FF;
+    border: 2px solid #1E90FF;
+}
+
+.btn-outline-primary:hover {
+    background-color: #1E90FF;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #e53935;
+}
+
+/* Message Container */
+.message-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .custom-container {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .btn {
+        width: 100%; /* Full width for buttons on smaller screens */
+    }
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.btn-rounded {
+    border-radius: 20px;
+}
+.table {
+    margin-bottom: 0;
+}
+.pagination {
+    justify-content: center;
+}
+
+.table th {
+    background-color: #007bff; /* Primary blue background */
+    color: white;
+    font-size: 16px; /* Slightly larger font for header */
+    padding: 12px;
+}
+
+
+.filter-section {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.filter-section .form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.filter-section .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-section .btn {
+    border-radius: 20px;
+    padding: 8px 16px;
+}
+
+.filter-section .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.filter-section .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.filter-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between fields */
+}
+
+.filter-fields > .col-md-4 {
+    flex: 0 0 calc(33.333% - 20px); /* 3 items per row */
+    box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 calc(50% - 20px); /* 2 items per row on small screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 100%; /* Full-width fields on very small screens */
+    }
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus, 
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Blue glow effect */
+}
+
+.table thead th {
+    background-color: #D6722B;
+}
+
+.page-link{
+    color: #D6722B;
+    
+}
+.page-link:hover{
+    color: #D6722B;
+}
+.page-item.active .page-link {
+    color: white; /* White text for active page */
+    background-color: #D6722B; /* Orange background */
+    border-color: #D6722B; /* Orange border */
+}
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.purple{
+    border-color: #D6722B;
+    color: #D6722B;
+}
+.purple:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.purple-btn{
+    background-color: #D6722B;
+    color: white;
+}
+.purple-btn:hover{
+    background-color: #D6722B;
+    color: white;
 }

@@ -1,38 +1,45 @@
-var updateButton = document.getElementsByClassName('update-cart')
+var updateButton = document.getElementsByClassName('update-status-btn');
 
-for (i = 0; i < updateButton.length; i++){
-    updateButton[i].addEventListener('click', function(){
-        var productId = this.dataset.product
-        var action = this.dataset.action
-        if(user === "AnonymousUser"){
-            console.log('User are not logged')
+// Iterate over all the update buttons
+for (let i = 0; i < updateButton.length; i++) {
+    updateButton[i].addEventListener('click', function () {
+        var orderId = this.dataset.order; // Get the order ID from the button's data-room attribute
+        var action = this.dataset.action; // Get the action (true/false) from the button's data-action attribute
+
+        // Check if the user is logged in and their role
+        if (userRole === "AnonymousUser") {
+            console.log('User is not logged in');
+        } else if (userRole === "seller") {
+            updateUserComfirm(orderId, action);
+        } else {
+            console.log('Unauthorized user role');
         }
-        else{
-            updateUserCart(productId, action)
-        }
-    })
+        window.location.reload();
+    });
 }
 
-function updateUserCart(productId, action){
-    console.log('productId', productId,'action', action)
-    console.log('user:', user)
 
-    var url = '/updateItem/'
+
+function updateUserComfirm(orderId, action) {
+    console.log('orderId:', orderId, 'action:', action);
+    console.log('user:', user);
+    console.log('csrftoken:', csrftoken);
+
+    var url = '/update_order/';  // The URL to send the request to
 
     fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken
+            'X-CSRFToken': csrftoken // Ensure csrftoken is available
         },
-        body: JSON.stringify({'productId': productId, 'action': action})
+        body: JSON.stringify({'orderId':orderId,'action':action}) // Send data in JSON format
     })
-    .then(response => {
-        return response.json();
+    .then((response)=> {
+        response.json()
     })
-    .then(data => {
-        console.log('Data:', data);
-        location.reload();
+    .then((data)=>{
+        console.log('data', data)
     })
-
 }
+

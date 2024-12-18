@@ -1,63 +1,296 @@
+/* Bordered Box Styling */
+.bordered-box {
+    border: 1px solid #d8d8d8; /* Light grey border */
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Light background */
+}
+
+/* Room and Price Group */
+.room-price-group {
+    text-align: right;
+    font-weight: 500;
+    color: #4A148C; /* Deep Purple */
+}
+
+/* Thumbnail styling for product images */
 .thumbnail {
     width: 100%;
-    height: auto; 
-    max-height: 200px; 
-    object-fit: cover; 
-    border-radius: 5px; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.box-element {
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    margin-bottom: 20px; 
-    border-radius: 5px; 
-    transition: box-shadow 0.3s; 
+/* Service and Button Group */
+.box-group {
+    margin-bottom: 15px;
 }
 
-.box-element:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+/* Individual Button Styling */
+.chat-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    color: #FFCC80; /* Warm Orange */
+    border-color: #FFCC80;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.detail-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: block;
+.chat-button:hover {
+    background-color: #FFCC80;
+    color: #FFFFFF;
 }
 
-.btn-outline-success {
-    color: #28a745; 
-    border-color: #28a745;
-    transition: background-color 0.3s;
+.detail-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    color: #D6722B; /* Deep Purple */
+    border-color: #D6722B;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-outline-success:hover {
-    background-color: #28a745; 
-    color: white; 
+#purple{
+    color: #D6722B; 
 }
 
-@media (max-width: 768px) {
-    .box-element {
-        margin-bottom: 15px; 
-    }
-}
-/* Optional: Adjust width */
-input.form-control {
-    width: auto; /* Makes the input box adjust to its content */
-    max-width: 300px; /* Limits the maximum width */
+.detail-button:hover {
+    background-color: #D6722B;
+    color: white;
 }
 
-button.btn {
-    width: auto; /* Ensures the button doesn't take up unnecessary space */
+/* Centered "Đặt phòng" Button */
+.add-btn.update-cart {
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #D6722B; /* Orange */
+    color: white;
+    border-radius: 50px;
+    border: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.empty-state {
-    height: 600px; /* Adjust height as needed */
-    display: flex;
-    flex-direction: column;
+.add-btn.update-cart:hover {
+    background-color: #B6591F; /* Darker Orange on hover */
+    box-shadow: 0 4px 8px rgba(214, 114, 43, 0.5); /* Orange shadow for pop effect */
+}
+
+/* Individual Button Styling */
+.chat-button {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    color: #D6722B; /* Orange */
+    border-color: #D6722B;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.chat-button:hover {
+    background-color: #D6722B;
+    color: #FFFFFF;
+}
+
+
+/* Modal Styling */
+.map-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent */
     justify-content: center;
     align-items: center;
+}
+
+.map-modal-content {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 35px;
+    color: #FF0000; /* Red for emphasis */
+    cursor: pointer;
+    z-index: 1001;
+}
+
+/* Map Button Styling */
+.view-map-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: #D6722B; /* Deep Purple */
+    background-color: transparent;
+    border: 2px solid #D6722B;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.view-map-btn:hover {
+    background-color: #D6722B;
+    color: white;
+}
+
+/* Flex adjustments for side-by-side boxes */
+.d-flex .flex-grow-1 {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+/* Search Input and Button */
+.search-input {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+}
+
+.search-btn {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    background-color: #D6722B; /* Deep Purple */
+    color: white;
+    border: none;
+}
+
+.search-btn:hover {
+    background-color: #4A0E7A; /* Darker purple */
+}
+
+/* Filter Section Styling */
+.filter-section {
+    background-color: #F9F9F9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.color-text{
+    color: #D6722B; 
+}
+
+.filter-section .form-label {
+    font-weight: bold;
+}
+
+.filter-section .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-section .btn-primary {
+    background-color: #D6722B;
+    border-color: #D6722B;
+    color: white;
+}
+
+.filter-section .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.filter-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .filter-fields > .col-md-4 {
+        flex: 0 0 100%;
+    }
+}
+
+/* Column Width Customization */
+.custom-col-width {
+    flex: 0 0 30%;
+    max-width: 30%;
+}
+
+.custom-right-width {
+    flex: 0 0 70%;
+    max-width: 70%;
+}
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+.orange-outline{
+    border-color: #D6722B;
+    color: #D6722B;
+}
+.orange-outline:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+
+/* Default layout: Desktop - Filter on the left, content on the right */
+.filter-sidebar {
+    flex: 0 0 25%; /* Fixed width for filters */
+    max-width: 25%;
+}
+
+.custom-right-width {
+    flex: 0 0 75%; /* Remaining width for content */
+    max-width: 75%;
+}
+
+/* On smaller screens, stack filter and content vertically */
+@media (max-width: 768px) {
+    .filter-sidebar, .custom-right-width {
+        flex: 0 0 100%; /* Make both sections full width */
+        max-width: 100%; /* Ensure full width */
+    }
+
+    .filter-sidebar {
+        order: -1; /* Place filter section on top */
+        margin-bottom: 20px; /* Add spacing between filter and listings */
+    }
+
+    .filter-fields h6 {
+        font-size: 14px; /* Reduce heading size for small screens */
+    }
+
+    .filter-fields .form-group input,
+    .filter-fields .form-group select {
+        font-size: 14px;
+        padding: 8px; /* Adjust padding for compact input fields */
+    }
+}
+
+/* Improve card display for very small screens */
+@media (max-width: 576px) {
+    .col-md-6 {
+        flex: 0 0 100%; /* Cards take full width */
+        max-width: 100%;
+    }
+
+    .card {
+        margin-bottom: 15px; /* Add spacing between cards */
+    }
+
+    .btn {
+        width: 100%; /* Full width buttons for better usability */
+    }
 }

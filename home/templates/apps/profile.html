@@ -2,49 +2,152 @@
 {% block title %}Trang cá nhân{% endblock %}
 
 {% block profile %}
+
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="#" class="breadcrumbs__item is-active">Trang cá nhân</a> 
+</nav>
+
+
 <div class="container mt-5">
-    <div class="card shadow p-4">
+    <!-- Profile Card -->
+    <div class="card shadow-lg p-4">
+        <!-- Back Button -->
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{% url 'home' %}">
+                <i class="fas fa-arrow-left me-2"></i> Trở lại
+            </a>
+        </div>
+
         <!-- Profile Header -->
         <div class="row mb-4">
+            <!-- Profile Image -->
             <div class="col-md-3 text-center">
-                <!-- Display the Profile Image -->
                 {% if profile %}
-                    <img src="{{ profile.imageURL }}" class="img-fluid rounded-circle mb-3" alt="Profile Image" width="120">
+                    <img src="{{ profile.imageURL }}" class="profile-img img-thumbnail mb-3" alt="Ảnh cá nhân">
                 {% else %}
-                    <img src="https://www.gravatar.com/avatar/658a364d199fda38ad7c509b769ca939?d=identicon&s=120" class="img-fluid rounded-circle mb-3" alt="Default Profile Image" width="120">
+                    <img src="https://www.gravatar.com/avatar/658a364d199fda38ad7c509b769ca939?d=identicon&s=150" class="img-thumbnail rounded-circle mb-3" alt="Default Profile Image" width="150">
                 {% endif %}
+                <h4 class="text purple-text">{{ profile.user.username }}</h4>
             </div>
+            <!-- User Info -->
             <div class="col-md-9">
                 {% if profile %}
-                    <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
-                    <p class="text-muted">Email: {{ profile.user.email }}</p>
+                    <h2 class="fw-bold">{{ profile.user.last_name }} {{ profile.user.first_name }}</h2>
+                    <p class="text-muted fs-5 mb-1"><i class="fas fa-envelope me-2"></i>Email: {{ profile.user.email }}</p>
+                    <p class="text-muted fs-5 mb-1"><i class="fas fa-calendar-alt me-2"></i>Ngày tham gia: {{ profile.user.date_joined|date:"d/m/Y" }}</p>
                 {% else %}
-                    <h2>Please log in to see your profile.</h2>
+                    <h2 class="text-danger">Vui lòng đăng nhập để xem trang cá nhân.</h2>
                 {% endif %}
             </div>
         </div>
 
+        <!-- Divider -->
+        <hr class="my-4">
+
         <!-- Profile Details Section -->
         {% if profile %}
-        <div class="row">
+        <div class="row gx-5">
+            <!-- Left Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase">Personal Information</h5>
-                <p><strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
-                <p><strong>Username:</strong> {{ profile.user.username }}</p>
-                <p><strong>Bio:</strong> <!-- Add bio field if available in UserProfile --></p>
+                <h5 class="text-uppercase text fw-bold purple-text">Thông tin người dùng</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Họ và tên:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</li>
+                    <li class="list-group-item"><strong>Ngày sinh:</strong> {{ profile.birthday|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>Căn cước công dân:</strong> {{ profile.cccd }}</li>
+                    <li class="list-group-item"><strong>Số điện thoại:</strong> {{ profile.phonecall }}</li>
+                    <li class="list-group-item"><strong>Vai trò:</strong> {{ profile.get_role_display }}</li>
+                </ul>
             </div>
+            <!-- Right Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase">Account Information</h5>
-                <p><strong>Member Since:</strong> {{ profile.user.date_joined }}</p>
-                <p><strong>Last Login:</strong> {{ profile.user.last_login }}</p>
+                <h5 class="text-uppercase text purple-text fw-bold">Thông tin tài khoản</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Tên tài khoản:</strong> {{ profile.user.username }}</li>
+                    <li class="list-group-item"><strong>Tạo tài khoản từ:</strong> {{ profile.user.date_joined|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>Lần cuối đăng nhập:</strong> {{ profile.user.last_login|date:"d/m/Y H:i" }}</li>
+                </ul>
             </div>
         </div>
         {% endif %}
 
         <!-- Edit Profile Button -->
         <div class="mt-4 text-center">
-            <a href="{% url 'home' %}" class="btn btn-primary">Edit Profile</a>
+            <a href="{% url 'edit_profile' user_id=profile.user.id %}" class="btn btn purple btn-lg rounded-pill px-4">
+                <i class="fas fa-edit me-2"></i> Chỉnh sửa trang cá nhân
+            </a>
         </div>
     </div>
 </div>
+
+<style>
+        .breadcrumbs {
+    border: 1px solid #cbd2d9;
+    border-radius: 0.3rem;
+    display: inline-flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+    }
+
+    .breadcrumbs__item {
+    background: #fff;
+    color: #333;
+    outline: none;
+    padding: 0.75em 0.75em 0.75em 1.25em;
+    position: relative;
+    text-decoration: none;
+    transition: background 0.2s linear;
+    }
+
+    .breadcrumbs__item:hover:after,
+    .breadcrumbs__item:hover {
+    background: #edf1f5;
+    }
+
+    .breadcrumbs__item:focus:after,
+    .breadcrumbs__item:focus,
+    .breadcrumbs__item.is-active:focus {
+    background: #323f4a;
+    color: #fff;
+    }
+
+    .breadcrumbs__item:after,
+    .breadcrumbs__item:before {
+    background: white;
+    bottom: 0;
+    clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+    content: "";
+    left: 100%;
+    position: absolute;
+    top: 0;
+    transition: background 0.2s linear;
+    width: 1em;
+    z-index: 1;
+    }
+
+    .breadcrumbs__item:before {
+    background: #cbd2d9;
+    margin-left: 1px;
+    }
+
+    .breadcrumbs__item:last-child {
+    border-right: none;
+    }
+
+    .breadcrumbs__item.is-active {
+    background: #edf1f5;
+    }
+    .purple{
+        background-color: #D6722B;
+        color: white;
+    }
+    .purple:hover{
+        background-color: #D6722B;
+        color: white;
+    }
+
+    .purple-text{
+        color: #D6722B;
+    }
+</style>
 {% endblock profile %}

@@ -1,0 +1,259 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+
+{% block title %}
+
+{% if allow %}
+    Tạo hồ sơ
+{% else %}
+    Cập nhật hồ sơ
+{% endif %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/i18n/datepicker-vi.js"></script>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/css/edit_profile.css' %}">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
+
+{% block edit_profile %}
+
+{% if profile.role == 'admin' %}
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'manage_account' %}" class="breadcrumbs__item">Quản lý tài khoản</a> 
+    {% if allow %}
+        <a href="#" class="breadcrumbs__item is-active">Tạo tài khoản</a> 
+    {% else %}
+        <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+    {% endif %}
+
+    
+</nav>
+{% else %}
+<nav class="breadcrumbs">
+    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
+    <a href="{% url 'profile' %}" class="breadcrumbs__item">Trang cá nhân</a> 
+    <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+</nav>
+{% endif %}
+
+<div class="custom-box">
+    {% if allow %}
+        <h1> Tạo tài khoản </h1>
+    {% else %}
+        <h1> Cập nhật tài khoản </h1>
+    {% endif %}
+    <br/>
+    <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Left Side (User Information) -->
+            <div class="col-md-6">
+                <h3>Thông tin tài khoản</h3>
+                <div class="form-group">
+                    <label for="{{ user_form.username.id_for_label }}">Tên tài khoản:</label>
+                    {{ user_form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ user_form.email.id_for_label }}">Email:</label>
+                    {{ user_form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ user_form.first_name.id_for_label }}">Tên riêng:</label>
+                    {{ user_form.first_name }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ user_form.last_name.id_for_label }}">Họ:</label>
+                    {{ user_form.last_name }}
+                </div>
+            </div>
+
+            <!-- Right Side (Profile Information) -->
+            <div class="col-md-6">
+                <h3>Thông tin hồ sơ</h3>
+                <div class="form-group">
+                    <label for="{{ profile_form.cccd.id_for_label }}">Căn cước công dân:</label>
+                    {{ profile_form.cccd }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
+                    <input type="text" id="datepicker" class="form-control" name="birthday" 
+                           value="{{ profile_form.birthday.value|date:"d/m/Y" }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ profile_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    {{ profile_form.phonecall }}
+                </div>
+                <div class="form-group">
+                    <label for="profile_image">Ảnh hồ sơ:</label>
+                    <input type="file" name="profile_image" id="profile_image" class="form-control">
+                    {% if profile_form.instance.profile_image %}
+                        <img src="{{ profile_form.instance.profile_image.url }}" alt="Current Image" class="uploaded-image mt-2">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Fields -->
+        <h3 class="mt-4">Mật khẩu</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
+                    {{ user_form.password1 }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
+                    {{ user_form.password2 }}
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Cập nhật" class="btn btn-secondary">
+        {% if profile.role == 'admin' %}
+            <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        {% else %}
+            <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        {% endif %}
+        </div>
+        <br/>
+        
+    </form>
+
+    
+</div>
+
+
+<br/><br/>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Custom pattern for password validation
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[a-zA-Z0-9!@#$%^&*?]{8,}$/;
+        
+        // Password fields
+        const password1Field = document.getElementById("id_password1");
+        const password2Field = document.getElementById("id_password2");
+
+        // Function to apply validation pattern
+        const applyValidation = (field) => {
+            // Set pattern, oninvalid and oninput attributes dynamically
+            field.setAttribute('pattern', passwordPattern);
+            field.setAttribute('oninvalid', "this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự')");
+            field.setAttribute('oninput', "this.setCustomValidity('')");
+        };
+
+        // Apply validation to the fields if they are filled
+        if (password1Field.value) {
+            applyValidation(password1Field);
+        }
+
+        if (password2Field.value) {
+            applyValidation(password2Field);
+        }
+
+        // Trigger validation when user types in the fields (only if they are filled)
+        password1Field.addEventListener('input', function() {
+            // Reset custom validity
+            this.setCustomValidity('');
+
+            // Apply validation only if the field has value
+            if (this.value && !this.value.match(passwordPattern)) {
+                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+            }
+        });
+
+        password2Field.addEventListener('input', function() {
+            // Reset custom validity
+            this.setCustomValidity('');
+
+            // Apply validation only if the field has value
+            if (this.value && !this.value.match(passwordPattern)) {
+                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+            }
+        });
+    });
+    $( function() {
+      $( "#datepicker" ).datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            prevText: "Trước",
+            nextText: "Sau",
+            monthNamesShort: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"], // Short month names
+            dayNamesMin: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"], // Short day names
+            dayNames: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"], // Full day names
+            showMonthAfterYear: false,  // Show month before year in date format
+        });
+    } );
+</script>
+    
+<style>
+        .breadcrumbs {
+border: 1px solid #cbd2d9;
+border-radius: 0.3rem;
+display: inline-flex;
+margin-bottom: 10px;
+overflow: hidden;
+}
+
+.breadcrumbs__item {
+background: #fff;
+color: #333;
+outline: none;
+padding: 0.75em 0.75em 0.75em 1.25em;
+position: relative;
+text-decoration: none;
+transition: background 0.2s linear;
+}
+
+.breadcrumbs__item:hover:after,
+.breadcrumbs__item:hover {
+background: #edf1f5;
+}
+
+.breadcrumbs__item:focus:after,
+.breadcrumbs__item:focus,
+.breadcrumbs__item.is-active:focus {
+background: #323f4a;
+color: #fff;
+}
+
+.breadcrumbs__item:after,
+.breadcrumbs__item:before {
+background: white;
+bottom: 0;
+clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+content: "";
+left: 100%;
+position: absolute;
+top: 0;
+transition: background 0.2s linear;
+width: 1em;
+z-index: 1;
+}
+
+.breadcrumbs__item:before {
+background: #cbd2d9;
+margin-left: 1px;
+}
+
+.breadcrumbs__item:last-child {
+border-right: none;
+}
+
+.breadcrumbs__item.is-active {
+background: #edf1f5;
+}
+</style>
+
+{% endblock edit_profile %}
