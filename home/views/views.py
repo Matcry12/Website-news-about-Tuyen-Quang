@@ -1,8 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from ..models import *
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q, Value, F, FloatField, Count
 import json
+from collections import defaultdict
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.db.models import Case, When, IntegerField
@@ -10,7 +12,7 @@ from django.db.models.functions import Cast, Substr, StrIndex, Concat
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator
-from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate, SuperUserForm, UserEditForm, UserProfileForm, OrderForm
+from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate , SuperUserForm, UserEditForm, UserProfileForm, OrderForm, UserPasswordForm, ProductFormCreateUser
 from django.contrib.auth.decorators import login_required
 import pandas as pd
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -25,7 +27,7 @@ from django.core.mail import send_mail
 from django.views.generic import TemplateView, CreateView
 from django.http import QueryDict
 from io import BytesIO
-
+from django.core.serializers import serialize
 from .history_view import *
 from .add_view import *
 from .entrance_view import *
@@ -47,6 +49,17 @@ def error_login(request):
 
     return render(request, 'apps/errorlogin.html', context)
 
+def reset_password(request):
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user = request.user)
+        user_not_login = "none"
+    else:
+        user_not_login = "block"
+        profile = None
+
+    context = {'user_not_login': user_not_login, 'profile': profile}
+
+    return render(request, 'apps/reset_password.html', context)
 
 def news(request):
     news = new.objects.all()
@@ -63,6 +76,12 @@ def parse_amount_start(product):
     # Extract and convert amount_start to a numeric value
     amount_start = product.amountprice.split('-')[0]
     return float(amount_start.replace(',', '').replace('.', ''))
+
+def parse_price(price):
+    try:
+        return int(price.replace('.', '').strip())  # Remove dots and whitespace, then convert
+    except (ValueError, AttributeError):
+        return 0  # Default to 0 if parsing fails
 
 def home(request):
     # Annotate amount_start for sorting
@@ -93,8 +112,9 @@ def home(request):
         selected_categories = request.POST.getlist('category')
         selected_product_types = request.POST.getlist('product_type')
         selected_room_types = request.POST.getlist('room_type')
-        price = request.POST.get('price', 'all')
         rate = request.POST.get('rate', 'all')
+        max_price = request.POST.get('max_price')
+        min_price = request.POST.get('min_price')
 
         # Store selections in session
         request.session.update({
@@ -102,7 +122,8 @@ def home(request):
             'selected_product_types': selected_product_types,
             'selected_room_types': selected_room_types,
             'name': name,
-            'price': price,
+            'max_price': max_price,
+            'min_price': min_price,
             'rate': rate,
         })
 
@@ -117,21 +138,28 @@ def home(request):
             products = products.filter(room_types__name__in=selected_room_types).distinct()
 
         # Price filtering
-        if price and price != 'all':
-            start_price, end_price = None, None
-            if price == '1':
-                end_price = 500000
-            elif price == '2':
-                start_price, end_price = 500000, 1000000
-            elif price == '3':
-                start_price = 1000000
+        start_price = min_price
+        end_price = max_price
 
-            if start_price is not None and end_price is not None:
-                products = products.filter(amount_start__gte=start_price, amount_start__lte=end_price)
-            elif start_price is not None:
-                products = products.filter(amount_start__gte=start_price)
-            elif end_price is not None:
-                products = products.filter(amount_start__lte=end_price)
+        if start_price or end_price:  # Check if either price is provided
+            filtered_products = []
+
+            for item in products:
+                try:
+                    
+                    prices = item.amountprice.split('-')
+                    amount_start = parse_price(prices[0])
+                    
+                    if amount_start <= int(end_price) and amount_start >= int(start_price):
+                        filtered_products.append(item)
+                        
+                except (ValueError, IndexError):
+                    # Handle cases where amountprice is invalid
+                    continue
+
+            # Apply filtering once
+            filtered_ids = list({product.id for product in filtered_products})
+            products = products.filter(id__in=filtered_ids)
 
         # Rate filtering
         if rate and rate != 'all':
@@ -148,59 +176,79 @@ def home(request):
 
     sorted_products = sorted(products, key=parse_amount_start)
 
+    status_id = StatusType.objects.filter(name='Trống').values_list('id', flat=True).first()
+    product_rooms = {}
+
+    if status_id:
+        product_rooms = {
+            product.id: product.rooms.filter(status_id=status_id)
+            for product in products
+        }
+    else:
+        product_rooms = {}
+        print("Status 'Trống' not found.")
+
     context = {
         'products': sorted_products,
         'categories': categories,
         'product_types': product_types,
         'room_types': room_types,
         'profile': profile,
+        'product_rooms': product_rooms,
         'selected_categories': selected_categories,
         'selected_product_types': selected_product_types,
         'selected_room_types': selected_room_types,
         'user_not_login': user_not_login,
+        'home': "home",
     }
     return render(request, 'apps/home.html', context)
 
 # views.py
-
 def detail(request):
     if request.user.is_authenticated:
-        profile = UserProfile.objects.get(user = request.user)
+        profile = UserProfile.objects.get(user=request.user)
         user_not_login = "none"
     else:
         user_not_login = "block"
         profile = None
+
     id = request.GET.get('id', '')
     product = get_object_or_404(Product, id=id)
-    status = StatusType.objects.get(name = 'Trống')
+    status = StatusType.objects.get(name='Trống')
     rooms_on_sale = product.rooms.filter(status=status)
 
-    # Set default sorting order
-    price_order = 'price_numeric'
+    # Get sorting parameter from GET
+    price_sort = request.GET.get('priceSort', 'asc')
+    price_order = 'price_numeric' if price_sort == 'asc' else '-price_numeric'
 
-    if request.method == 'POST':
-        # Get the selected sorting option from the POST data
-        price_sort = request.POST.get('priceSort')
-        if price_sort == 'desc':
-            price_order = '-price_numeric'  # Sort High to Low
-        elif price_sort == 'asc':
-            price_order = 'price_numeric'   # Sort Low to High
-
-    # Create an annotation to convert `price` to an integer for sorting, assuming prices are in format like "1.000"
+    # Annotate and order rooms
     rooms_on_sale = rooms_on_sale.annotate(
         price_numeric=Cast(Cast('price', IntegerField()), IntegerField())
     ).order_by(
-        Case(When(status=True, then=0), When(status=False, then=1)),
+        Case(When(status=True, then=0), When(status=False, then=1)),  # Sort by status
         price_order
     )
+
+    # Pagination
+    paginator = Paginator(rooms_on_sale, 5)
+    page_number = request.GET.get('page')
+    room_page = paginator.get_page(page_number)
+
+    # Generate query string for pagination links
+    query_params = request.GET.copy()
+    query_params.pop('page', None)
+    query_string = query_params.urlencode()
 
     context = {
         'product': product,
         'user_not_login': user_not_login,
-        'rooms': rooms_on_sale,
-        'profile': profile
+        'rooms': room_page,
+        'profile': profile,
+        'room_page': room_page,
+        'query_string': query_string,
     }
     return render(request, 'apps/detail.html', context)
+
 
 
 def newdetail(request):
@@ -223,7 +271,7 @@ def profile(request):
     else:
         user_not_login = "block"
         user_profile = None  # No profile available for non-logged-in users
-        return redirect('error_login')
+        return redirect('reset_password')
     context = {'profile': user_profile, 'user_not_login': user_not_login}
     
     return render(request, 'apps/profile.html', context)
@@ -251,12 +299,19 @@ def booking(request, order_id=None):
         room = get_object_or_404(Room, id=room_id, product=product)
     else:
         product = room = None
+    
+    outstock = StatusType.objects.filter(name='Đang được sử dụng').values_list('id', flat=True).first()
+    wait = StatusType.objects.filter(name='Chờ').values_list('id', flat=True).first()
 
+    if room.status.id == wait or room.status.id == outstock:
+        return redirect('home')
     # If order_id is provided, fetch the existing order
     if order_id:
         order_obj = get_object_or_404(order, id=order_id)
     else:
         order_obj = None
+
+    
 
     if request.method == 'POST':
         # Extract form data
@@ -417,38 +472,107 @@ def edit_profile(request, user_id=None):
     
     # Handle user profile editing based on role
     if user_profile.role != 'admin':
-        user_form = UserEditForm(request.POST or None, instance=request.user)
+        user_form = UserEditForm(request.POST or None,  request.FILES or None, instance=request.user)
+        user_profile.base_password = None
         profile_form = UserProfileForm(request.POST or None, request.FILES or None, instance=user_profile)
     else:
         try:
-            user_profile_t = UserProfile.objects.get(user__id=user_id)
+            user_profile_t = UserProfile.objects.get(user__id=user_id) 
             user = User.objects.get(id=user_id)
-            user_form = UserEditForm(request.POST or None, instance=user)
+
+            # Forms for the admin to edit another user
+            user_form = UserEditForm(request.POST or None, request.FILES or None, instance=user)
             profile_form = UserProfileForm(request.POST or None, request.FILES or None, instance=user_profile_t)
+
+            # Update base_password
+            user_profile_t.base_password = None
         except UserProfile.DoesNotExist or User.DoesNotExist:
             messages.error(request, "Tài khoản không tồn tại")
-            return redirect('manage_account')
-
+            if user_profile.role != 'admin':
+                return redirect('profile')
+            else:
+                return redirect('manage_account')
     # Save forms if valid and redirect accordingly
-    if user_form.is_valid() and profile_form.is_valid():
-        user_form.save()
-        profile_form.save()
-        
-        if user_profile.role != 'admin':
-            return redirect('profile')
-        else:
-            return redirect('manage_account')
+    error = ""
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "Cập nhật":
+            if user_form.is_valid() and profile_form.is_valid():
+                password1 = user_form.cleaned_data.get('password1')
+                password2 = user_form.cleaned_data.get('password2')
 
+                if password1 == password2:
+                    user_form.save()
+                    if user_profile:
+                        user_profile.save()
+                    elif user_profile_t:
+                        user_profile_t.save()
+
+                    profile_form.save()
+                    
+                    if user_profile.role != 'admin':
+                        return redirect('profile')
+                    else:
+                        return redirect('manage_account')
+                else:
+                    error = 'Lỗi trong quá trình nhập dữ liệu'
+            else:
+                error = 'Lỗi trong quá trình nhập dữ liệu'
     # Default context
     context = {
         'profile': user_profile,
         'user_not_login': user_not_login,
         'user_form': user_form,
         'profile_form': profile_form,
+        'error': error
     }
     
     return render(request, 'apps/edit_profile.html', context)
 
+@login_required
+def change_password(request, user_id=None):
+    # Check if the logged-in user is admin
+    if request.user.is_authenticated:
+        user_not_login = "none"
+        user_profile = UserProfile.objects.get(user=request.user)  # The current user's profile
+    else:
+        user_not_login = "block"
+        user_profile = None
+        return redirect('login')
+
+    # Handle user profile editing based on role
+    if user_profile.role != 'admin':
+        password_form = UserPasswordForm(request.POST or None,  request.FILES or None, instance=request.user)
+        user_profile.base_password = None
+    error = ""
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "Cập nhật":
+            if password_form.is_valid():
+                password1 = password_form.cleaned_data.get('password1')
+                password2 = password_form.cleaned_data.get('password2')
+
+                if password1 == password2:
+                    password_form.save()
+                    if user_profile:
+                        user_profile.save()
+
+                    password_form.save()
+                    
+                    return redirect('profile')
+                else:
+                    error = 'Lỗi trong quá trình nhập dữ liệu'
+            else:
+                error = 'Lỗi trong quá trình nhập dữ liệu'
+    # Default context
+    context = {
+        'profile': user_profile,
+        'user_not_login': user_not_login,
+        'password_form': password_form,
+        'error': error
+    }
+    
+    return render(request, 'apps/change_password.html', context)
 
 def return_room(request, order_id):
 
@@ -515,6 +639,16 @@ def filter_users(request, user_profile):
     email = request.GET.get('email')
     if email:
         users = users.filter(user__email__icontains=email)  # Use icontains for partial match
+    
+    role_ids = request.GET.getlist('role')
+    if 'all' not in role_ids:
+        if '1' in role_ids:
+            users = users.filter(role='customer')
+        if '2' in role_ids:
+            users = users.filter(role='seller')
+        if '3' in role_ids:
+            users = users.filter(role='admin')
+
 
     # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
@@ -575,8 +709,11 @@ def manage_account(request):
                 reset_results = []
                 for user_id in selected_users:
                     user = User.objects.get(id=user_id)
+                    profile = UserProfile.objects.get(user__id = user_id)
                     new_password = User.objects.make_random_password(length=10)
                     user.set_password(new_password)
+                    profile.base_password = new_password
+                    profile.save()
                     user.save()
 
                     send_mail(
@@ -672,11 +809,18 @@ def manage_account(request):
                         user=user,
                         role = 'seller',
                         phonecall=account_data['Số điện thoại'],
+                        base_password = account_data['Mật khẩu'],
                     )
 
         return redirect('manage_account')
+    
+    products = Product.objects.all()
+    account_hotel = {
+        product.id: product.owner
+        for product in products
+    }
 
-    context = {'user_not_login': user_not_login, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string,}
+    context = {'user_not_login': user_not_login, 'products': products, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string, 'account_hotel': account_hotel}
 
     return render(request, 'apps/manage_account.html', context)
 

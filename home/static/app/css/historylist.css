@@ -406,3 +406,18 @@ body {
         box-sizing: border-box; /* Ensures padding and borders are included in the element's width */
     }
 }
+
+/* Table Responsiveness */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table thead th {
+    white-space: nowrap;
+}
+
+.table th, .table td {
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center; /* Center-align content for better readability */
+    vertical-align: middle; /* Vertically align the content */
+}

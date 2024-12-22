@@ -1,155 +1,162 @@
 from .views import *
 
-class AddRoomView(CreateView):
-    model = Room
-    form_class = RoomFormCreate
-    template_name = 'apps/add_room.html'
-    success_url = reverse_lazy('cart')
+@login_required
+def add_room(request):
+    user = request.user
 
-    def dispatch(self, request, *args, **kwargs):
-        # Check if the user is authenticated
-        if not request.user.is_authenticated:
-            return redirect('login')  # Redirect to login if not authenticated
-
-        # Check if the user owns any products
-        products = Product.objects.filter(owner=request.user)
-        if not products.exists():  # If the user has no products
-            return redirect('cart')  # Redirect to the cart page
-
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        user = self.request.user
-        products = Product.objects.filter(owner=user)
-
-        if products.exists():
-            kwargs['initial'] = {'product': products.first()}
+    # Check if the user owns any products
+    products = Product.objects.filter(owner=user)
+    if not products.exists():
+        return redirect('cart')  # Redirect if no owned products
+    error = ''
+    if request.method == 'POST':
+        form = RoomFormCreate(request.POST)
+        if form.is_valid():
+            room = form.save(commit=False)
+            room.owner = user
+            room.product = products.first()
+            room.save()
+            return redirect('cart')  # Redirect to success URL
         else:
-            kwargs['initial'] = {'product': None}
-        
-        return kwargs
+            error = 'Có lỗi khi bạn gửi bài. Vui lòng kiểm tra biểu mẫu và thử lại.'
+    else:
+        # Prepopulate the product field with the user's first product
+        initial_product = products.first() if products.exists() else None
+        form = RoomFormCreate(initial={'product': initial_product})
 
-    def form_valid(self, form):
-        user = self.request.user
-        selected_product = form.cleaned_data['product']
-        products = Product.objects.filter(owner=user)
+    # Fetch the user's profile for the template
+    user_profile = get_object_or_404(UserProfile, user=user)
 
-        # Validate that the selected product belongs to the user
-        if selected_product not in products:
-            form.add_error('product', 'Bạn không thể chọn cơ sở lưu trú không phải của mình.')
-            return self.form_invalid(form)
+    context = {
+        'form': form,
+        'profile': user_profile,
+        'user_not_login': "none",
+        'product': products,
+        'error': error
+    }
 
-        # Proceed to save the room if validation passes
-        room = form.save(commit=False)
-        room.owner = user
-        room.save()
-
-        return super().form_valid(form)
-    def form_invalid(self, form):
-        storage = get_messages(request)
-        for message in storage:
-            pass  # Iterating through storage clears it
-        
-        messages.error(self.request, "Có lỗi khi bạn gửi bài. Vui lòng kiểm tra biểu mẫu và thử lại.")
-        return super().form_invalid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if self.request.user.is_authenticated:
-            user_profile = UserProfile.objects.get(user=self.request.user)
-            products = Product.objects.filter(owner=self.request.user)
-            context['profile'] = user_profile
-            context['user_not_login'] = "none"
-            context['product'] = products
-        else:
-            context['user_not_login'] = "block"
-            context['profile'] = None
-            context['product'] = None
-
-        return context
+    return render(request, 'apps/add_room.html', context)
 
 
-class AddHotelView(CreateView):
-    model = Product
-    form_class = ProductFormCreate  # Use your custom form if necessary
-    template_name = 'apps/add_hotel.html'
-    success_url = reverse_lazy('cart')
-
-    def form_valid(self, form):
-        user_profile = UserProfile.objects.get(user=self.request.user)
-
-        # Ensure the user is a seller (you can adjust this logic based on your app)
-        if user_profile.role != 'seller':
-            # Redirect to home or show a forbidden message if the user is not a seller
-            return redirect('home')
-
-        # Automatically assign the owner to the logged-in user
-        product = form.save(commit=False)
-        product.owner = self.request.user
-        product.save()
-        return super().form_valid(form)
-
-    def dispatch(self, request, *args, **kwargs):
-        # Redirect unauthenticated users before reaching the view
-        if not request.user.is_authenticated:
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
-
-
-    def get_context_data(self, **kwargs):
-        # Prepare context data for template
-        context = super().get_context_data(**kwargs)
-
-        # Add additional context
-        context['page_name'] = "hotel_detail"
-        context['user_not_login'] = "none"  # Since user is authenticated at this point
-        return context
+@login_required
+def add_hotel(request):
+    """
+    Handle adding a new hotel for authenticated sellers.
+    """
+    user_profile = UserProfile.objects.get(user=request.user)
+    products = Product.objects.filter(owner = request.user)
     
+    # Ensure only users with the 'seller' role can access this view
+    if user_profile.role != 'seller' or products.exists():
+        return redirect('home')
+    error = ''
+    if request.method == 'POST':
+        form = ProductFormCreate(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            # Save the form but assign the current user as the owner
+            product = form.save(commit=False)  # Do not save yet
+            product.owner = request.user  # Assign owner explicitly
+            product.save()
 
-
-class AddAccountView(TemplateView):
-    template_name = 'apps/edit_profile.html'
-    user_form_class = UserEditForm
-    profile_form_class = UserProfileForm
-    success_url = reverse_lazy('manage_account')
-
-    def get(self, request, *args, **kwargs):
-        # Provide empty forms on GET request
-        user_form = self.user_form_class()
-        profile_form = self.profile_form_class()
-        allow = True
-        user_profile = UserProfile.objects.get(user = request.user)
-        
-        return render(request, self.template_name, {
-            'user_form': user_form,
-            'profile_form': profile_form,
-            'allow': allow,
-            'profile': user_profile,
-        })
-
-    def post(self, request, *args, **kwargs):
-        # Instantiate forms with POST data and files (for profile image)
-        user_form = self.user_form_class(request.POST)
-        profile_form = self.profile_form_class(request.POST, request.FILES)
-        user_profile = UserProfile.objects.get(user = request.user)
-        if user_form.is_valid() and profile_form.is_valid():
-            # Save the User model
-            user = user_form.save(commit=False)
-            user.set_password(user_form.cleaned_data['password1'])  # Securely set the password
-            user.save()
-
-            # Link and save the UserProfile
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-
-            return redirect(self.success_url)
+            form.save_m2m() 
+            return redirect(reverse_lazy('cart'))
         else:
-            # Re-render with errors
-            return render(request, self.template_name, {
-                'user_form': user_form,
-                'profile_form': profile_form,
-                'profile': user_profile,
-            })
+            error = 'Vui lòng kiểm tra lại thông tin và thử lại.'
+    else:
+        form = ProductFormCreate()
+    
+    context = {
+        'form': form,
+        'page_name': "hotel_detail",
+        'user_not_login': "none",  # User is authenticated
+        'profile': user_profile,
+        'error': error,
+    }
+    return render(request, 'apps/add_hotel.html', context)
+    
+@login_required
+def add_hotel_user(request):
+    """
+    Handle adding a new hotel for authenticated sellers.
+    """
+    user_profile = UserProfile.objects.get(user=request.user)
+    
+    # Ensure only users with the 'seller' role can access this view
+    if user_profile.role != 'admin':
+        return redirect('home')
+    error = ''
+    if request.method == 'POST':
+        form = ProductFormCreateUser(request.POST, request.FILES)
+        if form.is_valid():
+            # Save the form but assign the current user as the owner
+            form.save()
+            return redirect(reverse_lazy('cart'))
+        else:
+            error = 'Vui lòng kiểm tra lại thông tin và thử lại.'
+    else:
+        form = ProductFormCreateUser()
+    
+    context = {
+        'form': form,
+        'user_not_login': "none",  # User is authenticated
+        'profile': user_profile,
+        'error': error,
+    }
+    return render(request, 'apps/add_hotel.html', context)
+
+
+def add_account(request):
+    # Check if the logged-in user is authenticated
+    if not request.user.is_authenticated:
+        return redirect('login')
+    user_not_login = "none"
+    # Get the current user's profile
+    user_profile = UserProfile.objects.get(user=request.user)
+    allow = True  # Allow account creation
+
+    # Forms for account creation
+    user_form = UserEditForm(request.POST or None)
+    profile_form = UserProfileForm(request.POST or None, request.FILES or None)
+
+    # Initialize error variable
+    error = ""
+
+    # Handle POST request
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "Cập nhật":
+            if user_form.is_valid() and profile_form.is_valid():
+                password1 = user_form.cleaned_data.get('password1')
+                password2 = user_form.cleaned_data.get('password2')
+
+                if password1 == password2:
+                    # Save the User object
+                    user = user_form.save(commit=False)
+                    user.set_password(password1)  # Hash the password
+                    user.save()
+
+                    # Save the UserProfile object
+                    profile = profile_form.save(commit=False)
+                    profile.user = user
+                    profile.base_password = password1
+                    profile.save()
+
+                    
+
+                    return redirect('manage_account')  # Redirect after successful creation
+                else:
+                    error = "Mật khẩu không đúng"
+            else:
+                error = "Xảy ra lỗi trong lúc nhập dữ liệu"
+
+    # Render the page with forms and context
+    context = {
+        'profile': user_profile,
+        'allow': allow,
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'error': error,
+        'user_not_login': user_not_login,
+    }
+    return render(request, 'apps/edit_profile.html', context)

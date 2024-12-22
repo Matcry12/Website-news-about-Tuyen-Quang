@@ -1,25 +1,69 @@
+{% load static %}
 {% load custom_filters %}
-<div class="row">
-    {% for room in rooms %}
-    <div class="col-12 mb-4"> <!-- Full width column for each room -->
-        <div class="card">
-            <div class="row g-0">
-                <!-- Image Section -->
-                <div class="col-md-4">
-                    <img src="{{ room.imageURL }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Ảnh phòng">
-                </div>
+<div class="row" id="room-container">
+    {% if room_page %}
+        {% for room in room_page %} <!-- Display only the first 5 rooms -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="row g-0">
+                        <!-- Image Section -->
+                        <div class="col-md-4">
+                            {% if room.imageURL %}
+                             <img src="{{ room.imageURL }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Ảnh phòng">
+                            {% else %}
+                                <img src="{% static 'app/images/default-image.png' %}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Ảnh nền">
+                            {% endif %}
+                            
+                        </div>
 
-                <!-- Content Section -->
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h4 class="card-title"><strong>{{ room.roomName }} - {{ room.room_code }}</strong></h4>
-                        <p class="card-text"><strong>Mã phòng:</strong> {{ room.roomCode }}</p>
-                        <p class="card-text"><strong>Giá: </strong>{{ room.price|format_price }} Đồng</p>
-                        <a class="btn btn-primary btn-rounded" href="{% url 'booking' %}?product_id={{ product.id }}&room_id={{ room.id }}"><i class="fas fa-shopping-cart"></i> Đặt phòng</a>
+                        <!-- Content Section -->
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title"><strong>{{ room.roomName }} - {{ room.room_code }}</strong></h4>
+                                <p class="card-text"><strong>Mã phòng:</strong> {{ room.roomCode }}</p>
+                                <p class="card-text"><strong>Giá: </strong>{{ room.price|format_price }} Đồng</p>
+                                <a class="btn btn-primary btn-rounded" href="{% url 'booking' %}?product_id={{ product.id }}&room_id={{ room.id }}">
+                                    <i class="fas fa-shopping-cart"></i> Đặt phòng
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="orange rounded" style="width: 50%;
+        margin: 0 auto;
+        text-align: center;
+        display: block;"> Hiện tại cơ sở lưu trú này đã hết phòng</p>
+    {% endif %}
+
+    
 </div>
+
+<!-- "See More" Button -->
+{% if room_page %}
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            {% if room_page.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ room_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
+                </li>
+            {% endif %}
+            {% for num in room_page.paginator.page_range %}
+                <li class="page-item {% if room_page.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}&{{ query_string }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+            {% if room_page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ room_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+

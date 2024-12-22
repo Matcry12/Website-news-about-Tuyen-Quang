@@ -82,17 +82,9 @@
                         <h5 class="section-title">Thêm cơ sở lưu trú</h5>
                         
                         <div class="text-center">
-                            <a class="btn btn-lg btn-primary btn-rounded mb-3 px-4 py-2" href="{% url 'add_hotel' %}">
+                            <a class="btn btn-lg btn purple btn-rounded mb-3 px-4 py-2" href="{% url 'add_hotel' %}">
                                 <i class="fas fa-plus-circle me-2"></i> Thêm cơ sở lưu trú
                             </a>
-                            <a class="btn btn-lg btn-outline-primary btn-rounded mb-3 px-4 py-2" href="{% url 'download_example_hotel' %}">
-                                <i class="fas fa-download me-2"></i> Tải file excel mẫu
-                            </a>
-                            <form method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="file" name="hotel_excel" id="hotel_excel" accept=".xlsx, .xls" class="form-control mb-3" required>
-                                <button type="submit" class="btn btn-outline-primary btn-rounded">Thêm</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -169,20 +161,31 @@
                 </div>
             </div>
 
-            <!-- Thêm phòng -->
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h5 class="section-title">Thêm phòng nhanh</h5>
-                    <div class="text-center">
-                        <a class="btn btn-lg btn-outline purple btn-rounded mb-3 px-4 py-2" href="{% url 'download_example_room' %}">
-                            <i class="fas fa-download me-2"></i> Tải file excel mẫu
-                        </a>
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="file" name="room_excel" id="room_excel" accept=".xlsx, .xls" class="form-control mb-3" required>
-                            <button type="submit" class="btn btn-lg btn purple-btn btn-rounded mb-3 px-4 py-2"><i class="fas fa-plus-circle me-2"></i> Thêm phòng</button>
-                            
-                        </form>
+                    <a href="javascript:void(0);" class="btn btn-outline purple d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i>  Thêm phòng nhanh</a>
+
+                    <div id="extraContent2" style="display: block;">
+                        <h5 class="section-title">Thêm phòng</h5>
+                        <div class="text-center">
+                            <a class="btn btn-lg btn purple-btn btn-rounded mb-3 px-4 py-2" href="{% url 'add_room' %}"> <i class="fas fa-plus-circle me-2"></i> Thêm phòng </a>
+                        </div>
+                    </div>
+                    
+
+                    <div id="extraContent" style="display: none;">
+                        <h5 class="section-title">Thêm phòng nhanh</h5>
+                        <div class="text-center">
+                            <a class="btn btn-lg btn-outline purple btn-rounded mb-3 px-4 py-2" href="{% url 'download_example_room' %}">
+                                <i class="fas fa-download me-2"></i> Tải file excel mẫu
+                            </a>
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="file" name="room_excel" id="room_excel" accept=".xlsx, .xls" class="form-control mb-3" required>
+                                <button type="submit" class="btn btn-lg btn purple-btn btn-rounded mb-3 px-4 py-2"><i class="fas fa-plus-circle me-2"></i> Thêm phòng</button>
+                                
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -335,5 +338,29 @@
     background: #edf1f5;
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        const extraContent = document.getElementById('extraContent');
+        const extraContent2 = document.getElementById('extraContent2');
+
+        // Check if the button and content exist
+        if (showMoreBtn && extraContent) {
+            showMoreBtn.addEventListener('click', function () {
+                // Toggle the display style of the extra content
+                if (extraContent.style.display === 'none') {
+                    extraContent.style.display = 'block'; // Show the content
+                    extraContent2.style.display = 'none'; // Show the content
+                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo tài khoản thủ công'; // Change the button text to "Hide"
+                } else {
+                    extraContent.style.display = 'none'; // Hide the content
+                    extraContent2.style.display = 'block'; // Show the content
+                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo tài khoản nhanh'; // Change the button text back to "See more"
+                }
+            });
+        }
+    });
+</script>
 
 {% endblock %}

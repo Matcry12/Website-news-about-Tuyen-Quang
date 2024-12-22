@@ -184,3 +184,15 @@ input[type="submit"]:hover {
 .form-group textarea {
     margin-top: 3px; /* Reduced margin-top */
 }
+
+
+.orange{
+    background-color: #D6722B;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}

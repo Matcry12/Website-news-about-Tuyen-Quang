@@ -294,3 +294,32 @@
         width: 100%; /* Full width buttons for better usability */
     }
 }
+
+/* Enforce consistent card dimensions */
+.uniform-card {
+    height: 100%; /* Make cards stretch to the same height */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: space-between; /* Spread content evenly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add consistent shadow */
+    border-radius: 10px; /* Ensure rounded corners */
+}
+
+.uniform-card img {
+    max-height: 200px; /* Limit image height */
+    object-fit: cover; /* Ensure image scales properly */
+    border-top-left-radius: 10px; /* Match card border radius */
+    border-top-right-radius: 10px;
+}
+
+.uniform-card .card-body {
+    flex-grow: 1; /* Make content fill the available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Spread items evenly */
+}
+
+/* Align buttons to the bottom */
+.uniform-card .card-body .text-center {
+    margin-top: auto;
+}

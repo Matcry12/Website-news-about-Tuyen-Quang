@@ -3,7 +3,7 @@
 {% block title %}Quản lí cơ sở lưu trú{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'app/css/manage_account.css' %}">
+<link rel="stylesheet" href="{% static 'app/css/manage_hotel.css' %}">
 {% endblock %}
 {% block extra_js %}
 {% endblock %}
@@ -115,11 +115,17 @@
 
                     <a href="javascript:void(0);" class="btn btn-outline purple d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i> Tạo cơ sở lưu trú nhanh</a>
 
-
+                    <div id="extraContent2" style="display: block;">
+                        <h5 class="text-center"><strong>Thêm cơ sở lưu trú</strong></h5>
+                        <div class="text-center">
+                            <a class="btn btn-outline purple mt-2" href="{% url 'add_hotel_user' %}"> <i class="fas fa-plus-circle me-2"></i> Thêm cơ sở lưu trú </a>
+                        </div>
+                    </div>
 
                     <!-- Content to show/hide -->
                     <div id="extraContent" style="display: none;">
                         <br>
+
                         <h5 class="text-center"><strong>Thêm cơ sở lưu trú bằng excel</strong></h5>
                         <a class="btn btn-sm btn-outline purple mt-2" href="{% url 'download_example_hotel' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu</a>
                         </br>
@@ -229,7 +235,7 @@
                                         {% endfor %}
                                     {% else %}
                                         <tr class="no-history-row">
-                                            <td colspan="11" class="text-center">Không có tài khoản.</td>
+                                            <td colspan="11" class="text-center">Không có cơ sở lưu trú nào.</td>
                                         </tr>                                    
                                     {% endif %}
                                 </tbody>                                
@@ -251,7 +257,7 @@
                                 </thead>
                                 <tbody>
                                     <tr class="no-history-row">
-                                        <td colspan="11" class="text-center">Không có tài khoản nào.</td>
+                                        <td colspan="11" class="text-center">Không có cơ sở lưu trú nào.</td>
                                     </tr>   
                                 </tbody>                                
                             </table>
@@ -292,6 +298,7 @@
     document.addEventListener("DOMContentLoaded", function() {
         const showMoreBtn = document.getElementById('showMoreBtn');
         const extraContent = document.getElementById('extraContent');
+        const extraContent2 = document.getElementById('extraContent2');
 
         // Check if the button and content exist
         if (showMoreBtn && extraContent) {
@@ -299,10 +306,12 @@
                 // Toggle the display style of the extra content
                 if (extraContent.style.display === 'none') {
                     extraContent.style.display = 'block'; // Show the content
-                    showMoreBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ẩn tính năng'; // Change the button text to "Hide"
+                    extraContent2.style.display = 'none'; // Show the content
+                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo CS lưu trú thủ công'; // Change the button text to "Hide"
                 } else {
                     extraContent.style.display = 'none'; // Hide the content
-                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo cơ sở lưu trú nhanh'; // Change the button text back to "See more"
+                    extraContent2.style.display = 'block'; // Show the content
+                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo CS lưu trú nhanh'; // Change the button text back to "See more"
                 }
             });
         }

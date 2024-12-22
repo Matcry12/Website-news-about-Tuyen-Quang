@@ -1,6 +1,9 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}Khách sạn{% endblock %}
+
+
 
 {% block extra_js %}
 <script src="{% static 'app/js/hotel.js' %}"></script>
@@ -14,7 +17,7 @@
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-        <img src="{% static 'app/images/banner/Finalllll@72x-100(resize).jpg' %}" class="d-block w-100" alt="...">
+        <img src="{% static 'app/images/banner/Finalllll.jpg' %}" class="d-block w-100" alt="...">
         </div>
     </div>
 </div>
@@ -49,15 +52,13 @@
                             <div class="form-group table">
                                 <input type="text" name="name" class="form-control search-input flex-grow-1" placeholder="Nhập cơ sở lưu trú">
                             </div>
-        
-                            <h6 class="form-label color-text"><strong>Giá phòng</strong></h6>
-                            <div class="form-group table" >
-                                <select name="price" id="price" class="form-control">
-                                    <option value="all">--Tất cả giá-- </option>
-                                    <option value="1" > Dưới 500.000 VNĐ/đêm </option>
-                                    <option value="2" > 500.000 - 1.000.000 VNĐ/đêm </option>
-                                    <option value="3" > Trên 1.000.000 VNĐ/đêm </option>
-                                </select>
+    
+                            <h6 for="price" class="form-label color-text"><strong>Khoảng giá</strong></h6>
+                            <div class="" id="price">
+                                <div class="d-flex">
+                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
+                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                </div>
                             </div>
         
                             <h6 class="form-label color-text"><strong>Dịch vụ của khách sạn</strong></h6>
@@ -132,7 +133,7 @@
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-6 mb-4">
-                    <div class="card box-element">
+                    <div class="card uniform-card box-element">
                         <img src="{{ product.imageURL }}" class="card-img-top thumbnail" alt="{{ product.name }}">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ product.name }}</h5>
@@ -170,11 +171,13 @@
                                         {% endfor %}
                                     </p>
                                     <p class="card-text"><strong>Tình trạng:</strong> 
-                                        {% if product.onSale %}
-                                            Còn phòng
-                                        {% else %}
-                                            Hết phòng
-                                        {% endif %}
+                                        {% with product_rooms|get_item:product.id as rooms %}
+                                            {% if rooms %}
+                                                Còn phòng
+                                            {% else %}
+                                                Hết phòng
+                                            {% endif %}
+                                        {% endwith %}
                                     </p>                                    
                                     <p class="card-text"><strong>Giá phòng:</strong> {{ product.amountprice }} Đồng</p>
                                     <p class="card-text"><strong>Số điện thoại:</strong> {{ product.phonecall }} </p>
@@ -192,7 +195,7 @@
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <button 
-                                        class="btn btn-outline orange-outline chat-button" 
+                                        class="btn btn-outline orange-outline rounded-pill chat-button" 
                                         onclick="window.open('https://zalo.me/{{ product.phonecall }}', '_blank')" 
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
@@ -229,8 +232,8 @@
                 </div>                         
                 {% empty %}
                 <div class="col-12 text-center empty-state">
-                    <h6 class="text-danger">Không có sản phẩm nào.</h6>
-                    <a type="button" class="btn btn-secondary" href="?">Tải lại trang</a>
+                    <h6 class="text-danger">Không có cơ sở lưu trú nào.</h6>
+                    <a type="button" class="btn btn-secondary rounded" href="?">Tải lại trang</a>
                 </div>
                 {% endfor %}
             </div>

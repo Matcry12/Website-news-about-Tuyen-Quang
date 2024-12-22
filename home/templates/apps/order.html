@@ -20,7 +20,7 @@
 <div class="container my-4">
     <div class="row">
         
-        <div class="col-lg-12">
+        <div class="col-lg-12" id = "order">
             <div class="box-element">
 
                 <!-- Order Table for Seller -->
@@ -38,6 +38,7 @@
                                     <th>Số ĐT</th>
                                     <th>CCCD</th>
                                     <th>Ngày đặt phòng</th>
+                                    <th>Ngày nhận phòng</th>
                                     <th>Loại phòng</th>
                                     <th>Mã phòng</th>
                                     <th>Số phòng</th>
@@ -55,6 +56,7 @@
                                                 <td>{{ order.cname }}</td>
                                                 <td>{{ order.phonecall }}</td>
                                                 <td>{{ order.cccd }}</td>
+                                                <td>{{ order.dateOrder|date:"d/m/Y" }}</td>
                                                 <td>{{ order.datebook|date:"d/m/Y" }}</td>
                                                 <td>{{ order.room.roomName }}</td>
                                                 <td>{{ order.room.roomCode }}</td>
@@ -151,6 +153,7 @@
                                     <th>Số ĐT</th>
                                     <th>CCCD</th>
                                     <th>Ngày đặt phòng</th>
+                                    <th>Ngày nhận phòng</th>
                                     <th>Loại phòng</th>
                                     <th>Mã phòng</th>
                                     <th>Giá tiền</th>
@@ -168,6 +171,7 @@
                                             <td>{{ order.cname }}</td>
                                             <td>{{ order.phonecall }}</td>
                                             <td>{{ order.cccd }}</td>
+                                            <td>{{ order.dateOrder|date:"d/m/Y" }}</td>
                                             <td>{{ order.datebook|date:"d/m/Y" }}</td>
                                             <td>{{ order.room.roomName }}</td>
                                             <td>{{ order.room.roomCode }}</td>

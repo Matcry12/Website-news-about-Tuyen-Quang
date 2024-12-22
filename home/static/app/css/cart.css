@@ -17,6 +17,7 @@
     background: #fff;
     padding: 20px;
     display: flex;
+    width: 100%;
     flex-direction: column; /* Stack content vertically */
     gap: 15px; /* Space between elements inside the card */
 }
@@ -291,4 +292,24 @@ textarea:focus {
 .purple-btn:hover{
     background-color: #D6722B;
     color: white;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table thead th {
+    white-space: nowrap;
+}
+
+.table th, .table td {
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center; /* Center-align content for better readability */
+    vertical-align: middle; /* Vertically align the content */
+}
+
+.container {
+    max-width: 1400px; /* Maximum width for large screens */
+    width: 95%; /* Take most of the screen width */
+    margin: 0 auto; /* Center the container */
 }

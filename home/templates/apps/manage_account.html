@@ -1,5 +1,6 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}Quản lí tài khoản{% endblock %}
 
 {% block extra_css %}
@@ -29,7 +30,7 @@
                             <!-- Filter by Name -->
                             <div class="">
                                 <label for="name" class="form-label">Tên tài khoản</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên tài khoản" value="{{ request.GET.name }}">
                             </div>
 
                             <div class="">
@@ -53,6 +54,15 @@
                                 <input type="text" name="phonecall" id="phonecall" class="form-control" placeholder="Nhập số điện thoại" value="{{ request.GET.phonecall }}">
                             </div>
                             
+                            <div class="form-group">
+                                <label for="role" class="form-label">Chọn vai trò:</label>
+                                <select name="role" id="role" class="form-control">
+                                    <option value="all">--Tất cả vai trò--</option>
+                                    <option value="1" >Khách hàng</option>
+                                    <option value="2" >Chủ cơ sở lưu trú</option>
+                                    <option value="3" >Người quản lí</option>
+                                </select>
+                            </div>                            
                         </div>
                 
                         <!-- Filter Buttons -->
@@ -82,7 +92,8 @@
 
                     <!-- Content to show/hide -->
                     <div id="extraContent" style="display: none;">
-                        <br>
+                        <br> 
+
                         <h5 class="text-center"><strong>Thêm tài khoản bằng excel</strong></h5>
                         <a class="btn btn-sm btn-outline purple mt-2" href="{% url 'download_example_account' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu cho tài khoản</a>
                         </br>
@@ -118,7 +129,7 @@
                         <div class="d-flex align-items-center">
                             <!-- Dropdown Selection -->
                             <select id="action-select" class="form-control me-3" style="width: 200px;">
-                                <option value="">---------------------------</option>
+                                <option value="">Chọn thao tác</option>
                                 <option value="reset-login">Cấp lại mã đăng nhập</option>
                                 <option value="provide-role">Cấp vai trò chủ cơ sở</option>
                                 <option value="reset-role">Bỏ vai trò chủ cơ sở</option>
@@ -137,34 +148,44 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
+                                        <th><input type="checkbox" id="select-all" /></th>
                                         <th>Tên tài khoản</th>
                                         <th>Vai trò</th>
                                         <th>Họ và tên</th>
-                                        <th>Ngày sinh</th>
                                         <th>Email</th>
                                         <th>Căn cước công dân</th>
                                         <th>Số điện thoại</th>
                                         <th>Ngày tạo</th>
+                                        <th>Mật khẩu</th>
                                         <th>Sửa</th>
                                         <th>Xóa</th>
-                                        <th><input type="checkbox" id="select-all" /></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% if users_page %}
                                         {% for profile in users_page %}
                                             <tr>
+                                                <td>
+                                                    <input type="checkbox" class="row-checkbox" value="{{ profile.user.id }}" />
+                                                </td>
                                                 <td>{{ profile.user }}</td>
-                                                <td>{{ profile.get_role_display }}</td>
+                                                <td>
+                                                    {{ profile.get_role_display }}
+                                                    {% if profile.role == 'seller' %}
+                                                        {% for product in products %}
+                                                            {% if product.owner == profile.user %}
+                                                                {% with account_hotel|get_item:product.id as owner %}
+                                                                    <div>
+                                                                        <p><strong>{{ product.name }}</strong> </p>
+                                                                    </div>
+                                                                {% endwith %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </td>
 
                                                 {% if profile.user.last_name or profile.user.first_name %}
                                                     <td>{{ profile.user.last_name }} {{ profile.user.first_name }}</td>
-                                                {% else %}
-                                                    <td> Không có </td>
-                                                {% endif %}
-
-                                                {% if profile.birthday %}
-                                                    <td>{{ profile.birthday|date:"d/m/Y" }}</td>
                                                 {% else %}
                                                     <td> Không có </td>
                                                 {% endif %}
@@ -178,7 +199,22 @@
                                                 <td>{{ profile.cccd }}</td>
                                                 <td>{{ profile.phonecall }}</td>
                                                 <td>{{ profile.date_created|date:"d/m/Y" }}</td>
-
+                                                <td>
+                                                    <div style="display: flex; flex-direction: column; align-items: center;">
+                                                        {% if profile.base_password == none %}
+                                                            <span id="passwordField-{{ forloop.counter }}" style="display: none;">Tài khoản đã đổi mật khẩu</span>
+                                                        {% else %}
+                                                            <span id="passwordField-{{ forloop.counter }}" style="display: none;">{{ profile.base_password }}</span>
+                                                        {% endif %}
+                                                        
+                                                        <button 
+                                                            id="toggleButton-{{ forloop.counter }}" 
+                                                            class="btn btn-outline purple btn-sm rounded-pill px-3 mt-2" 
+                                                            onclick="togglePassword({{ forloop.counter }})">
+                                                            Hiện
+                                                        </button>
+                                                    </div>
+                                                </td>                                                
                                                 <td>
                                                     <a type="button" class="btn" style="border: none; background: transparent; padding: 10px;" href="{% url 'edit_profile' user_id=profile.user.id %}">
                                                         <i class="fas fa-pencil-alt" style="color: #28a745; font-size: 24px;" ></i>
@@ -212,9 +248,6 @@
                                                             </div>
                                                     </div>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <input type="checkbox" class="row-checkbox" value="{{ profile.user.id }}" />
                                                 </td>
 
                                             </tr>
@@ -466,6 +499,19 @@
             return cookieValue;
         }
     });
+    function togglePassword(index) {
+        const passwordField = document.getElementById(`passwordField-${index}`);
+        const toggleButton = document.getElementById(`toggleButton-${index}`);
+
+        if (passwordField.style.display === 'none') {
+            passwordField.style.display = 'block'; // Show password
+            toggleButton.innerText = 'Ẩn'; // Change button text to "Hide"
+        } else {
+            passwordField.style.display = 'none'; // Hide password
+            toggleButton.innerText = 'Hiện'; // Change button text to "Show"
+        }
+    }
+
 </script>
 
 <style>

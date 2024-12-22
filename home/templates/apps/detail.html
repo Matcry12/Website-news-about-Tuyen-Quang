@@ -5,8 +5,9 @@
 {% block extra_js %}
 <script src="{% static 'app/js/details.js' %}"></script>
 {% endblock %}
-{% block extra_css %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/details.css' %}">
 {% endblock %}
 
 {% block detail %}
@@ -16,39 +17,34 @@
 </nav>
 
 <div class="container mt-5 mb-5">
+    <!-- Product Details Section -->
     <div class="card mb-5 p-4 shadow">
-        <div class="row">
-            <!-- Product Image Section -->
-            <div class="col-md-6">
-                <div class="text-center p-3">
-                    <img id="main-image" src="{{ product.imageURL }}" class="img-fluid rounded" alt="Product Image" width="300">
-                </div>
+        <div class="row g-0"> <!-- Added 'g-0' to remove row gutter spacing -->
+            <!-- Product Image -->
+            <div class="col-md-5 text-center"> <!-- Changed to 'col-md-5' for better balance -->
+                <img id="main-image" src="{{ product.imageURL }}" class="img-fluid rounded shadow" alt="Product Image">
             </div>
-
-            <!-- Product Information Section -->
-            <div class="col-md-6">
-                <div class="product-details">
-                    <!-- Back Button & Cart Icon -->
+    
+            <!-- Product Information -->
+            <div class="col-md-7"> <!-- Changed to 'col-md-7' -->
+                <div class="product-details px-4"> <!-- Added 'px-4' for padding -->
+                    <!-- Back Button -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <a class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Trở lại</a>
-                        <a href="{% url 'cart' %}" class="text-muted">
-                            <i class="fa fa-cogs"></i>
+                        <a class="btn btn-outline-dark rounded" style="" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                        <a href="{% url 'order' %}" class="text-muted">
+                            <i class="fa fa-cogs fa-lg"></i>
                         </a>
                     </div>
-
+    
                     <!-- Product Title & Price -->
-                    <h2 class="text-uppercase font-weight-bold">{{ product.name }}</h2>
-                    <div class="price mb-4">
-                        <span class="text-success h4">{{ product.amountprice }} Đồng</span>
-                    </div>
-
+                    <h2 class="text-uppercase font-weight-bold mb-3">{{ product.name }}</h2>
+                    <p class="price text-success h4">{{ product.amountprice }} Đồng</p>
+    
                     <!-- Product Description -->
-                    <p class="about mb-4">{{ product.detail }}</p>
-
-                    <!-- Address and Contact Information -->
+                    <p class="mb-4">{{ product.detail }}</p>
                     <p><strong>Địa chỉ:</strong> {{ product.location }}</p>
                     <p><strong>Số điện thoại:</strong> {{ product.phonecall }}</p>
-
+    
                     <!-- Services -->
                     <p><strong>Dịch vụ:</strong>
                         {% for category in product.categories.all %}
@@ -57,55 +53,45 @@
                             Không có dịch vụ nào
                         {% endfor %}
                     </p>
-
-                    <!-- Map and Zalo Buttons -->
-                    <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-rounded btn orange" onclick="window.open('https://zalo.me/{{ product.phonecall }}', '_blank')" ><i class="fas fa-comments"></i> Chat qua Zalo</button>
+    
+                    <!-- Contact Button -->
+                    <div class="mt-4">
+                        <button class="btn btn-rounded btn orange" onclick="window.open('https://zalo.me/{{ product.phonecall }}', '_blank')">
+                            <i class="fas fa-comments"></i> Chat qua Zalo
+                        </button>
                     </div>
-
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Room Details Section -->
-        <h3>Loại phòng</h3>
-
-        <div class="container mt-5 mb-5" id="room">
-            <div class="card mb-5 p-4 shadow">
-                <div class="row">
-                    <!-- Filter Section -->
-                    <div class="col-md-3">
-                        <form id="sortForm" method="POST">
-                            {% csrf_token %}
-                            <h6><strong>Sắp xếp theo mức giá</strong></h6>
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>Rẻ đến đắt</td>
-                                        <td>
-                                            <input type="checkbox" name="priceSort" value="asc" onchange="submitSortForm(this)" 
-                                                {% if request.POST.priceSort == 'asc' %}checked{% endif %}>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Đắt đến rẻ</td>
-                                        <td>
-                                            <input type="checkbox" name="priceSort" value="desc" onchange="submitSortForm(this)" 
-                                                {% if request.POST.priceSort == 'desc' %}checked{% endif %}>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
+    <!-- Room Details Section -->
+    <div class="card shadow p-4">
+        <h3 class="mb-4">Loại phòng</h3>
+        <div class="row">
+            <!-- Filter Section -->
+            <div class="col-md-3">
+                <form id="sortForm" method="GET">
+                    <input type="hidden" name="id" value="{{ product.id }}">
+                    <h6><strong>Sắp xếp theo mức giá</strong></h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="priceSort" id="priceAsc" value="asc" onchange="this.form.submit()"
+                            {% if request.GET.priceSort == 'asc' %}checked{% endif %}>
+                        <label class="form-check-label" for="priceAsc">Rẻ đến đắt</label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="priceSort" id="priceDesc" value="desc" onchange="this.form.submit()"
+                            {% if request.GET.priceSort == 'desc' %}checked{% endif %}>
+                        <label class="form-check-label" for="priceDesc">Đắt đến rẻ</label>
+                    </div>
+                </form>                
+            </div>
 
-                    <!-- Room Listings Section -->
-                    <div class="col-md-9">
-                        <div class="row rooms-container">
-                            <div id="productContainer">
-                                {% include 'apps/room.html' with rooms=rooms %}
-                            </div>    
-                        </div>
+            <!-- Room Listings -->
+            <div class="col-md-9">
+                <div class="row">
+                    <div id="productContainer">
+                        {% include 'apps/room.html' with rooms=rooms %}
                     </div>
                 </div>
             </div>
@@ -114,122 +100,138 @@
 </div>
 
 <style>
-        .breadcrumbs {
-border: 1px solid #cbd2d9;
-border-radius: 0.3rem;
-display: inline-flex;
-margin-bottom: 10px;
-overflow: hidden;
-}
+    .breadcrumbs {
+    border: 1px solid #cbd2d9;
+    border-radius: 0.3rem;
+    display: inline-flex;
+    margin-bottom: 10px;
+    overflow: hidden;
+    }
 
-.breadcrumbs__item {
-background: #fff;
-color: #333;
-outline: none;
-padding: 0.75em 0.75em 0.75em 1.25em;
-position: relative;
-text-decoration: none;
-transition: background 0.2s linear;
-}
+    .breadcrumbs__item {
+    background: #fff;
+    color: #333;
+    outline: none;
+    padding: 0.75em 0.75em 0.75em 1.25em;
+    position: relative;
+    text-decoration: none;
+    transition: background 0.2s linear;
+    }
 
-.breadcrumbs__item:hover:after,
-.breadcrumbs__item:hover {
-background: #edf1f5;
-}
+    .breadcrumbs__item:hover:after,
+    .breadcrumbs__item:hover {
+    background: #edf1f5;
+    }
 
-.breadcrumbs__item:focus:after,
-.breadcrumbs__item:focus,
-.breadcrumbs__item.is-active:focus {
-background: #323f4a;
-color: #fff;
-}
+    .breadcrumbs__item:focus:after,
+    .breadcrumbs__item:focus,
+    .breadcrumbs__item.is-active:focus {
+    background: #323f4a;
+    color: #fff;
+    }
 
-.breadcrumbs__item:after,
-.breadcrumbs__item:before {
-background: white;
-bottom: 0;
-clip-path: polygon(50% 50%, -50% -50%, 0 100%);
-content: "";
-left: 100%;
-position: absolute;
-top: 0;
-transition: background 0.2s linear;
-width: 1em;
-z-index: 1;
-}
+    .breadcrumbs__item:after,
+    .breadcrumbs__item:before {
+    background: white;
+    bottom: 0;
+    clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+    content: "";
+    left: 100%;
+    position: absolute;
+    top: 0;
+    transition: background 0.2s linear;
+    width: 1em;
+    z-index: 1;
+    }
 
-.breadcrumbs__item:before {
-background: #cbd2d9;
-margin-left: 1px;
-}
+    .breadcrumbs__item:before {
+    background: #cbd2d9;
+    margin-left: 1px;
+    }
 
-.breadcrumbs__item:last-child {
-border-right: none;
-}
+    .breadcrumbs__item:last-child {
+    border-right: none;
+    }
 
-.breadcrumbs__item.is-active {
-background: #edf1f5;
-}
+    .breadcrumbs__item.is-active {
+    background: #edf1f5;
+    }
 
-/* General Card Styling */
-.card {
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
 
-/* Main Product Image */
+    .product-details {
+        line-height: 1.8;
+    }
 
-/* Product Title */
-h2.text-uppercase {
-    font-size: 1.8rem;
-    color: #333; /* Dark text for contrast */
-    font-weight: bold;
-}
+    .btn-rounded {
+        padding: 10px 20px;
+        font-size: 1rem;
+        color: #FFFFFF;
+        background-color: #D6722B;
+        border: none;
+        border-radius: 50px;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
 
-/* Price Styling */
-.price .text-success {
-    font-size: 1.6rem;
-    color: #6A1B9A;
-    font-weight: bold;
-}
+    .btn-rounded:hover {
+        background-color: #B6591F;
+        box-shadow: 0 4px 8px rgba(214, 114, 43, 0.5);
+    }
 
-/* "Chat qua Zalo" and "Đặt phòng" Buttons */
-.btn-rounded {
-    padding: 10px 20px;
-    font-size: 1rem;
-    color: #FFFFFF;
-    background-color: #D6722B; /* Orange color */
-    border: none;
-    border-radius: 50px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-}
+    .price {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #6A1B9A;
+    }
 
-.btn-rounded:hover {
-    background-color: #B6591F; /* Darker orange on hover */
-    box-shadow: 0 4px 8px rgba(214, 114, 43, 0.5);
-}
+    .form-check-input {
+        transform: scale(1.2);
+        margin-right: 10px;
+    }
 
-.table input[type="checkbox"] {
-    transform: scale(1.2);
-    cursor: pointer;
-}
+    .orange {
+        background-color: #D6722B;
+        color: white;
+    }
 
-.orange{
-    background-color: #D6722B;
-    color: white;
-}
-.orange:hover{
-    background-color: #D6722B;
-    color: white;
-}
+    .orange:hover {
+        background-color: #B6591F;
+    }
+    
+    .page-link{
+        color: #D6722B;
+        
+    }
+    .page-link:hover{
+        color: #D6722B;
+    }
+    .page-item.active .page-link {
+        color: white; /* White text for active page */
+        background-color: #D6722B; /* Orange background */
+        border-color: #D6722B; /* Orange border */
+    }
 
-.orange-outline{
-    border-color: #D6722B;
-    color: #D6722B;
-}
-.orange-outline:hover{
-    background-color: #D6722B;
-    color: white;
-}
+    /* Ensure the image fills its container without extra space */
+    .img-fluid {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image scales properly while covering the area */
+        border-radius: 10px; /* Match the card's border radius */
+    }
+
+    /* Ensure the container has a fixed height or adjusts dynamically */
+    .col-md-6 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        max-height: 400px; /* Adjust this height based on your design */
+    }
+
 </style>
+
+
 {% endblock detail %}

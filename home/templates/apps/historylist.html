@@ -40,10 +40,24 @@
                         <form method="GET">
                             <div class="filter-fields">
                                 <!-- Filter by Name -->
-                                <div class="">
-                                    <label for="name" class="form-label">Tên CS lưu trú</label>
-                                    <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
-                                </div>
+                                {% if profile.role == 'seller' %}
+                                    <div class="">
+                                        <label for="room_type" class="form-label">Loại phòng</label>
+                                        <select name="room_type" id="room_type" class="form-control">
+                                            <option value="all">Tất cả loại phòng</option>
+                                            {% for type in room_type %}
+                                                <option value="{{ type.id }}">
+                                                    {{ type.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% else %}
+                                    <div class="">
+                                        <label for="name" class="form-label">Tên CS lưu trú</label>
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                    </div>
+                                {% endif %}
                     
                                 <!-- Filter by Date -->
                                 <div class="" id = "date">

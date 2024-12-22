@@ -94,9 +94,13 @@ def Cart(request):
         products = None
         rooms = None
         room_page = None  
+        return redirect('home')
 
     if user_profile.role == 'admin':
         return redirect('manage_hotel')
+    
+    if user_profile.role == 'customer':
+        return redirect('home')
 
     if request.method == 'POST':
         
@@ -252,7 +256,7 @@ def updateOrder(request):
 
     if action == 'true':
         Order.confirm = True
-        status_instance = StatusType.objects.get(name="Hết")
+        status_instance = StatusType.objects.get(name="Đang được sử dụng")
         Order.room.status = status_instance
         Order.room.save()
     elif action == 'false':

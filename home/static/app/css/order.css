@@ -581,3 +581,11 @@ h3.text-center {
     background-color: #D6722B; /* Orange background */
     border-color: #D6722B; /* Orange border */
 }
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table th, .table td {
+    vertical-align: middle; /* Vertically align the content */
+}

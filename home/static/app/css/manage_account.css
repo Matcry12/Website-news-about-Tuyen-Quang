@@ -460,3 +460,9 @@ h5.color-text {
 .table thead th {
     white-space: nowrap;
 }
+
+.table th, .table td {
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center; /* Center-align content for better readability */
+    vertical-align: middle; /* Vertically align the content */
+}

@@ -171,6 +171,16 @@ def filter_users(request, user_profile):
     email = request.GET.get('email')
     if email:
         users = users.filter(user__email__icontains=email)  # Use icontains for partial match
+    
+    role_ids = request.GET.getlist('role')
+    if 'all' not in role_ids:
+        if '1' in role_ids:
+            users = users.filter(role='customer')
+        if '2' in role_ids:
+            users = users.filter(role='seller')
+        if '3' in role_ids:
+            users = users.filter(role='admin')
+
 
     # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
@@ -184,28 +194,47 @@ def export_account(request):
     users = filter_users(request, user_profile)
     
     user_data = users.annotate(
-        full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name'))
+        full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name')),
+        product_name = Value('N/a')
     ).values(
         'user__username',
-        'full_name',      
-        'birthday',
-        'user__email',
-        'cccd',
+        'role',
+        'product_name',
+        'full_name',     
+        'user__email', 
         'phonecall',
+        'cccd',
+        'birthday',
+        'base_password',
         'date_created',
+        
     )
 
-    # Convert QuerySet to DataFrame
+    product_mapping = defaultdict(list)
+    for product in Product.objects.select_related('owner').all():
+        product_mapping[product.owner.username].append(product.name)
+
+    for user in user_data:
+        username = user['user__username']
+        user['product_name'] = ', '.join(product_mapping.get(username, ['N/A']))
+
     df = pd.DataFrame(list(user_data))
 
+    df['user__email'].replace('', 'N/a', inplace=True)
+    df['base_password'].replace({None: 'Tài khoản đã đổi mật khẩu'}, inplace=True)
+    df['base_password'].replace('None', 'Tài khoản đã đổi mật khẩu', inplace=True)
+    df['base_password'].replace('none', 'Tài khoản đã đổi mật khẩu', inplace=True)
     # Rename columns for better readability
     df.rename(columns={
         'user__username': 'Tên tài khoản',
+        'role': 'Vai trò',
+        'product_name': 'Tên cơ sở lưu trú',
         'full_name': 'Họ tên',      
         'birthday': 'Ngày sinh',
         'user__email': 'Email',
         'cccd': 'Căn cước công dân',
         'phonecall': 'Số điện thoại',
+        'base_password': 'Mật khẩu',
         'date_created': 'Ngày tạo',
     }, inplace=True)
 

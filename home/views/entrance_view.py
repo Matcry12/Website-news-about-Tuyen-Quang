@@ -30,14 +30,31 @@ def register(request):
     storage = get_messages(request)
     for message in storage:
         pass  # Iterating through storage clears it
+
     form = CreationUserForm()
     context = {'form': form}
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
         form = CreationUserForm(request.POST)
+        
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+        print(password1)
+        print(password2)
+        
         if form.is_valid():
-            form.save()
+            user = form.save()
+
+            UserProfile.objects.create(
+                user=user,
+                role='customer',  # Default role
+                phonecall=request.POST.get('phonecall', 'N/a'),  # Additional fields
+                cccd=request.POST.get('cccd', 'N/a'),
+                birthday=request.POST.get('birthday'),
+                base_password=None,
+            )
+
             return redirect('login')
         else: messages.info(request, 'Đăng ký không phù hợp!')
 

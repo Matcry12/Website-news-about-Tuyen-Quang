@@ -39,12 +39,11 @@ class RoomForm(forms.ModelForm):
 class RoomFormCreate(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['room_code', 'price', 'room_type', 'status', 'image']
+        fields = ['room_code', 'price', 'room_type', 'image']
         labels = {
             'room_code': ('Mã phòng'),
             'price': ('Giá'),
             'room_type': ('Loại phòng'),
-            'status': ('Trạng thái'),
             'image': ('Ảnh phòng'),
         }
 
@@ -53,38 +52,6 @@ class RoomPicForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = ('image', )
-
-class ProductFormCreate(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = [
-            'name', 
-            'amountprice', 
-            'onSale', 
-            'detail', 
-            'imageP', 
-            'categories', 
-            'room_types', 
-            'product_type', 
-            'location', 
-            'maplocation', 
-            'rate', 
-            'phonecall'
-        ]
-        labels = {
-            'name': 'Tên cơ sở lưu trú',
-            'amountprice': 'Giá',
-            'onSale': 'Đang bán',
-            'detail': 'Chi tiết',
-            'imageP': 'Hình ảnh',
-            'categories': 'Danh mục',
-            'room_types': 'Loại phòng',
-            'product_type': 'Loại sản phẩm',
-            'location': 'Vị trí',
-            'maplocation': 'Bản đồ',
-            'rate': 'Đánh giá',
-            'phonecall': 'Số điện thoại',
-        }
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -102,6 +69,14 @@ class ProductForm(forms.ModelForm):
             'rate', 
             'phonecall'
         ]
+        widgets = {
+            'detail': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,  # Reduce the number of visible rows
+                'style': 'resize: none;',  # Prevent resizing (optional)
+                'placeholder': 'Nhập mô tả',
+            }),
+        }
         labels = {
             'name': 'Tên cơ sở lưu trú',
             'amountprice': 'Giá',
@@ -123,6 +98,13 @@ class ProductPicForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('imageP', )
+
+        widgets = {
+            'imageP': forms.ClearableFileInput(attrs={
+                'class': 'form-control',  # Apply Bootstrap styling
+                'id': 'profile_image',
+            }),
+        }
 
 class SuperUserForm(forms.ModelForm):
     class Meta:
@@ -198,10 +180,46 @@ class UserProfileForm(forms.ModelForm):
             'oninvalid': "this.setCustomValidity('Vui lòng nhập ngày sinh hợp lệ (dd/mm/yyyy).')",
             'oninput': "this.setCustomValidity('')",
         }),
-        required=True
+        required=False
     )
 
 
+class UserPasswordForm(forms.ModelForm):
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu mới'}),
+        required=False
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Xác nhận mật khẩu'}),
+        required=False
+    )
+
+    class Meta:
+        model = User
+        fields = []
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        # Check if both passwords match
+        if password1 and password2 and password1 != password2:
+            self.add_error('password2', 'Mật khẩu không khớp')
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        # Update password if password1 is provided
+        if self.cleaned_data['password1']:
+            user.set_password(self.cleaned_data['password1'])
+
+        if commit:
+            user.save()
+
+        return user
 
 class UserEditForm(forms.ModelForm):
     password1 = forms.CharField(
@@ -275,3 +293,82 @@ class UserEditForm(forms.ModelForm):
             user.save()
 
         return user
+    
+class ProductFormCreateUser(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = [
+            'name', 
+            'owner',
+            'amountprice',  
+            'detail', 
+            'categories', 
+            'room_types', 
+            'product_type', 
+            'location', 
+            'maplocation', 
+            'rate', 
+            'phonecall',
+            'imageP',
+        ]
+        widgets = {
+            'detail': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,  # Reduce the number of visible rows
+                'style': 'resize: none;',  # Prevent resizing (optional)
+                'placeholder': 'Nhập mô tả',
+            }),
+        }
+        labels = {
+            'name': 'Tên cơ sở lưu trú',
+            'owner': 'Chủ cơ sở lưu trú',
+            'amountprice': 'Giá',
+            'detail': 'Chi tiết',
+            'categories': 'Danh mục',
+            'room_types': 'Loại phòng',
+            'product_type': 'Loại sản phẩm',
+            'location': 'Vị trí',
+            'maplocation': 'Bản đồ',
+            'rate': 'Đánh giá',
+            'phonecall': 'Số điện thoại',
+            'imageP': 'Ảnh CS lưu trú',
+        }
+
+class ProductFormCreate(forms.ModelForm):
+    class Meta:
+        model = Product
+        exclude = ['owner']
+        fields = [
+            'name', 
+            'amountprice',  
+            'detail', 
+            'categories', 
+            'room_types', 
+            'product_type', 
+            'location', 
+            'maplocation', 
+            'rate', 
+            'phonecall',
+            'imageP',
+        ]
+        widgets = {
+            'detail': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,  # Reduce the number of visible rows
+                'style': 'resize: none;',  # Prevent resizing (optional)
+                'placeholder': 'Nhập mô tả',
+            }),
+        }
+        labels = {
+            'name': 'Tên cơ sở lưu trú',
+            'amountprice': 'Giá',
+            'detail': 'Chi tiết',
+            'categories': 'Danh mục',
+            'room_types': 'Loại phòng',
+            'product_type': 'Loại sản phẩm',
+            'location': 'Vị trí',
+            'maplocation': 'Bản đồ',
+            'rate': 'Đánh giá',
+            'phonecall': 'Số điện thoại',
+            'imageP': 'Ảnh CS lưu trú'
+        }

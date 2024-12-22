@@ -61,11 +61,13 @@
   <!-- menu -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
+      {% if home != "home" %}
       <a class="navbar-brand" href="{% url 'home' %}">
         <img src=" {% static 'app/images/logo_nvh (Small).png' %}" width="55" height="55" />
         <img src=" {% static 'app/images/Tuyenquanglogo-removebg-preview.png' %}" width="55" height="55" />
         DU LỊCH TUYÊN QUANG
       </a>
+      {% endif %}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -106,21 +108,32 @@
             {{request.user}}
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
-            {% if profile.role != 'admin' %}
-            <li><a class="dropdown-item" href="{% url 'order' %}">Đơn đặt phòng</a></li>
+            {% if profile != none %}
+              <li><a class="dropdown-item" href="{% url 'profile' %}">Trang cá nhân</a></li>
+              {% if profile.role != 'admin' %}
+              <li><a class="dropdown-item" href="{% url 'order' %}">Đơn đặt phòng</a></li>
+              {% endif %}
+              {% if profile.role != 'customer' and profile != none %}
+              <li>
+                <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
+              </li>
+              {% endif %}
+              
+              {% if profile.role == 'admin' %}
+                <li><a class="dropdown-item" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
+                <li><a class="dropdown-item" href="{% url 'listroom' %}">Thống kê phòng</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'historylist' %}">Lịch sử đặt phòng</a></li>
+              <li>
+                <a href="{% url 'change_password' %}" class="dropdown-item">
+                    Đổi mật khẩu
+                </a>
+              </li>
+              <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
+            {% else %}
+              <li><a class="dropdown-item" href= "{% url 'login' %}" >Đăng nhập</a></li>
+              <li><a class="dropdown-item" href= "{% url 'register' %}" >Đăng ký</a></li>
             {% endif %}
-            {% if profile.role != 'customer' and profile != none %}
-            <li>
-              <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
-            </li>
-            {% endif %}
-            {% if profile.role == 'admin' %}
-              <li><a class="dropdown-item" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
-              <li><a class="dropdown-item" href="{% url 'listroom' %}">Thống kê phòng</a></li>
-            {% endif %}
-            <li><a class="dropdown-item" href="{% url 'historylist' %}">Lịch sử đặt phòng</a></li>
-            <li><a class="dropdown-item" href= "{% url 'logout' %}" >Đăng xuất</a></li>
           </ul>
         </li>
           {% if profile != none %}

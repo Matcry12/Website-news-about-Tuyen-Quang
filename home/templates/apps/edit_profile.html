@@ -52,10 +52,14 @@
         <h1> Cập nhật tài khoản </h1>
     {% endif %}
     <br/>
-    <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
+    <form action="" method="POST" class="custom-form" enctype="multipart/form-data" id="edit-form">
         {% csrf_token %}
         <div class="row">
             <!-- Left Side (User Information) -->
+             
+            {% if error %}
+                <h3 class="text-center" style="color: red;">{{ error }}</h3>
+            {% endif %}
             <div class="col-md-6">
                 <h3>Thông tin tài khoản</h3>
                 <div class="form-group">
@@ -92,11 +96,29 @@
                     <label for="{{ profile_form.phonecall.id_for_label }}">Số điện thoại:</label>
                     {{ profile_form.phonecall }}
                 </div>
+
                 <div class="form-group">
-                    <label for="profile_image">Ảnh hồ sơ:</label>
-                    <input type="file" name="profile_image" id="profile_image" class="form-control">
+                    <label for="id_profile_image">Ảnh hồ sơ:</label>
+                    <div class="input-group">
+                        <input 
+                            type="file" 
+                            name="profile_image" 
+                            id="id_profile_image" 
+                            class="form-control form-outline"
+                            accept="image/*"
+                        >
+                    </div>
                     {% if profile_form.instance.profile_image %}
-                        <img src="{{ profile_form.instance.profile_image.url }}" alt="Current Image" class="uploaded-image mt-2">
+                        <div class="mt-2">
+                            <p class="text-muted mt-2">Hình ảnh hiện tại:</p>
+                            <img 
+                                src="{{ profile_form.instance.profile_image.url }}" 
+                                alt="Current Image" 
+                                class="uploaded-image img-thumbnail" 
+                                style="max-width: 200px; max-height: 200px;"
+                            >
+
+                        </div>
                     {% endif %}
                 </div>
             </div>
@@ -107,18 +129,40 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
+                    <label for="{{ user_form.password1.id_for_label }}" id="id_password1" >Mật khẩu mới:</label>
                     {{ user_form.password1 }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
+                    <label for="{{ user_form.password2.id_for_label }}" id="id_password2">Xác nhận mật khẩu:</label>
                     {{ user_form.password2 }}
                 </div>
             </div>
         </div>
-        <input type="submit" value="Cập nhật" class="btn btn-secondary">
+        <button type="button" class="btn orange btn-rounded" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">
+            Cập nhật
+        </button>
+    
+        <!-- Confirmation Modal -->
+        <div class="modal fade" id="confirmUpdateModal" tabindex="-1" aria-labelledby="confirmUpdateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmUpdateModalLabel">Xác nhận cập nhật thông tin</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Bạn có chắc chắn muốn cập nhật thông tin này?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <!-- Hidden Submit Button -->
+                        <button type="submit" name="action" value="Cập nhật" class="btn orange">Xác nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% if profile.role == 'admin' %}
             <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
         {% else %}
@@ -130,6 +174,7 @@
     </form>
 
     
+    
 </div>
 
 
@@ -138,28 +183,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Custom pattern for password validation
-        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*?])[a-zA-Z0-9!@#$%^&*?]{8,}$/;
         
         // Password fields
         const password1Field = document.getElementById("id_password1");
         const password2Field = document.getElementById("id_password2");
-
-        // Function to apply validation pattern
-        const applyValidation = (field) => {
-            // Set pattern, oninvalid and oninput attributes dynamically
-            field.setAttribute('pattern', passwordPattern);
-            field.setAttribute('oninvalid', "this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự')");
-            field.setAttribute('oninput', "this.setCustomValidity('')");
-        };
-
-        // Apply validation to the fields if they are filled
-        if (password1Field.value) {
-            applyValidation(password1Field);
-        }
-
-        if (password2Field.value) {
-            applyValidation(password2Field);
-        }
 
         // Trigger validation when user types in the fields (only if they are filled)
         password1Field.addEventListener('input', function() {
@@ -168,7 +195,7 @@
 
             // Apply validation only if the field has value
             if (this.value && !this.value.match(passwordPattern)) {
-                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+                this.setCustomValidity('Đảm bảo mật khẩu chứa kí tự phù hợp');
             }
         });
 
@@ -178,7 +205,7 @@
 
             // Apply validation only if the field has value
             if (this.value && !this.value.match(passwordPattern)) {
-                this.setCustomValidity('Đảm bảo mật khẩu có đủ chữ thường, chữ hoa, chữ số, ký tự đặc biệt và có ít nhất 8 ký tự');
+                this.setCustomValidity('Đảm bảo mật khẩu chứa kí tự phù hợp');
             }
         });
     });

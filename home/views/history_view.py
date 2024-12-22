@@ -11,6 +11,10 @@ def filter_histories(request, user_profile):
     if name:
         histories = histories.filter(room__product__name__icontains=name)
 
+    room_ids = request.GET.getlist('room_type')
+    if room_ids and 'all' not in room_ids:
+        histories = histories.filter(room__room_type__id__in=room_ids).distinct()
+
     _start_date = request.GET.get('start_date')
     _end_date = request.GET.get('end_date')
 
@@ -63,6 +67,7 @@ def historylist(request):
         user_not_login = "none"
         histories = filter_histories(request, user_profile)
         allowed = histories.exists()
+        room_type = RoomType.objects.all()
         count = histories.count()
         paginator = Paginator(histories, 10)  # Paginate results
         page_number = request.GET.get('page')
@@ -76,7 +81,7 @@ def historylist(request):
         user_not_login = "block"
         histories_page = None
         return redirect('error_login')
-    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string,}
+    context = {'user_not_login': user_not_login, 'histories_page': histories_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string, 'room_type': room_type,}
     return render(request, 'apps/historylist.html', context)
 
 def completebooking(request):

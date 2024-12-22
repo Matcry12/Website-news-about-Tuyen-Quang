@@ -26,7 +26,6 @@
         <div class="row">
             <!-- Hotel Information -->
             <div class="col-md-6">
-                <h3 class="section-title">Thông tin cơ sở lưu trú</h3>
                 <div class="form-group">
                     <label for="{{ hotel_form.name.id_for_label }}">Tên cơ sở lưu trú:</label>
                     {{ hotel_form.name }}
@@ -46,19 +45,66 @@
                     <label for="{{ hotel_form.phonecall.id_for_label }}">Số điện thoại:</label>
                     {{ hotel_form.phonecall }}
                 </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.detail.id_for_label }}">Mô tả:</label>
+                    {{ hotel_form.detail }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.maplocation.id_for_label }}">Tọa độ bản đồ:</label>
+                    {{ hotel_form.maplocation }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.rate.id_for_label }}">Đánh giá:</label>
+                    {{ hotel_form.rate }}
+                </div>
             </div>
 
             <!-- Image Upload and Preview -->
             
             <div class="col-md-6">
-                <h3 class="section-title">Cập nhật ảnh</h3>
                 <div class="form-group">
-                    <label for="profile_image">Cập nhật ảnh:</label>
-                    <input type="file" name="profile_image" id="profile_image" class="form-control">
+                    <label for="{{ hotel_form.categories.id_for_label }}">Dịch vụ:</label>
+                    {{ hotel_form.categories }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.room_types.id_for_label }}">Loại phòng:</label>
+                    {{ hotel_form.room_types }}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ hotel_form.product_type.id_for_label }}">Loại cơ sở lưu trú:</label>
+                    {{ hotel_form.product_type }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_imageP">Cập nhật ảnh:</label>
+                    <div class="input-group">
+                        <input 
+                            type="file" 
+                            name="imageP" 
+                            id="id_imageP" 
+                            class="form-control form-outline"
+                            accept="image/*"
+                        >
+                    </div>
                     {% if pic_form.instance.imageP %}
-                        <img src="{{ pic_form.instance.imageP.url }}" alt="Current Image" class="uploaded-image mt-2">
+                        <div class="mt-2">
+                            <p class="text-muted mt-2">Hình ảnh hiện tại:</p>
+                            <img 
+                                src="{{ pic_form.instance.imageP.url }}" 
+                                alt="Current Image" 
+                                class="uploaded-image img-thumbnail" 
+                                style="max-width: 200px; max-height: 200px;"
+                            >
+                        </div>
                     {% endif %}
                 </div>
+
+
             </div>
             
             <input type="submit" value="Cập nhật" class="btn btn-secondary">

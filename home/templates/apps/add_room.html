@@ -14,11 +14,16 @@
 
 <div class="custom-box">
     <h1> Thêm phòng </h1>
+    <h2> {{ error }}</h2>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-    
-        <button type="submit" class="btn btn-primary">Thêm</button>
+        
+        <div style="text-align: center;">
+            <button type="submit" class="btn btn orange">Thêm</button>
+            <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        </div>
+        
     </form>    
 
 </div>

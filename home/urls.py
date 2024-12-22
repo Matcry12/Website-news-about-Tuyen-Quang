@@ -2,8 +2,6 @@ from django.contrib import admin
 from django.urls import include, path
 from .views import views
 
-from .views.views import AddRoomView, AddHotelView, AddAccountView
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tin-tuc/', views.news, name="news"),
@@ -27,9 +25,11 @@ urlpatterns = [
     path('cap-nhat-don-dat-phong/<order_id>', views.updateTrade, name="update_trade"),
     path('cap-nhat-co-so/<hotel_id>', views.updateHotel, name="update_hotel"),
     path('chinh-sua-thong-tin/<user_id>', views.edit_profile, name="edit_profile"),
-    path('them-phong-moi/', AddRoomView.as_view(), name="add_room"),
-    path('them-co-so-moi/', AddHotelView.as_view(), name="add_hotel"),
-    path('them-tai-khoan/', AddAccountView.as_view(), name="add_account"),
+    path('doi-mat-khau', views.change_password, name = "change_password"),
+    path('them-phong-moi/', views.add_room, name="add_room"),
+    path('them-co-so-moi/', views.add_hotel, name="add_hotel"),
+    path('them-co-so-moi-cho-tai-khoan/', views.add_hotel_user, name="add_hotel_user"),
+    path('them-tai-khoan/', views.add_account, name="add_account"),
     path('xoa-don-hang/<order_id>/', views.delete_order, name='delete_order'),
     path('xoa-co-so/<hotel_id>/', views.delete_hotel, name='delete_hotel'),
     path('xoa-phong/<room_id>/', views.delete_room, name='delete_room'),
@@ -47,4 +47,5 @@ urlpatterns = [
     path('tai-vi-du-tai-khoan/', views.generate_example_account, name='download_example_account'),
     path('tao-tai-khoan-admin/', views.create_superuser, name='create_superuser'),
     path('loi-dang-nhap/', views.error_login, name='error_login'),
+    path('dang-nhap-lai/', views.reset_password, name='reset_password'),
 ]

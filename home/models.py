@@ -35,22 +35,6 @@ class CreationUserForm(UserCreationForm):
                 'oninput': "this.setCustomValidity('')"
             }),
         }
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        if commit:
-            user.save()
-
-        # Get or create the UserProfile instance for this user
-        user_profile, created = UserProfile.objects.get_or_create(user=user)
-
-        # Update the UserProfile with the new role (and other fields if needed)
-        role = self.cleaned_data.get('role', 'customer')  # Default role is 'customer'
-        user_profile.role = role
-        user_profile.save()
-
-        return user
-
-
 
 # Category model
 class category(models.Model):
@@ -80,10 +64,10 @@ class ProductType(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=1000)
     amountprice = models.CharField(max_length=255, blank=False, default='0')
-    owner =  models.OneToOneField(User, on_delete=models.CASCADE)
+    owner =  models.OneToOneField(User, on_delete=models.CASCADE, related_name='products')
     onSale = models.BooleanField(default=False)
     detail = models.TextField(null=True, blank=True)
-    imageP = models.ImageField(null=True, blank=True)
+    imageP = models.ImageField(null=True, blank=True, upload_to="hotels/")
     categories = models.ManyToManyField(category, blank=True)
     room_types = models.ManyToManyField(RoomType, blank=True)  # Allows multiple room types
     product_type = models.ManyToManyField(ProductType, blank=True)
@@ -120,7 +104,7 @@ class Room(models.Model):
     )  # Reference the 'code' field of RoomType
     status = models.ForeignKey(StatusType, on_delete=models.SET_NULL, null=True, related_name='rooms')
     rating = models.IntegerField(null=True)
-    image = models.ImageField(null=True, blank=True, upload_to="rooms/")
+    image = models.ImageField(null=True, blank=True, upload_to="rooms/", default='default-image.png')
 
     def __str__(self):
         return f"{self.product.name} - {self.room_type.name if self.room_type else 'Unknown'} - {self.room_code}"
@@ -200,7 +184,7 @@ class cart(models.Model):
 class new(models.Model):
     title = models.CharField(max_length=1000)
     detail = models.TextField(null=True, blank=True)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="news/")
 
     def __str__(self):
         return self.title
@@ -216,7 +200,7 @@ class new(models.Model):
 # User Profile model
 class UserProfile(models.Model):
     ROLE_TYPE_CHOICES = [
-        ('seller', 'Chủ cơ sở lưu tú'),
+        ('seller', 'Chủ CS lưu trú'),
         ('customer', 'Khách hàng'),
         ('admin', 'Người quản lí'),
     ]
@@ -228,7 +212,8 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=255, choices=ROLE_TYPE_CHOICES, default='customer',)
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
     data_modified = models.DateTimeField(auto_now=True)
-    profile_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    profile_image = models.ImageField(null=True, blank=True, upload_to="profiles/")
+    base_password = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username

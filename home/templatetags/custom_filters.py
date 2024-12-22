@@ -11,3 +11,7 @@ def format_price(value):
     # Use intcomma to add commas and then replace commas with dots
     formatted_value = intcomma(value)
     return formatted_value.replace(",", ".")
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
