@@ -174,6 +174,10 @@
   {% block update_room %}{% endblock %}
   {% block edit_profile %}{% endblock %}
   </br>
+
+  <button onclick="scrollToTop()" id="back-to-top" class="btn btn-primary rounded-circle">
+      <i class="fas fa-arrow-up"></i>
+  </button>
   <!-- footer -->
   </br></br></br>
   <footer class="container-fluid bg-purple text-light text-center fixed-bottom py-2">
@@ -233,6 +237,89 @@ footer div {
 
   <script src="{%static 'app/js/cart.js' %}"></script>
   <script src="{%static 'app/js/customer.js' %}"></script>
+
+
+
+  <style>
+    /* Back to Top Button Styling */
+    #back-to-top {
+        position: fixed;
+        bottom: 100px; /* Default for larger screens */
+        right: 30px;
+        display: none; /* Initially hidden */
+        z-index: 1000;
+        background-color: #D6722B;
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 50%;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Show Button */
+    #back-to-top.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Hide Button */
+    #back-to-top.hide {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    /* Responsive Adjustments for Phones and Tablets */
+    @media (max-width: 768px) {
+        #back-to-top {
+            bottom: 150px; /* Move button higher on smaller screens */
+            width: 50px ;
+            right: 20px; /* Slightly adjust position */
+            padding: 10px 12px; /* Reduce padding */
+            font-size: 1rem; /* Slightly smaller font size */
+        }
+    }
+
+    @media (max-width: 480px) {
+        #back-to-top {
+            bottom: 200px; /* Higher position on very small screens */
+            width: 50px ;
+            right: 15px; /* Align closer to the edge */
+            padding: 8px 10px; /* Smaller padding for smaller screens */
+            font-size: 0.9rem; /* Smaller font size */
+        }
+    }
+
+
+</style>
+
+<script>
+    // Show or hide the Back to Top button dynamically
+    window.addEventListener('scroll', function () {
+        const backToTopBtn = document.getElementById('back-to-top');
+        const scrollThreshold = 2400; // Adjust the scroll threshold here
+
+        if (window.scrollY > scrollThreshold) {
+            backToTopBtn.classList.add('show');
+            backToTopBtn.classList.remove('hide');
+        } else {
+            backToTopBtn.classList.remove('show');
+            backToTopBtn.classList.add('hide');
+        }
+    });
+
+    // Smooth scroll to top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+</script>
 
 </body>
 
