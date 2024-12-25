@@ -4,7 +4,7 @@ from .views import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tin-tuc/', views.news, name="news"),
+    path('dich-vu-khac/', views.news, name="news"),
     path('quan-ly-co-so/', views.Cart, name="cart"),
     path('chi-tiet-co-so/<hotel_id>', views.detail_hotel, name="detail_hotel"),
     path('quan-ly-co-so-cho-nguoi-quan-li/', views.manage_hotel, name="manage_hotel"),

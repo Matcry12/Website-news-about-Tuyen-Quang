@@ -6,7 +6,7 @@ def parse_amount_start(product):
     return float(amount_start.replace(',', '').replace('.', ''))
 
 def filter_hotels(request):
-    hotels = Product.objects.annotate(room_count=Count('rooms'))
+    hotels = Product.objects.all()
     
     # Filter by username (partial match)
     name = request.GET.get('name')
@@ -17,41 +17,28 @@ def filter_hotels(request):
     if owner:
         hotels = hotels.filter(owner__icontains=owner)
 
+    start_price = request.GET.get('min_price')
+    end_price = request.GET.get('max_price')
 
-    price = request.GET.get('price')
-    if price and price != 'all':
+    if start_price or end_price:  # Check if either price is provided
+        filtered_hotels = []
 
-        start_price = None
-        end_price = None
+        for item in hotels:
+            try:
+                
+                prices = item.amountprice.split('-')
+                amount_start = parse_price(prices[0])
+                
+                if amount_start <= int(end_price) and amount_start >= int(start_price):
+                    filtered_hotels.append(item)
+                    
+            except (ValueError, IndexError):
+                # Handle cases where amountprice is invalid
+                continue
 
-        if price == '1':
-            end_price = '500.000'
-        if price == '2':
-            start_price = '500.000'
-            end_price = '1.000.000'
-        if price == '3':
-            start_price = '1.000.000'
-
-        if end_price or start_price:  # Check if either price is provided
-            filtered_hotels = []
-
-            if end_price:
-                end = parse_price(end_price)
-                for item in hotels:
-                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
-                    if amount_start <= end:
-                        filtered_hotels.append(item)
-
-            if start_price:
-                start = parse_price(start_price)
-                for item in hotels:
-                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
-                    if start <= amount_start:
-                        filtered_hotels.append(item)
-
-            # Ensure only unique IDs are filtered when both conditions are applied
-            filtered_ids = list({hotel.id for hotel in filtered_hotels})
-            hotels = hotels.filter(id__in=filtered_ids)
+        # Apply filtering once
+        filtered_ids = list({hotel.id for hotel in filtered_hotels})
+        hotels = hotels.filter(id__in=filtered_ids)
 
     category_ids = request.GET.getlist('category')
     if category_ids and 'all' not in category_ids:
@@ -86,6 +73,8 @@ def export_hotel(request):
     hotel_data = []
     for hotel in hotels:
         room_types = ', '.join(room_type.name for room_type in hotel.room_types.all())
+
+        room_count_for_product = hotel.rooms.filter(product=hotel).count()
         try:
             full_owner_name = f"{hotel.owner.last_name} {hotel.owner.first_name}"
         except AttributeError:
@@ -94,7 +83,7 @@ def export_hotel(request):
             'Tên cơ sở lưu trú': hotel.name,
             'Địa chỉ': hotel.location,
             'Họ tên chủ cơ sở': full_owner_name,
-            'Số phòng': hotel.room_count,
+            'Số phòng': room_count_for_product,
             'Loại phòng': room_types,  # Include room types here
             'Số điện thoại': hotel.phonecall,
             'Giá niêm yết':  hotel.amountprice,
@@ -143,34 +132,34 @@ def export_hotel(request):
 def filter_users(request, user_profile):
     users = UserProfile.objects.all()
 
-    # Filter by username (partial match)
     name = request.GET.get('name')
     if name:
-        users = users.filter(user__username__icontains=name)  # Use icontains for partial match
+        users = users.filter(user__username__icontains=name) 
 
-    # Filter by CCCD (partial match)
+    hotel = request.GET.get('hotel')
+
+    if hotel:
+        users = users.filter(user__products__name__icontains=hotel).distinct()
+
     cccd = request.GET.get('cccd')
     if cccd:
-        users = users.filter(cccd__icontains=cccd)  # Use icontains for partial match
+        users = users.filter(cccd__icontains=cccd)
     
-    # Filter by phone number (partial match)
     phone = request.GET.get('phonecall')
     if phone:
-        users = users.filter(phonecall__icontains=phone)  # Use icontains for partial match
+        users = users.filter(phonecall__icontains=phone)
 
-    # Filter by full name (concatenated first and last name, partial match)
     fullname = request.GET.get('fullname')
     if fullname:
         users = users.annotate(
             full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name'))
         ).filter(
-            full_name__icontains=fullname  # Partial match for full name
+            full_name__icontains=fullname 
         )
 
-    # Filter by email (partial match)
     email = request.GET.get('email')
     if email:
-        users = users.filter(user__email__icontains=email)  # Use icontains for partial match
+        users = users.filter(user__email__icontains=email) 
     
     role_ids = request.GET.getlist('role')
     if 'all' not in role_ids:
@@ -180,9 +169,6 @@ def filter_users(request, user_profile):
             users = users.filter(role='seller')
         if '3' in role_ids:
             users = users.filter(role='admin')
-
-
-    # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
         return None
     
@@ -195,16 +181,22 @@ def export_account(request):
     
     user_data = users.annotate(
         full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name')),
-        product_name = Value('N/a')
+        product_name = Value('N/a'),
+        role_display=Case(
+            When(role='seller', then=Value('Chủ CS lưu trú')),
+            When(role='customer', then=Value('Khách hàng')),
+            When(role='admin', then=Value('Người quản lí')),
+            default=Value('Không xác định'),
+            output_field=CharField(),
+        )
     ).values(
         'user__username',
-        'role',
+        'role_display',
         'product_name',
         'full_name',     
         'user__email', 
         'phonecall',
         'cccd',
-        'birthday',
         'base_password',
         'date_created',
         
@@ -223,14 +215,36 @@ def export_account(request):
     df['user__email'].replace('', 'N/a', inplace=True)
     df['base_password'].replace({None: 'Tài khoản đã đổi mật khẩu'}, inplace=True)
     df['base_password'].replace('None', 'Tài khoản đã đổi mật khẩu', inplace=True)
+    df['base_password'].replace('', 'Tài khoản đã đổi mật khẩu', inplace=True)
     df['base_password'].replace('none', 'Tài khoản đã đổi mật khẩu', inplace=True)
+
+    # Sort rows by 'product_name'
+    df = df.sort_values(by='product_name', ascending=True)
+
+    # Reorder columns
+    column_order = [
+        'user__username',
+        'full_name',
+        'role_display',
+        'product_name',
+        'user__email',
+        'phonecall',
+        'cccd',
+        'base_password',
+        'date_created'
+    ]
+    df = df[column_order]
+
+    # Reset index
+    df.reset_index(drop=True, inplace=True)
+
+
     # Rename columns for better readability
     df.rename(columns={
         'user__username': 'Tên tài khoản',
-        'role': 'Vai trò',
+        'role_display': 'Vai trò',
         'product_name': 'Tên cơ sở lưu trú',
         'full_name': 'Họ tên',      
-        'birthday': 'Ngày sinh',
         'user__email': 'Email',
         'cccd': 'Căn cước công dân',
         'phonecall': 'Số điện thoại',
@@ -239,7 +253,7 @@ def export_account(request):
     }, inplace=True)
 
     # Format datetime columns to 'yyyy-mm-dd h:mm:ss'
-    datetime_columns = ['Ngày sinh', 'Ngày tạo']
+    datetime_columns = ['Ngày tạo']
     for column in datetime_columns:
         if pd.api.types.is_datetime64_any_dtype(df[column]):  # Check if column is datetime
             df[column] = df[column].dt.strftime('%Y-%m-%d %H:%M:%S')  # Apply format
@@ -410,7 +424,9 @@ def export_new_password(request):
         sheet.cell(row=row_num, column=1, value=result.get("account"))
         sheet.cell(row=row_num, column=2, value=result.get("last_name"))
         sheet.cell(row=row_num, column=3, value=result.get("first_name"))
-        sheet.cell(row=row_num, column=4, value=result.get("email"))
+        # Check for None or empty string and set 'N/a' if true
+        email = result.get("email") or 'N/a'
+        sheet.cell(row=row_num, column=4, value=email)
         sheet.cell(row=row_num, column=5, value=result.get("new_password"))
 
     # Define the border style

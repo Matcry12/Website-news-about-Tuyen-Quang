@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from ..models import *
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Q, Value, F, FloatField, Count
+from django.db.models import Q, Value, F, FloatField, Count, CharField
 import json
 from collections import defaultdict
 from django.contrib.auth import authenticate,login,logout
@@ -611,34 +611,34 @@ def return_room(request, order_id):
 def filter_users(request, user_profile):
     users = UserProfile.objects.all()
 
-    # Filter by username (partial match)
     name = request.GET.get('name')
     if name:
-        users = users.filter(user__username__icontains=name)  # Use icontains for partial match
+        users = users.filter(user__username__icontains=name) 
 
-    # Filter by CCCD (partial match)
+    hotel = request.GET.get('hotel')
+
+    if hotel:
+        users = users.filter(user__products__name__icontains=hotel).distinct()
+
     cccd = request.GET.get('cccd')
     if cccd:
-        users = users.filter(cccd__icontains=cccd)  # Use icontains for partial match
+        users = users.filter(cccd__icontains=cccd)
     
-    # Filter by phone number (partial match)
     phone = request.GET.get('phonecall')
     if phone:
-        users = users.filter(phonecall__icontains=phone)  # Use icontains for partial match
+        users = users.filter(phonecall__icontains=phone)
 
-    # Filter by full name (concatenated first and last name, partial match)
     fullname = request.GET.get('fullname')
     if fullname:
         users = users.annotate(
             full_name=Concat(F('user__last_name'), Value(' '), F('user__first_name'))
         ).filter(
-            full_name__icontains=fullname  # Partial match for full name
+            full_name__icontains=fullname 
         )
 
-    # Filter by email (partial match)
     email = request.GET.get('email')
     if email:
-        users = users.filter(user__email__icontains=email)  # Use icontains for partial match
+        users = users.filter(user__email__icontains=email) 
     
     role_ids = request.GET.getlist('role')
     if 'all' not in role_ids:
@@ -648,34 +648,10 @@ def filter_users(request, user_profile):
             users = users.filter(role='seller')
         if '3' in role_ids:
             users = users.filter(role='admin')
-
-
-    # If the user role is not 'admin', restrict the result
     if user_profile.role != 'admin':
         return None
     
     return users
-
-def reset_user_password(user_id):
-    try:
-        user = User.objects.get(id=user_id)
-
-        # Generate a new random password
-        new_password = User.objects.make_random_password(length=10)
-        user.set_password(new_password)
-        user.save()
-
-        # Send the new password via email
-        send_mail(
-            'Mật khẩu của bạn đã được làm mới',
-            f'Xin chào {user.username},\n\nMật khẩu mới của bạn là: {new_password}\n\nXin hãy đăng nhập và sửa nó sớm nhất có thể.',
-            'fdtywadw@gmail.com',  # From email
-            [user.email],  # To email
-        )
-
-        return {"user_id": user.id, "status": "success", "new_password": new_password}
-    except ObjectDoesNotExist:
-        return {"user_id": user_id, "status": "error", "message": "User does not exist"}
 
 def manage_account(request):
     if request.user.is_authenticated:
@@ -686,14 +662,14 @@ def manage_account(request):
         users = filter_users(request, user_profile)
         allowed = users.exists()
         count = users.count()
-        paginator = Paginator(users, 10)  # Paginate results
+        paginator = Paginator(users, 10) 
         page_number = request.GET.get('page')
         users_page = paginator.get_page(page_number)
 
         query_params = request.GET.copy()
-        query_params.pop('page', None)  # Remove the 'page' parameter if it exists
-        query_string = query_params.urlencode()  # Generate a clean query string
-        # Fetch the UserProfile for the authenticated user
+        query_params.pop('page', None)  
+        query_string = query_params.urlencode() 
+
     else:
         user_not_login = "block"
         users_page = None
@@ -716,12 +692,16 @@ def manage_account(request):
                     profile.save()
                     user.save()
 
-                    send_mail(
-                        'Mật khẩu của bạn đã được làm mới',
-                        f'Xin chào {user.username},\n\nMật khẩu mới của bạn là: {new_password}\n\nXin hãy đăng nhập và sửa nó sớm nhất có thể.',
-                        'fdtywadw@gmail.com',  # From email
-                        [user.email],  # To email
-                    )
+                    try:
+                        send_mail(
+                            'Mật khẩu của bạn đã được làm mới',
+                            f'Xin chào {user.username},\n\nMật khẩu mới của bạn là: {new_password}\n\nXin hãy đăng nhập và sửa nó sớm nhất có thể.',
+                            'fdtywadw@gmail.com',  # From email
+                            [user.email],  # To email
+                            fail_silently=True  # Fail silently to avoid exceptions
+                        )
+                    except Exception as e:
+                        print(f"Email failed to send: {e}")
 
                     reset_results.append({
                         "account": user.username,

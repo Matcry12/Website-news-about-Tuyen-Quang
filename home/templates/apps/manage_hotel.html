@@ -47,14 +47,12 @@
                                 </select>
                             </div>
 
-                            <div class="form-group" >
-                                <label for="price" class="form-label">Giá phòng</label>
-                                <select name="price" id="price" class="form-control">
-                                    <option value="all">--Tất cả giá-- </option>
-                                    <option value="1" > Dưới 500.000 VNĐ/đêm </option>
-                                    <option value="2" > 500.000 - 1.000.000 VNĐ/đêm </option>
-                                    <option value="3" > Trên 1.000.000 VNĐ/đêm </option>
-                                </select>
+                            <div class="form-group" id="price">
+                                <label for="price" class="form-label color-text"><strong>Khoảng giá</strong></label>
+                                <div class="d-flex">
+                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
+                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                </div>
                             </div>
 
                             <div class="form-group">

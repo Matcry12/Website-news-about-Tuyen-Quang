@@ -20,6 +20,7 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'app/css/edit_profile.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% endblock %}
 
@@ -127,47 +128,63 @@
         <!-- Password Fields -->
         <h3 class="mt-4">Mật khẩu</h3>
         <div class="row">
+            <!-- Password1 Field -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password1.id_for_label }}" id="id_password1" >Mật khẩu mới:</label>
-                    {{ user_form.password1 }}
+                    <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
+                    <div class="input-group">
+                        {{ user_form.password1 }}
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password1', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <!-- Password2 Field -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password2.id_for_label }}" id="id_password2">Xác nhận mật khẩu:</label>
-                    {{ user_form.password2 }}
-                </div>
-            </div>
-        </div>
-        <button type="button" class="btn orange btn-rounded" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">
-            Cập nhật
-        </button>
-    
-        <!-- Confirmation Modal -->
-        <div class="modal fade" id="confirmUpdateModal" tabindex="-1" aria-labelledby="confirmUpdateModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmUpdateModalLabel">Xác nhận cập nhật thông tin</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Bạn có chắc chắn muốn cập nhật thông tin này?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <!-- Hidden Submit Button -->
-                        <button type="submit" name="action" value="Cập nhật" class="btn orange">Xác nhận</button>
+                    <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
+                    <div class="input-group">
+                        {{ user_form.password2 }}
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password2', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        {% if profile.role == 'admin' %}
-            <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
-        {% else %}
-            <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
-        {% endif %}
+
+        <div class="text-center mt-4">
+            <button type="button" class="btn orange btn-rounded" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">
+                Cập nhật
+            </button>
+        
+            <!-- Confirmation Modal -->
+            <div class="modal fade" id="confirmUpdateModal" tabindex="-1" aria-labelledby="confirmUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmUpdateModalLabel">Xác nhận cập nhật thông tin</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn cập nhật thông tin này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <!-- Hidden Submit Button -->
+                            <button type="submit" name="action" value="Cập nhật" class="btn orange">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if profile.role == 'admin' %}
+                <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+            {% else %}
+                <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+            {% endif %}
+            </div>
         </div>
         <br/>
         
@@ -226,61 +243,79 @@
     
 <style>
         .breadcrumbs {
-border: 1px solid #cbd2d9;
-border-radius: 0.3rem;
-display: inline-flex;
-margin-bottom: 10px;
-overflow: hidden;
-}
+        border: 1px solid #cbd2d9;
+        border-radius: 0.3rem;
+        display: inline-flex;
+        margin-bottom: 10px;
+        overflow: hidden;
+        }
 
-.breadcrumbs__item {
-background: #fff;
-color: #333;
-outline: none;
-padding: 0.75em 0.75em 0.75em 1.25em;
-position: relative;
-text-decoration: none;
-transition: background 0.2s linear;
-}
+        .breadcrumbs__item {
+        background: #fff;
+        color: #333;
+        outline: none;
+        padding: 0.75em 0.75em 0.75em 1.25em;
+        position: relative;
+        text-decoration: none;
+        transition: background 0.2s linear;
+        }
 
-.breadcrumbs__item:hover:after,
-.breadcrumbs__item:hover {
-background: #edf1f5;
-}
+        .breadcrumbs__item:hover:after,
+        .breadcrumbs__item:hover {
+        background: #edf1f5;
+        }
 
-.breadcrumbs__item:focus:after,
-.breadcrumbs__item:focus,
-.breadcrumbs__item.is-active:focus {
-background: #323f4a;
-color: #fff;
-}
+        .breadcrumbs__item:focus:after,
+        .breadcrumbs__item:focus,
+        .breadcrumbs__item.is-active:focus {
+        background: #323f4a;
+        color: #fff;
+        }
 
-.breadcrumbs__item:after,
-.breadcrumbs__item:before {
-background: white;
-bottom: 0;
-clip-path: polygon(50% 50%, -50% -50%, 0 100%);
-content: "";
-left: 100%;
-position: absolute;
-top: 0;
-transition: background 0.2s linear;
-width: 1em;
-z-index: 1;
-}
+        .breadcrumbs__item:after,
+        .breadcrumbs__item:before {
+        background: white;
+        bottom: 0;
+        clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+        content: "";
+        left: 100%;
+        position: absolute;
+        top: 0;
+        transition: background 0.2s linear;
+        width: 1em;
+        z-index: 1;
+        }
 
-.breadcrumbs__item:before {
-background: #cbd2d9;
-margin-left: 1px;
-}
+        .breadcrumbs__item:before {
+        background: #cbd2d9;
+        margin-left: 1px;
+        }
 
-.breadcrumbs__item:last-child {
-border-right: none;
-}
+        .breadcrumbs__item:last-child {
+        border-right: none;
+        }
 
-.breadcrumbs__item.is-active {
-background: #edf1f5;
-}
+        .breadcrumbs__item.is-active {
+        background: #edf1f5;
+        }
 </style>
 
+
+<script>
+    function togglePassword(inputId, button) {
+        const passwordInput = document.getElementById(inputId);
+        const icon = button.querySelector('i');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+
+</script>
 {% endblock edit_profile %}

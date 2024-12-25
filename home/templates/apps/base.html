@@ -83,20 +83,22 @@
               <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">Quản lý cơ sở lưu trú</a>
             </li>
           {% endif %}
-          {% if profile.role != 'admin' %}
+          {% if profile.role != 'admin' and profile != none %}
             <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}">Đơn đặt phòng</a></li>
           {% endif %}
           {% if profile.role == 'admin' %}
               <li class="nav-item"><a class="nav-link active" href="{% url 'manage_account' %}">Quản lí tài khoản</a></li>
               <li class="nav-item"><a class="nav-link active" href="{% url 'listroom' %}">Thống kê phòng</a></li>
           {% endif %}
-
+          
+          {% if profile != none %}
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url 'historylist' %}">Lịch sử đặt phòng</a>
+            </li>
+          {% endif %}
+        
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'historylist' %}">Lịch sử đặt phòng</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'news' %}">Tin tức</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'news' %}">Dịch vụ khác</a>
           </li>
 
         </ul>

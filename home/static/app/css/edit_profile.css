@@ -4,7 +4,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow for depth */
     width: 100%; /* Make it fit the content's width */
-    max-width: 600px; /* Limit the maximum width of the form box */
+    max-width: 800px; /* Limit the maximum width of the form box */
     margin: 0 auto; /* Center the box horizontally */
 }
 
@@ -14,22 +14,6 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.custom-form input[type="text"], .custom-form select, .custom-form input[type="date"] {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    font-weight: normal;
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.custom-form input[type="text"]:focus, .custom-form select:focus, .custom-form input[type="date"]:focus {
-    border-color: #1E90FF; /* Border color on focus (blue) */
-    box-shadow: 0 0 5px rgba(30, 144, 255, 0.5); /* Glow effect on focus */
 }
 
 .btn-secondary {
@@ -42,8 +26,8 @@
 }
 
 .btn-secondary:hover {
-    background-color: #f8f9fa;
-    color: black;
+    background-color: #D6722B;
+    color: white;
 }
 
 /* Styling for the image */
@@ -60,7 +44,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
@@ -70,81 +54,25 @@ h1 {
     font-size: 2.5rem;
     text-align: center;
 }
-/* Container for the form */
-.custom-box {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-h3 {
-    font-size: 18px;
-    color: #444;
-    margin-top: 10px;
-}
-
-/* Form styling */
-.custom-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1px; /* Reduced space between form fields */
-}
-
-/* Label styling */
-label {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
-    margin-top: 5px; /* Reduced top margin */
-}
-
-/* Input and text area styling */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="file"],
-textarea {
-    padding: 8px; /* Reduced padding */
-    font-size: 14px;
-    margin-bottom: 8px; /* Reduced bottom margin */
-    border: 1px solid #ddd;
+.btn-secondary {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 10px 20px;
     border-radius: 5px;
-    transition: border-color 0.3s ease;
+    border: 1px solid #ccc;
+    cursor: pointer;
 }
 
-/* Focus effect */
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-textarea:focus {
-    border-color: #5cb85c;
+.btn-secondary:hover {
+    background-color: #f8f9fa;
+    color: black;
 }
 
-/* Image input styling */
-input[type="file"] {
-    padding: 5px;
-    border: none;
-    background-color: transparent;
-}
-
-/* Error message styling */
-.error {
-    color: #f44336;
-    font-size: 12px;
-    margin-top: 5px;
-}
-
-.error p {
-    margin: 0;
-}
-
-/* Button styling */
 input[type="submit"] {
     padding: 10px 20px;
     font-size: 16px;
+    margin-top: 20px;
     background-color: #D6722B;
     color: white;
     border: none;
@@ -158,33 +86,6 @@ input[type="submit"]:hover {
     background-color: #D6722B;
 }
 
-/* Custom image display section */
-.uploaded-image {
-    max-width: 100%;
-    max-height: 200px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
-/* File input wrapper for image */
-.field-wrapper {
-    margin-top: 10px; /* Reduced top margin */
-}
-
-/* Field group styling for a cleaner layout */
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px; /* Reduced space between fields */
-}
-
-/* Styling for the form inside a field group */
-.form-group input,
-.form-group select,
-.form-group textarea {
-    margin-top: 3px; /* Reduced margin-top */
-}
-
 
 .orange{
     background-color: #D6722B;
@@ -196,3 +97,6 @@ input[type="submit"]:hover {
     background-color: #D6722B;
     color: white;
 }
+
+
+

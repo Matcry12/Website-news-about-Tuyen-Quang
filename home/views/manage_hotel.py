@@ -307,41 +307,28 @@ def filter_hotels(request):
     if owner:
         hotels = hotels.filter(owner__icontains=owner)
 
+    start_price = request.GET.get('min_price')
+    end_price = request.GET.get('max_price')
 
-    price = request.GET.get('price')
-    if price and price != 'all':
+    if start_price or end_price:  # Check if either price is provided
+        filtered_hotels = []
 
-        start_price = None
-        end_price = None
+        for item in hotels:
+            try:
+                
+                prices = item.amountprice.split('-')
+                amount_start = parse_price(prices[0])
+                
+                if amount_start <= int(end_price) and amount_start >= int(start_price):
+                    filtered_hotels.append(item)
+                    
+            except (ValueError, IndexError):
+                # Handle cases where amountprice is invalid
+                continue
 
-        if price == '1':
-            end_price = '500.000'
-        if price == '2':
-            start_price = '500.000'
-            end_price = '1.000.000'
-        if price == '3':
-            start_price = '1.000.000'
-
-        if end_price or start_price:  # Check if either price is provided
-            filtered_hotels = []
-
-            if end_price:
-                end = parse_price(end_price)
-                for item in hotels:
-                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
-                    if amount_start <= end:
-                        filtered_hotels.append(item)
-
-            if start_price:
-                start = parse_price(start_price)
-                for item in hotels:
-                    amount_start, amount_end = map(parse_price, item.amountprice.split('-'))
-                    if start <= amount_start:
-                        filtered_hotels.append(item)
-
-            # Ensure only unique IDs are filtered when both conditions are applied
-            filtered_ids = list({hotel.id for hotel in filtered_hotels})
-            hotels = hotels.filter(id__in=filtered_ids)
+        # Apply filtering once
+        filtered_ids = list({hotel.id for hotel in filtered_hotels})
+        hotels = hotels.filter(id__in=filtered_ids)
 
     category_ids = request.GET.getlist('category')
     if category_ids and 'all' not in category_ids:
