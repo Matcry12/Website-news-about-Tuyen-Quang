@@ -1,0 +1,109 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Container Styling */
+body {
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.custom-container {
+    background: linear-gradient(135deg, #D6722B, #D6722B); /* Gradient */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+/* Table and Form Styling */
+.table-wrapper {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.field-wrapper {
+    background: #f9f9f9;
+    border: 2px solid #D6722B; /* Add a solid border with color */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    margin-bottom: 10px;
+}
+
+
+.field-wrapper strong {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Input and Select Styling */
+.form-control,
+.form-select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: black;
+    box-shadow: 0 0 5px rgba(106, 27, 154, 0.5);
+}
+
+/* Buttons */
+.btn-primary,
+.btn-view-room {
+    background-color: #D6722B;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover,
+.btn-view-room:hover {
+    background-color: #B6591F;
+    transform: scale(1.05);
+}
+
+.btn-outline-secondary {
+    color: black;
+    border: 2px solid black;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6A1B9A;
+    color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .row > .col-md-4 {
+        margin-bottom: 15px;
+    }
+    .breadcrumbs {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+
+h3{
+    color: rgb(255, 255, 255);
+}
+
+.orange-text{
+    color: #D6722B;
+}

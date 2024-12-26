@@ -1,0 +1,110 @@
+/* Blue custom-box styling */
+.custom-box {
+    background-color: #D6722B; /* Blue background for the card */
+    color: white; /* White text for the card */
+    padding: 30px;
+    border-radius: 15px;
+}
+
+    
+/* Custom Heading */
+h2 {
+    color: #ffffff;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form Input Fields */
+.form-control {
+    border-radius: 8px;
+}
+
+/* Input Focus Styling */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+
+
+/* Mobile and Small Screen Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .custom-box {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+}
+.custom-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.orange{
+    background-color: #D6722B;
+    color: white;
+}
+.orange:hover{
+    background-color: #D6722B;
+    color: white;
+}
+
+
+/* Ensure the input group aligns items properly */
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Password Input Field */
+.password-input {
+    border-radius: 8px;
+    padding-right: 40px; /* Space for the eye icon */
+    height: 44px; /* Standard height for inputs */
+}
+
+/* Eye Icon Button Styling */
+.toggle-password {
+    position: absolute;
+    right: 10px; /* Distance from the right edge */
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background: none;
+    border: none;
+    padding: 0 10px; /* Horizontal padding for the button */
+    font-size: 1.2rem;
+    color: #6c757d; /* Muted color for the eye icon */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure Eye Icon Fills the Button */
+.toggle-password i {
+    line-height: 1;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+/* Hover State for the Icon */
+.toggle-password:hover {
+    color: #007bff;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+    .password-input {
+        padding-right: 35px;
+    }
+}
