@@ -531,20 +531,21 @@ def edit_profile(request, user_id=None):
 
 @login_required
 def change_password(request, user_id=None):
-    # Check if the logged-in user is admin
+    # Check if the logged-in user is authenticated
     if request.user.is_authenticated:
         user_not_login = "none"
-        user_profile = UserProfile.objects.get(user=request.user)  # The current user's profile
+        user_profile = get_object_or_404(UserProfile, user=request.user)
     else:
-        user_not_login = "block"
-        user_profile = None
         return redirect('login')
 
-    # Handle user profile editing based on role
-    if user_profile.role != 'admin':
-        password_form = UserPasswordForm(request.POST or None,  request.FILES or None, instance=request.user)
-        user_profile.base_password = None
+    # Initialize password form outside of the conditional block
+    password_form = UserPasswordForm(request.POST or None, request.FILES or None, instance=request.user)
     error = ""
+
+    # Handle role-specific logic
+    if user_profile.role != 'admin':
+        user_profile.base_password = None
+
     if request.method == "POST":
         action = request.POST.get("action")
         if action == "Cập nhật":
@@ -557,13 +558,12 @@ def change_password(request, user_id=None):
                     if user_profile:
                         user_profile.save()
 
-                    password_form.save()
-                    
                     return redirect('profile')
                 else:
-                    error = 'Lỗi trong quá trình nhập dữ liệu'
+                    error = 'Lỗi: Mật khẩu không khớp'
             else:
-                error = 'Lỗi trong quá trình nhập dữ liệu'
+                error = 'Lỗi: Vui lòng kiểm tra lại dữ liệu nhập'
+
     # Default context
     context = {
         'profile': user_profile,
