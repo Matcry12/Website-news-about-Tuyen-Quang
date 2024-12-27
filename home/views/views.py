@@ -69,7 +69,7 @@ def news(request):
     else:
         user_not_login = "block"
         profile = None
-    context = {'news': news, 'user_not_login': user_not_login, 'profile': profile, 'page_name': 'news'}
+    context = {'news': news, 'user_not_login': user_not_login, 'profile': profile, 'page_name': 'news', 'home': "home",}
     return render(request, 'apps/news.html', context)
 
 def parse_amount_start(product):
