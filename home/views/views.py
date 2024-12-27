@@ -666,6 +666,8 @@ def manage_account(request):
         page_number = request.GET.get('page')
         users_page = paginator.get_page(page_number)
 
+        error = ''
+
         query_params = request.GET.copy()
         query_params.pop('page', None)  
         query_string = query_params.urlencode() 
@@ -745,54 +747,55 @@ def manage_account(request):
             excel_file = request.FILES['account_excel']
             
             # Open the uploaded Excel file
-            wb = openpyxl.load_workbook(excel_file)
-            sheet = wb.active
-            
-            # Define the column headers for products
-            headers = [
-                'Tên tài khoản (username)', 
-                'Email', 
-                'Tên riêng', 
-                'Tên đệm', 
-                'Số điện thoại',
-                'Mật khẩu',
-            ]
-            
-            # Iterate over the rows in the sheet
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                account_data = dict(zip(headers, row))
-
-                username = account_data.get('Tên tài khoản (username)', '').strip()
-
-                # Check if the username is not empty
-                if not username:
-                    continue  # Skip this row if username is missing or empty
-
-                # Check if the user already exists, if so, skip
-                try:
-                    user = User.objects.get(username=username)
-                except ObjectDoesNotExist:
-                    user = None  # If user does not exist, proceed with creating new user
+            try:
+                wb = openpyxl.load_workbook(excel_file)
+                sheet = wb.active
                 
-                if not user:  # Only create a new user if it doesn't exist
-                    # Create the new user and set password
-                    user = User.objects.create_user(
-                        username=username,
-                        email=account_data['Email'],
-                        first_name=account_data['Tên riêng'],
-                        last_name=account_data['Tên đệm'],
-                        password=account_data['Mật khẩu'],  # Set password using 'create_user'
-                    )
+                # Define the column headers for products
+                headers = [
+                    'Tên tài khoản (username)', 
+                    'Email', 
+                    'Tên riêng', 
+                    'Tên đệm', 
+                    'Số điện thoại',
+                    'Mật khẩu',
+                ]
+                
+                # Iterate over the rows in the sheet
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    account_data = dict(zip(headers, row))
 
-                    # Create the user profile
-                    UserProfile.objects.create(
-                        user=user,
-                        role = 'seller',
-                        phonecall=account_data['Số điện thoại'],
-                        base_password = account_data['Mật khẩu'],
-                    )
+                    username = account_data.get('Tên tài khoản (username)', '').strip()
 
-        return redirect('manage_account')
+                    # Check if the username is not empty
+                    if not username:
+                        continue  # Skip this row if username is missing or empty
+
+                    # Check if the user already exists, if so, skip
+                    try:
+                        user = User.objects.get(username=username)
+                    except ObjectDoesNotExist:
+                        user = None  # If user does not exist, proceed with creating new user
+                    
+                    if not user:  # Only create a new user if it doesn't exist
+                        # Create the new user and set password
+                        user = User.objects.create_user(
+                            username=username,
+                            email=account_data['Email'],
+                            first_name=account_data['Tên riêng'],
+                            last_name=account_data['Tên đệm'],
+                            password=account_data['Mật khẩu'],  # Set password using 'create_user'
+                        )
+
+                        # Create the user profile
+                        UserProfile.objects.create(
+                            user=user,
+                            role = 'seller',
+                            phonecall=account_data['Số điện thoại'],
+                            base_password = account_data['Mật khẩu'],
+                        )
+            except Exception as e:
+                error = 'Lỗi trong quá trình nhập dữ liệu'
     
     products = Product.objects.all()
     account_hotel = {
@@ -800,7 +803,7 @@ def manage_account(request):
         for product in products
     }
 
-    context = {'user_not_login': user_not_login, 'products': products, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string, 'account_hotel': account_hotel}
+    context = {'user_not_login': user_not_login,'error': error, 'products': products, 'users_page': users_page, 'allowed': allowed, 'count': count, 'profile': user_profile, 'query_string': query_string, 'account_hotel': account_hotel}
 
     return render(request, 'apps/manage_account.html', context)
 

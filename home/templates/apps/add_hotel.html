@@ -23,6 +23,13 @@
             <label for="{{ form.name.id_for_label }}">Tên cơ sở lưu trú</label>
             {{ form.name }}
         </div>
+
+        {% if profile.role == 'admin' %}
+            <div class="form-group mb-3">
+                <label for="{{ form.name.id_for_label }}">Tên cơ sở lưu trú</label>
+                {{ form.owner }}
+            </div>
+        {% endif %}
         
         <div class="form-group mb-3">
             <label for="{{ form.amountprice.id_for_label }}">Giá</label>

@@ -85,6 +85,7 @@ def add_hotel_user(request):
     # Ensure only users with the 'seller' role can access this view
     if user_profile.role != 'admin':
         return redirect('home')
+    
     error = ''
     if request.method == 'POST':
         form = ProductFormCreateUser(request.POST, request.FILES)
