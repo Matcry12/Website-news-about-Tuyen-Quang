@@ -54,12 +54,14 @@ def add_hotel(request):
         form = ProductFormCreate(request.POST, request.FILES)
         print(form)
         if form.is_valid():
-            # Save the form but assign the current user as the owner
-            product = form.save(commit=False)  # Do not save yet
-            product.owner = request.user  # Assign owner explicitly
-            product.save()
+            product = form.save(commit=False)
+            product.owner = request.user
+            product.save() 
 
-            form.save_m2m() 
+            form.save_m2m()
+
+            user_profile.product = product
+            user_profile.save()
             return redirect(reverse_lazy('cart'))
         else:
             error = 'Vui lòng kiểm tra lại thông tin và thử lại.'
@@ -69,7 +71,7 @@ def add_hotel(request):
     context = {
         'form': form,
         'page_name': "hotel_detail",
-        'user_not_login': "none",  # User is authenticated
+        'user_not_login': "none",
         'profile': user_profile,
         'error': error,
     }
@@ -77,12 +79,9 @@ def add_hotel(request):
     
 @login_required
 def add_hotel_user(request):
-    """
-    Handle adding a new hotel for authenticated sellers.
-    """
+
     user_profile = UserProfile.objects.get(user=request.user)
     
-    # Ensure only users with the 'seller' role can access this view
     if user_profile.role != 'admin':
         return redirect('home')
     
@@ -90,8 +89,13 @@ def add_hotel_user(request):
     if request.method == 'POST':
         form = ProductFormCreateUser(request.POST, request.FILES)
         if form.is_valid():
-            # Save the form but assign the current user as the owner
-            form.save()
+            product = form.save(commit=False) 
+            user_profile_seller = UserProfile.objects.get(user=product.owner)
+            user_profile_seller.product = product
+            user_profile_seller.save()
+            product.save()
+            
+            form.save_m2m() 
             return redirect(reverse_lazy('cart'))
         else:
             error = 'Vui lòng kiểm tra lại thông tin và thử lại.'
@@ -100,7 +104,7 @@ def add_hotel_user(request):
     
     context = {
         'form': form,
-        'user_not_login': "none",  # User is authenticated
+        'user_not_login': "none",
         'profile': user_profile,
         'error': error,
     }

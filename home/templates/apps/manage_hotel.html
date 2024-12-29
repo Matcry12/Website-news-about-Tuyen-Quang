@@ -194,9 +194,13 @@
                                                 <td>{{hotel.location}}</td>
                                                 <td>{{hotel.phonecall}}</td>
                                                 <td>
-                                                    {% for _ in "1"|center:hotel.rate %}
-                                                        <i class="fa fa-star text-warning" aria-hidden="true"></i>
-                                                    {% endfor %}
+                                                    {% if hotel.rate == 0 %}
+                                                        Chưa đánh giá
+                                                    {% else %}
+                                                        {% for _ in "1"|center:hotel.rate %}
+                                                            <i class="fa fa-star text-warning"></i>
+                                                        {% endfor %}
+                                                    {% endif %}
                                                 </td>
                                                 <td>
                                                     <a href="{% url 'detail_hotel' hotel_id=hotel.id %}" class="btn btn-outline purple btn-sm rounded-pill px-3 d-inline-flex align-items-center">

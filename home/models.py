@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.timezone import now
+from django.core.validators import MinValueValidator
+
 # User Creation Form
 class CreationUserForm(UserCreationForm):
     class Meta:
@@ -73,7 +75,10 @@ class Product(models.Model):
     product_type = models.ManyToManyField(ProductType, blank=True)
     location = models.CharField(max_length=255)
     maplocation = models.CharField(max_length=255, default='N/A')
-    rate = models.IntegerField(null=True)
+    rate = models.IntegerField(
+        null=True,
+        validators=[MinValueValidator(0)]
+    )
     phonecall = models.CharField(max_length=255, blank=False, default='0')
 
     def __str__(self):
@@ -88,6 +93,8 @@ class Product(models.Model):
         return url
     def ownerName(self):
         return f"{self.owner.last_name} {self.owner.first_name}"
+    class Meta:
+        ordering = ['name']
     
 class StatusType(models.Model):
     name = models.CharField(max_length=100)  # Display name for the room type
@@ -133,6 +140,9 @@ class Room(models.Model):
     
     def roomName(self):
         return f"{self.room_type.name if self.room_type else 'Unknown'}"
+    
+    class Meta:
+        ordering = ['product']
         
     
 # Order model
@@ -215,6 +225,7 @@ class UserProfile(models.Model):
     data_modified = models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(null=True, blank=True, upload_to="profiles/")
     base_password = models.TextField(null=True, blank=True)
+    product = models.OneToOneField("Product", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username

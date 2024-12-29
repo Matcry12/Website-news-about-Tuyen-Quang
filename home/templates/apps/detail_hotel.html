@@ -42,12 +42,16 @@
                                         <tr>
                                             <td>{{ product.name }}</td>
                                             <td>
-                                                {% for _ in "1"|center:product.rate %}
-                                                    <i class="fa fa-star text-warning"></i>
-                                                {% endfor %}
+                                                {% if product.rate == 0 %}
+                                                    Chưa đánh giá
+                                                {% else %}
+                                                    {% for _ in "1"|center:product.rate %}
+                                                        <i class="fa fa-star text-warning"></i>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </td>
                                             <td>
-                                                {% if product.onSale %} Còn phòng {% else %} Hết phòng {% endif %}
+                                                {% if onsale %} Còn phòng {% else %} Hết phòng {% endif %}
                                             </td>
                                             <td>{{ product.amountprice }} Đồng</td>
                                             <td>{{ product.phonecall }}</td>

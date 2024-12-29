@@ -39,10 +39,11 @@ class RoomForm(forms.ModelForm):
 class RoomFormCreate(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['room_code', 'price', 'room_type', 'image']
+        fields = ['room_code', 'price', 'status', 'room_type', 'image']
         labels = {
             'room_code': ('Mã phòng'),
             'price': ('Giá'),
+            'status': ('Trạng thái'),
             'room_type': ('Loại phòng'),
             'image': ('Ảnh phòng'),
         }

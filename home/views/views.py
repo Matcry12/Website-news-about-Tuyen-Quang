@@ -399,6 +399,7 @@ def updateRoom(request, room_id):
         user_not_login = "block"
         user_profile = None  # No profile available for non-logged-in users
         return redirect('login')
+    error = ''
     room_form = RoomForm(request.POST or None, request.FILES or None , instance=room)
     pic_form = RoomPicForm(request.POST or None , request.FILES or None , instance=room)
     if room_form.is_valid() and pic_form.is_valid():
@@ -406,9 +407,9 @@ def updateRoom(request, room_id):
             pic_form.save()
 
             return redirect('cart')  # Redirect to room details page after saving
-    else:
-        print(room_form.is_valid())
-    context = {'profile': user_profile, 'user_not_login': user_not_login, 'room': room, 'room_form': room_form, 'pic_form': pic_form}
+    elif request.method == 'POST': 
+        error = 'Xảy ra lỗi trong quá trình nhập dữ liệu'
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'room': room, 'room_form': room_form, 'pic_form': pic_form, 'error': error}
     return render(request, 'apps/update_room.html', context)
 
 def updateHotel(request, hotel_id):
@@ -423,6 +424,7 @@ def updateHotel(request, hotel_id):
         user_not_login = "block"
         user_profile = None  # No profile available for non-logged-in users
         return redirect('login')
+    error = ''
     hotel_form = ProductForm(request.POST or None, request.FILES or None , instance=hotel)
     pic_form = ProductPicForm(request.POST or None , request.FILES or None , instance=hotel)
     if hotel_form.is_valid() and pic_form.is_valid():
@@ -430,7 +432,9 @@ def updateHotel(request, hotel_id):
             pic_form.save()
 
             return redirect('cart')  # Redirect to room details page after saving
-    context = {'profile': user_profile, 'user_not_login': user_not_login, 'hotel': hotel, 'hotel_form': hotel_form, 'pic_form': pic_form}
+    elif request.method == 'POST': 
+        error = 'Xảy ra lỗi trong quá trình nhập dữ liệu'
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'hotel': hotel, 'hotel_form': hotel_form, 'pic_form': pic_form, 'error': error}
     return render(request, 'apps/update_hotel.html', context)
 
 def updateTrade(request, order_id):
@@ -446,17 +450,21 @@ def updateTrade(request, order_id):
         user_not_login = "block"
         user_profile = None  # No profile available for non-logged-in users
         return redirect('login')
+    error = ''
     order_form = OrderForm(request.POST or None, request.FILES or None , instance=Order)
     if order_form.is_valid():
         # Check if the selected room belongs to the same product
         selected_room = order_form.cleaned_data['room']
         if selected_room.product != product_room.room.product:
-            order_form.add_error('room', "Phòng được chọn không hợp lệ")
+            error = 'Phòng được chọn không hợp lệ'
         else:
             # Save the form if validation passes
             order_form.save()
             return redirect('order')  # Redirect after successful update
-    context = {'profile': user_profile, 'user_not_login': user_not_login, 'order': Order, 'order_form': order_form}
+    elif request.method == 'POST': 
+        error = 'Xảy ra lỗi trong quá trình nhập dữ liệu'    
+    
+    context = {'profile': user_profile, 'user_not_login': user_not_login, 'order': Order, 'order_form': order_form, 'error': error}
     return render(request, 'apps/update_order.html', context)
 
 @login_required

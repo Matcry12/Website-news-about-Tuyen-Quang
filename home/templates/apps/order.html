@@ -185,26 +185,30 @@
                                             </td>
                                             <td>{{ order.method }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-sm btn-danger w-100 py-2" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
-                                                    <i class="fas fa-trash-alt me-2"></i> Xóa
-                                                </a>
-                                                <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa đơn hàng này không?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                {% if order.confirm == False %}
+                                                    <a href="#" class="btn btn-sm btn-danger w-100 py-2" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
+                                                        <i class="fas fa-trash-alt me-2"></i> Xóa
+                                                    </a>
+                                                    <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Bạn có chắc chắn muốn xóa đơn hàng này không?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                {% else %}
+                                                Đơn đặt phòng của bạn đã được xác nhận
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

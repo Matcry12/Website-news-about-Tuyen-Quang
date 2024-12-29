@@ -9,13 +9,15 @@ def delete_order(request, order_id):
     user_profile = UserProfile.objects.get(user=request.user)
     
     orderD = order.objects.get(id=order_id)
-    if orderD.room.product.owner != request.user and orderD.customer != request.user:
-        return redirect('order')
-    status_instance = StatusType.objects.get(name="Trống")
-    orderD.room.status = status_instance
-    orderD.room.save()
-    orderD.delete()
-    messages.success(request, "Order deleted successfully")
+
+    if orderD.confirm == False:
+        if orderD.room.product.owner != request.user and orderD.customer != request.user:
+            return redirect('order')
+        status_instance = StatusType.objects.get(name="Trống")
+        orderD.room.status = status_instance
+        orderD.room.save()
+        orderD.delete()
+        messages.success(request, "Order deleted successfully")
     return redirect('order')
 
 def delete_room(request, room_id):

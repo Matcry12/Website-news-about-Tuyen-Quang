@@ -1,7 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}Khách sạn{% endblock %}
+{% block title %}Tuyên Quang Booking{% endblock %}
 
 
 
@@ -166,9 +166,13 @@
                                 <!-- Room/Price Box -->
                                 <div class="box-group bordered-box flex-grow-1">
                                     <p class="card-text"><strong>Đánh giá:</strong>
-                                        {% for _ in "1"|center:product.rate %}
-                                            <i class="fa fa-star text-warning"></i>
-                                        {% endfor %}
+                                        {% if product.rate == 0 %}
+                                            Chưa đánh giá
+                                        {% else %}
+                                            {% for _ in "1"|center:product.rate %}
+                                                <i class="fa fa-star text-warning"></i>
+                                            {% endfor %}
+                                        {% endif %}
                                     </p>
                                     <p class="card-text"><strong>Tình trạng:</strong> 
                                         {% with product_rooms|get_item:product.id as rooms %}
