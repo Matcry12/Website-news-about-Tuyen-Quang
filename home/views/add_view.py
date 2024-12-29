@@ -118,11 +118,13 @@ def add_account(request):
     user_not_login = "none"
     # Get the current user's profile
     user_profile = UserProfile.objects.get(user=request.user)
+    if user_profile.role != 'admin':
+        return redirect('home')
     allow = True  # Allow account creation
 
     # Forms for account creation
     user_form = UserEditForm(request.POST or None)
-    profile_form = UserProfileForm(request.POST or None, request.FILES or None)
+    profile_form = UserProfileFormUser(request.POST or None, request.FILES or None)
 
     # Initialize error variable
     error = ""
@@ -153,6 +155,7 @@ def add_account(request):
                 else:
                     error = "Mật khẩu không đúng"
             else:
+                print(user_form.is_valid())
                 error = "Xảy ra lỗi trong lúc nhập dữ liệu"
 
     # Render the page with forms and context

@@ -318,7 +318,7 @@ def manage_hotel(request):
                 
                 # Define the column headers for products
                 headers = [
-                    'Tên cơ sở lưu trú', 'Giá niêm yết', 'Chủ sở hữu (username)', 'Trạng thái', 'Mô tả',
+                    'Tên cơ sở lưu trú', 'Giá niêm yết', 'Chủ sở hữu (username)', 'Mô tả',
                     'Dịch vụ', 'Các loại phòng', 
                     'Loại cơ sở lưu trú', 'Địa chỉ', 'Tọa độ', 'Đánh giá (sao)', 'Số điện thoại'
                 ]
@@ -341,7 +341,6 @@ def manage_hotel(request):
                         name=product_data['Tên cơ sở lưu trú'],
                         amountprice=product_data['Giá niêm yết'],
                         owner=owner,
-                        onSale=product_data['Trạng thái'],
                         detail=product_data['Mô tả'],
                         location=product_data['Địa chỉ'],
                         maplocation=product_data['Tọa độ'],

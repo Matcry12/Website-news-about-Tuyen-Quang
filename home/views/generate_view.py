@@ -8,7 +8,7 @@ def generate_example_hotel(request):
 
     # Define the headers
     headers = [
-        'Tên cơ sở lưu trú', 'Giá niêm yết', 'Chủ sở hữu (username)', 'Trạng thái', 'Mô tả',
+        'Tên cơ sở lưu trú', 'Giá niêm yết', 'Chủ sở hữu (username)', 'Mô tả',
         'Dịch vụ', 'Các loại phòng', 
         'Loại cơ sở lưu trú', 'Địa chỉ', 'Tọa độ', 'Đánh giá (sao)', 'Số điện thoại'
     ]
@@ -19,8 +19,8 @@ def generate_example_hotel(request):
 
     # Example data to be shown in the file (optional)
     example_data = [
-        ["Cơ sở luu trú A", "100.000 - 200.000", "Ductam", True, "Khách sạn tuyệt đẹp bên cạnh bãi biển", "Bể bơi, Wifi", "Phòng đơn, Phòng đôi", "Khách sạn", "Tuyên Quang", "N/A", 5, "0123456789"],
-        ["Cơ sở luu trú B", "300.000 - 500.000", "Duong", False, "Nhà nghỉ tuyệt vời", "Bãi đỗ xe", "Phòng VIP", "Nhà nghỉ", "Phú thọ", "N/A", 4, "0987654321"],
+        ["Cơ sở luu trú A", "100.000 - 200.000", "Ductam", "Khách sạn tuyệt đẹp bên cạnh bãi biển", "Bể bơi, Wifi", "Phòng đơn, Phòng đôi", "Khách sạn", "Tuyên Quang", "N/A", 5, "0123456789"],
+        ["Cơ sở luu trú B", "300.000 - 500.000", "Duong", "Nhà nghỉ tuyệt vời", "Bãi đỗ xe", "Phòng VIP", "Nhà nghỉ", "Phú thọ", "N/A", 4, "0987654321"],
     ]
 
     # Add example data to the sheet (you can add more rows or leave it empty for the user to fill)

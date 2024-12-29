@@ -12,7 +12,7 @@ from django.db.models.functions import Cast, Substr, StrIndex, Concat
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator
-from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate , SuperUserForm, UserEditForm, UserProfileForm, OrderForm, UserPasswordForm, ProductFormCreateUser
+from home.templatetags.forms import RoomForm, RoomPicForm, ProductForm, ProductPicForm, RoomFormCreate, ProductFormCreate, UserProfileFormUser , SuperUserForm, UserEditForm, UserProfileForm, OrderForm, UserPasswordForm, ProductFormCreateUser
 from django.contrib.auth.decorators import login_required
 import pandas as pd
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -455,7 +455,7 @@ def updateTrade(request, order_id):
     if order_form.is_valid():
         # Check if the selected room belongs to the same product
         selected_room = order_form.cleaned_data['room']
-        if selected_room.product != product_room.room.product:
+        if selected_room.product != product_room.room.product and Order.customer != user_profile.user:
             error = 'Phòng được chọn không hợp lệ'
         else:
             # Save the form if validation passes

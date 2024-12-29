@@ -185,6 +185,62 @@ class UserProfileForm(forms.ModelForm):
     )
 
 
+class UserProfileFormUser(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['role','cccd', 'birthday', 'phonecall', 'profile_image']
+        labels = {
+            'role': 'Vai trò',
+            'cccd': 'Căn cước công dân',
+            'birthday': 'Ngày sinh',
+            'phonecall': 'Số điện thoại',
+            'profile_image': 'Ảnh đại diện',
+        }
+        widgets = {
+            'role': forms.Select(attrs={
+                'class': 'form-control form-outline',
+                'placeholder': 'Chọn vai trò',
+            }, choices=[('', 'Chọn vai trò')] + list(UserProfile.ROLE_TYPE_CHOICES)),
+            'cccd': forms.TextInput(attrs={
+                'class': 'form-control form-outline',
+                'placeholder': 'Nhập căn cước công dân',
+                'pattern': r'^\d{12}$',  # Pattern for 12-digit CCCD
+                'oninvalid': "this.setCustomValidity('Căn cước công dân phải là 12 chữ số.')",
+                'oninput': "this.setCustomValidity('')"
+            }),
+            'birthday': forms.DateInput(attrs={
+                'class': 'form-control form-outline',
+                'type': 'date',
+                'placeholder': 'Ngày sinh (d/m/y)',
+                'oninvalid': "this.setCustomValidity('Vui lòng nhập ngày sinh hợp lệ.')",
+                'oninput': "this.setCustomValidity('')",
+            }),
+            'phonecall': forms.TextInput(attrs={
+                'class': 'form-control form-outline',
+                'placeholder': 'Nhập số điện thoại',
+                'pattern': r'^(\\+84|0)[3|5|7|8|9][0-9]{8}$',  # Example phone number pattern (Vietnam)
+                'oninvalid': "this.setCustomValidity('Số điện thoại không hợp lệ.')",
+                'oninput': "this.setCustomValidity('')"
+            }),
+            'profile_image': forms.ClearableFileInput(attrs={
+                'class': 'form-control form-outline',
+                'accept': 'image/*',  # Allow only image files
+            }),
+        }
+
+    # Add custom `input_formats` for the `birthday` field
+    birthday = forms.DateField(
+        input_formats=settings.DATE_INPUT_FORMATS,
+        widget=forms.DateInput(attrs={
+            'class': 'form-control form-outline',
+            'placeholder': 'Ngày sinh (dd/mm/yyyy)',
+            'type': 'text',  # Use text instead of date to enforce custom format
+            'oninvalid': "this.setCustomValidity('Vui lòng nhập ngày sinh hợp lệ (dd/mm/yyyy).')",
+            'oninput': "this.setCustomValidity('')",
+        }),
+        required=False
+    )
+
 class UserPasswordForm(forms.ModelForm):
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control form-outline', 'placeholder': 'Nhập mật khẩu mới'}),

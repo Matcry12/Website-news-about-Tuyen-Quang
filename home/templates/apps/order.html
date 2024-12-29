@@ -186,6 +186,9 @@
                                             <td>{{ order.method }}</td>
                                             <td>
                                                 {% if order.confirm == False %}
+                                                    <a href="{% url 'update_trade' order_id=order.id %}" class="btn btn-sm btn-info">
+                                                        <i class="fas fa-pencil-alt me-2"></i> Sửa
+                                                    </a>     
                                                     <a href="#" class="btn btn-sm btn-danger w-100 py-2" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
                                                         <i class="fas fa-trash-alt me-2"></i> Xóa
                                                     </a>
