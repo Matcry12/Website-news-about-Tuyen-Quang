@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-02 13:56+0700\n"
+"POT-Creation-Date: 2025-01-02 15:19+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,14 +30,15 @@ msgstr ""
 #: .\home\templates\apps\listroom.html:45
 #: .\home\templates\apps\manage_account.html:39
 #: .\home\templates\apps\manage_hotel.html:37
-#: .\home\templates\apps\manage_hotel.html:169
+#: .\home\templates\apps\manage_hotel.html:169 .\home\templatetags\forms.py:85
 msgid "Tên cơ sở lưu trú"
 msgstr ""
 
 #: .\home\templates\apps\add_hotel.html:30
 #: .\home\templates\apps\manage_account.html:34
 #: .\home\templates\apps\manage_account.html:161
-#: .\home\templates\apps\manage_hotel.html:256
+#: .\home\templates\apps\manage_hotel.html:256 .\home\templatetags\forms.py:118
+#: .\home\templatetags\forms.py:298
 msgid "Tên tài khoản"
 msgstr ""
 
@@ -46,17 +47,18 @@ msgstr ""
 #: .\home\templates\apps\detail_hotel.html:38
 #: .\home\templates\apps\detail_hotel.html:159
 #: .\home\templates\apps\listroom.html:139
-#: .\home\templates\apps\listroom.html:169
+#: .\home\templates\apps\listroom.html:169 .\home\templatetags\forms.py:36
+#: .\home\templatetags\forms.py:47 .\home\templatetags\forms.py:86
 msgid "Giá"
 msgstr ""
 
 #: .\home\templates\apps\add_hotel.html:41 .\home\templates\apps\home.html:218
 #: .\home\templates\apps\manage_hotel.html:178
-#: .\home\templates\apps\manage_hotel.html:210
+#: .\home\templates\apps\manage_hotel.html:210 .\home\templatetags\forms.py:88
 msgid "Chi tiết"
 msgstr ""
 
-#: .\home\templates\apps\add_hotel.html:46
+#: .\home\templates\apps\add_hotel.html:46 .\home\templatetags\forms.py:89
 msgid "Danh mục"
 msgstr ""
 
@@ -72,24 +74,26 @@ msgstr ""
 #: .\home\templates\apps\listroom.html:167
 #: .\home\templates\apps\manage_hotel.html:173
 #: .\home\templates\apps\order.html:43 .\home\templates\apps\order.html:158
+#: .\home\templatetags\forms.py:37 .\home\templatetags\forms.py:49
+#: .\home\templatetags\forms.py:90
 msgid "Loại phòng"
 msgstr ""
 
-#: .\home\templates\apps\add_hotel.html:56
+#: .\home\templates\apps\add_hotel.html:56 .\home\templatetags\forms.py:91
 msgid "Loại sản phẩm"
 msgstr ""
 
-#: .\home\templates\apps\add_hotel.html:61
+#: .\home\templates\apps\add_hotel.html:61 .\home\templatetags\forms.py:92
 msgid "Vị trí"
 msgstr ""
 
-#: .\home\templates\apps\add_hotel.html:66
+#: .\home\templates\apps\add_hotel.html:66 .\home\templatetags\forms.py:93
 msgid "Bản đồ"
 msgstr ""
 
 #: .\home\templates\apps\add_hotel.html:71 .\home\templates\apps\cart.html:38
 #: .\home\templates\apps\detail_hotel.html:36
-#: .\home\templates\apps\manage_hotel.html:177
+#: .\home\templates\apps\manage_hotel.html:177 .\home\templatetags\forms.py:94
 msgid "Đánh giá"
 msgstr ""
 
@@ -99,7 +103,9 @@ msgstr ""
 #: .\home\templates\apps\manage_account.html:60
 #: .\home\templates\apps\manage_account.html:166
 #: .\home\templates\apps\manage_hotel.html:176
-#: .\home\templates\apps\manage_hotel.html:261
+#: .\home\templates\apps\manage_hotel.html:261 .\home\templatetags\forms.py:22
+#: .\home\templatetags\forms.py:95 .\home\templatetags\forms.py:146
+#: .\home\templatetags\forms.py:199
 msgid "Số điện thoại"
 msgstr ""
 
@@ -428,7 +434,8 @@ msgstr ""
 #: .\home\templates\apps\cart.html:140
 #: .\home\templates\apps\detail_hotel.html:117
 #: .\home\templates\apps\listroom.html:74 .\home\templates\apps\order.html:48
-#: .\home\templates\apps\order.html:161
+#: .\home\templates\apps\order.html:161 .\home\templatetags\forms.py:38
+#: .\home\templatetags\forms.py:48
 msgid "Trạng thái"
 msgstr ""
 
@@ -539,6 +546,7 @@ msgstr ""
 #: .\home\templates\apps\change_password.html:51
 #: .\home\templates\apps\edit_profile.html:135
 #: .\home\templates\apps\manage_account.html:168
+#: .\home\templatetags\forms.py:120
 msgid "Mật khẩu"
 msgstr ""
 
@@ -739,7 +747,8 @@ msgstr ""
 #: .\home\templates\apps\historylist.html:73
 #: .\home\templates\apps\manage_account.html:55
 #: .\home\templates\apps\manage_account.html:165
-#: .\home\templates\apps\manage_hotel.html:260
+#: .\home\templates\apps\manage_hotel.html:260 .\home\templatetags\forms.py:144
+#: .\home\templatetags\forms.py:197
 msgid "Căn cước công dân"
 msgstr ""
 
@@ -793,6 +802,7 @@ msgstr ""
 #: .\home\templates\apps\historylist.html:142
 #: .\home\templates\apps\historylist.html:187
 #: .\home\templates\apps\order.html:42 .\home\templates\apps\order.html:157
+#: .\home\templatetags\forms.py:24
 msgid "Ngày nhận phòng"
 msgstr ""
 
@@ -809,7 +819,7 @@ msgstr ""
 #: .\home\templates\apps\historylist.html:145
 #: .\home\templates\apps\historylist.html:190
 #: .\home\templates\apps\manage_hotel.html:175
-#: .\home\templates\apps\order.html:152
+#: .\home\templates\apps\order.html:152 .\home\templatetags\forms.py:20
 msgid "Địa chỉ"
 msgstr ""
 
@@ -822,6 +832,7 @@ msgstr ""
 #: .\home\templates\apps\historylist.html:147
 #: .\home\templates\apps\historylist.html:192
 #: .\home\templates\apps\order.html:40 .\home\templates\apps\order.html:155
+#: .\home\templatetags\forms.py:23
 msgid "CCCD"
 msgstr ""
 
@@ -1060,6 +1071,7 @@ msgid "Đang xử lý... Vui lòng chờ."
 msgstr ""
 
 #: .\home\templates\apps\manage_account.html:162
+#: .\home\templatetags\forms.py:196
 msgid "Vai trò"
 msgstr ""
 
@@ -1069,7 +1081,7 @@ msgid "Họ và tên"
 msgstr ""
 
 #: .\home\templates\apps\manage_account.html:164
-#: .\home\templates\apps\manage_hotel.html:259
+#: .\home\templates\apps\manage_hotel.html:259 .\home\templatetags\forms.py:299
 msgid "Email"
 msgstr ""
 
@@ -1164,7 +1176,8 @@ msgstr ""
 msgid "Có"
 msgstr ""
 
-#: .\home\templates\apps\manage_hotel.html:258
+#: .\home\templates\apps\manage_hotel.html:258 .\home\templatetags\forms.py:145
+#: .\home\templatetags\forms.py:198
 msgid "Ngày sinh"
 msgstr ""
 
@@ -1185,6 +1198,7 @@ msgid "Ngày đặt phòng"
 msgstr ""
 
 #: .\home\templates\apps\order.html:44 .\home\templates\apps\order.html:159
+#: .\home\templatetags\forms.py:35 .\home\templatetags\forms.py:46
 msgid "Mã phòng"
 msgstr ""
 
@@ -1294,7 +1308,7 @@ msgstr ""
 msgid "Quý khách vui lòng đăng nhập lại tài khoản"
 msgstr ""
 
-#: .\home\templates\apps\room.html:13
+#: .\home\templates\apps\room.html:13 .\home\templatetags\forms.py:50
 msgid "Ảnh phòng"
 msgstr ""
 
@@ -1395,6 +1409,38 @@ msgstr ""
 
 #: .\home\templates\apps\update_room.html:53
 msgid "Trạng thái:"
+msgstr ""
+
+#: .\home\templatetags\forms.py:21
+msgid "Tên khách hàng"
+msgstr ""
+
+#: .\home\templatetags\forms.py:25
+msgid "Phương thức thanh toán"
+msgstr ""
+
+#: .\home\templatetags\forms.py:26
+msgid "Phòng"
+msgstr ""
+
+#: .\home\templatetags\forms.py:80
+msgid "Nhập mô tả"
+msgstr ""
+
+#: .\home\templatetags\forms.py:87
+msgid "Đang bán"
+msgstr ""
+
+#: .\home\templatetags\forms.py:147 .\home\templatetags\forms.py:200
+msgid "Ảnh đại diện"
+msgstr ""
+
+#: .\home\templatetags\forms.py:300
+msgid "Tên riêng"
+msgstr ""
+
+#: .\home\templatetags\forms.py:301
+msgid "Họ"
 msgstr ""
 
 #: .\mywebsite\settings.py:138

@@ -1,6 +1,8 @@
 from django import forms
 from home.models import Room, Product, User, UserProfile, order
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+
 
 class OrderForm(forms.ModelForm):
     class Meta:
@@ -15,13 +17,13 @@ class OrderForm(forms.ModelForm):
             'room',
         ]
         labels = {
-            'address': 'Địa chỉ',
-            'cname': 'Tên khách hàng',
-            'phonecall': 'Số điện thoại',
-            'cccd': 'CCCD',
-            'datebook': 'Ngày nhận phòng',
-            'method': 'Phương thức thanh toán',
-            'room': 'Phòng',
+            'address': _('Địa chỉ'),
+            'cname': _('Tên khách hàng'),
+            'phonecall': _('Số điện thoại'),
+            'cccd': _('CCCD'),
+            'datebook': _('Ngày nhận phòng'),
+            'method': _('Phương thức thanh toán'),
+            'room': _('Phòng'),
         }
 
 
@@ -30,10 +32,10 @@ class RoomForm(forms.ModelForm):
         model = Room
         fields = ['room_code', 'price', 'room_type', 'status']
         labels = {
-            'room_code': ('Mã phòng'),
-            'price': ('Giá'),
-            'room_type': ('Loại phòng'),
-            'status': ('Trạng thái'),
+            'room_code': _('Mã phòng'),
+            'price': _('Giá'),
+            'room_type': _('Loại phòng'),
+            'status': _('Trạng thái'),
         }
 
 class RoomFormCreate(forms.ModelForm):
@@ -41,11 +43,11 @@ class RoomFormCreate(forms.ModelForm):
         model = Room
         fields = ['room_code', 'price', 'status', 'room_type', 'image']
         labels = {
-            'room_code': ('Mã phòng'),
-            'price': ('Giá'),
-            'status': ('Trạng thái'),
-            'room_type': ('Loại phòng'),
-            'image': ('Ảnh phòng'),
+            'room_code': _('Mã phòng'),
+            'price': _('Giá'),
+            'status': _('Trạng thái'),
+            'room_type': _('Loại phòng'),
+            'image': _('Ảnh phòng'),
         }
 
 class RoomPicForm(forms.ModelForm):
@@ -73,23 +75,24 @@ class ProductForm(forms.ModelForm):
         widgets = {
             'detail': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 3,  # Reduce the number of visible rows
-                'style': 'resize: none;',  # Prevent resizing (optional)
-                'placeholder': 'Nhập mô tả',
+                'rows': 3,
+                'style': 'resize: none;',
+                'placeholder': _('Nhập mô tả'),
             }),
         }
+
         labels = {
-            'name': 'Tên cơ sở lưu trú',
-            'amountprice': 'Giá',
-            'onSale': 'Đang bán',
-            'detail': 'Chi tiết',
-            'categories': 'Danh mục',
-            'room_types': 'Loại phòng',
-            'product_type': 'Loại sản phẩm',
-            'location': 'Vị trí',
-            'maplocation': 'Bản đồ',
-            'rate': 'Đánh giá',
-            'phonecall': 'Số điện thoại',
+            'name': _('Tên cơ sở lưu trú'),
+            'amountprice': _('Giá'),
+            'onSale': _('Đang bán'),
+            'detail': _('Chi tiết'),
+            'categories': _('Danh mục'),
+            'room_types': _('Loại phòng'),
+            'product_type': _('Loại sản phẩm'),
+            'location': _('Vị trí'),
+            'maplocation': _('Bản đồ'),
+            'rate': _('Đánh giá'),
+            'phonecall': _('Số điện thoại'),
         }
 
         
@@ -112,9 +115,9 @@ class SuperUserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'password']
         labels = {
-            'username': 'Tên tài khoản',
+            'username': _('Tên tài khoản'),
             'email': 'Email',
-            'password': 'Mật khẩu',
+            'password': _('Mật khẩu'),
         }
         widgets = {
             'password': forms.PasswordInput(),
@@ -138,10 +141,10 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['cccd', 'birthday', 'phonecall', 'profile_image']
         labels = {
-            'cccd': 'Căn cước công dân',
-            'birthday': 'Ngày sinh',
-            'phonecall': 'Số điện thoại',
-            'profile_image': 'Ảnh đại diện',
+            'cccd': _('Căn cước công dân'),
+            'birthday': _('Ngày sinh'),
+            'phonecall': _('Số điện thoại'),
+            'profile_image': _('Ảnh đại diện'),
         }
         widgets = {
             'cccd': forms.TextInput(attrs={
@@ -190,11 +193,11 @@ class UserProfileFormUser(forms.ModelForm):
         model = UserProfile
         fields = ['role','cccd', 'birthday', 'phonecall', 'profile_image']
         labels = {
-            'role': 'Vai trò',
-            'cccd': 'Căn cước công dân',
-            'birthday': 'Ngày sinh',
-            'phonecall': 'Số điện thoại',
-            'profile_image': 'Ảnh đại diện',
+            'role': _('Vai trò'),
+            'cccd': _('Căn cước công dân'),
+            'birthday': _('Ngày sinh'),
+            'phonecall': _('Số điện thoại'),
+            'profile_image': _('Ảnh đại diện'),
         }
         widgets = {
             'role': forms.Select(attrs={
@@ -292,10 +295,10 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
         labels = {
-            'username': 'Tên tài khoản',
-            'email': 'Email',
-            'first_name': 'Tên riêng',
-            'last_name': 'Họ',
+            'username': _('Tên tài khoản'),
+            'email': _('Email'),
+            'first_name': _('Tên riêng'),
+            'last_name': _('Họ'),
         }
         widgets = {
             'username': forms.TextInput(attrs={
