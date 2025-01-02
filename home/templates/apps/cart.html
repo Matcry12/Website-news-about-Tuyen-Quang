@@ -58,7 +58,7 @@
                                             <td>
                                                 {% if onsale %} {% trans "Còn phòng" %} {% else %} {% trans "Hết phòng" %} {% endif %}
                                             </td>
-                                            <td>{{ product.amountprice }} VNĐ</td>
+                                            <td>{{ product.amountprice }} VND</td>
                                             <td>{{ product.phonecall }}</td>
                                             <td>
                                                 <a href="{% url 'update_hotel' hotel_id=product.id %}" class="text-success" >
@@ -221,7 +221,7 @@
                                     <tr>
                                         <td>{{ room.roomName }}</td>
                                         <td>{{ room.room_code }}</td>
-                                        <td>{{ room.price|format_price }} VNĐ</td>
+                                        <td>{{ room.price|format_price }} VND</td>
                                         <td>{{ room.status.name }}</td>
                                         <td>
                                             <a href="{% url 'update_room' room_id=room.id %}" class="text-success">
