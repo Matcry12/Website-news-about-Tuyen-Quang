@@ -19,8 +19,8 @@ def generate_example_hotel(request):
 
     # Example data to be shown in the file (optional)
     example_data = [
-        ["Cơ sở luu trú A", "100.000 - 200.000", "Ductam", "Khách sạn tuyệt đẹp bên cạnh bãi biển", "Bể bơi, Wifi", "Phòng đơn, Phòng đôi", "Khách sạn", "Tuyên Quang", "N/A", 5, "0123456789"],
-        ["Cơ sở luu trú B", "300.000 - 500.000", "Duong", "Nhà nghỉ tuyệt vời", "Bãi đỗ xe", "Phòng VIP", "Nhà nghỉ", "Phú thọ", "N/A", 4, "0987654321"],
+        ["Cơ sở luu trú A", "100.000 - 200.000", "Ductam", "Khách sạn tuyệt đẹp bên cạnh bãi biển", "Bãi đỗ xe/Parking area, Wi-fi miễn phí/Free Wi-Fi, Bể bơi/Swimming pool, Máy điều hòa/Air conditioner, Tủ lạnh/Fridge, Ti vi/Television, Ăn sáng/Breakfast, Buffet sáng/Breakfast buffet, Dịch vụ giặt ủi,giặt khô/Laundry service", "Phòng đơn/Single room, Phòng đôi/Double room", "Khách sạn/Hotel", "Tuyên Quang", "N/A", 5, "0123456789"],
+        ["Cơ sở luu trú B", "300.000 - 500.000", "Duong", "Nhà nghỉ tuyệt vời", "Bãi đỗ xe/Parking area, Wi-fi miễn phí/Free Wi-Fi, Máy điều hòa/Air conditioner", "Phòng đơn/Single room, Phòng đôi/Double room, Phòng 3 giường/ Triple room, Phòng VIP/ VIP room", "Nhà nghỉ/Guesthouse", "Phú thọ", "N/A", 4, "0987654321"],
     ]
 
     # Add example data to the sheet (you can add more rows or leave it empty for the user to fill)
@@ -92,9 +92,9 @@ def generate_example_room(request):
 
     # Example data to be shown in the file (optional)
     example_data = [
-        ["0005", "1000000", "Phòng Đơn", 'Trống/Empty'],
-        ["0006", "5000000", "Phòng VIP", 'Đang được sử dụng/ In use',],
-        ["0005", "1000000", "Phòng Đơn", 'Chờ/Wait'],
+        ["0005", "1000000", "Phòng đơn/Single room", 'Trống/Empty'],
+        ["0006", "5000000", "Phòng VIP/ VIP room", 'Đang được sử dụng/ In use',],
+        ["0005", "1000000", "Phòng đôi/Double room", 'Chờ/Wait'],
     ]
 
     # Add example data to the sheet (you can add more rows or leave it empty for the user to fill)
