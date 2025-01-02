@@ -1,7 +1,8 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
-{% block title %}Đơn đặt phòng{% endblock %}
+{% block title %}{% trans "Đơn đặt phòng" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/order.css' %}">
@@ -13,8 +14,8 @@
 {% block order %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'order' %}" class="breadcrumbs__item is-active">Đơn đặt phòng</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'order' %}" class="breadcrumbs__item is-active">{% trans "Đơn đặt phòng" %}</a> 
 </nav>
 
 <div class="container my-4">
@@ -26,26 +27,26 @@
                 <!-- Order Table for Seller -->
                 {% if profile.role == 'seller' %}
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <a class="btn btn-outline-dark btn-sm rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
-                        <h5 class="text-center"><strong>Đơn đặt phòng: {{ count }}</strong></h5>
+                        <a class="btn btn-outline-dark btn-sm rounded-btn" href="{% url 'home' %}">&#x2190; {% trans "Trở lại" %}</a>
+                        <h5 class="text-center"><strong>{% trans "Đơn đặt phòng:" %} {{ count }}</strong></h5>
                     </div>
                     
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Người đặt phòng</th>
-                                    <th>Số ĐT</th>
-                                    <th>CCCD</th>
-                                    <th>Ngày đặt phòng</th>
-                                    <th>Ngày nhận phòng</th>
-                                    <th>Loại phòng</th>
-                                    <th>Mã phòng</th>
-                                    <th>Số phòng</th>
-                                    <th>Giá tiền</th>
-                                    <th>Phương thức</th>
-                                    <th>Trạng thái</th>
-                                    <th>Chỉnh sửa</th>
+                                    <th>{% trans "Người đặt phòng" %}</th>
+                                    <th>{% trans "Số ĐT" %}</th>
+                                    <th>{% trans "CCCD" %}</th>
+                                    <th>{% trans "Ngày đặt phòng" %}</th>
+                                    <th>{% trans "Ngày nhận phòng" %}</th>
+                                    <th>{% trans "Loại phòng" %}</th>
+                                    <th>{% trans "Mã phòng" %}</th>
+                                    <th>{% trans "Số phòng" %}</th>
+                                    <th>{% trans "Giá tiền" %}</th>
+                                    <th>{% trans "Phương thức" %}</th>
+                                    <th>{% trans "Trạng thái" %}</th>
+                                    <th>{% trans "Chỉnh sửa" %}</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,67 +62,67 @@
                                                 <td>{{ order.room.roomName }}</td>
                                                 <td>{{ order.room.roomCode }}</td>
                                                 <td>{{ order.room.room_code }}</td>
-                                                <td>{{ order.room.price|format_price }} Đồng</td>
+                                                <td>{{ order.room.price|format_price }} {% trans "Đồng" %}</td>
                                                 <td>{{ order.method }}</td>
                                                 <td>
                                                     {% if order.confirm %}
                                                         <!-- Confirmed State -->
                                                         <button class="btn btn-sm btn-primary update-status-btn" data-order="{{ order.id }}" data-action="true">
-                                                            <i class="fas fa-check-circle me-2"></i> Xác Nhận
+                                                            <i class="fas fa-check-circle me-2"></i> {% trans "Xác Nhận" %}
                                                         </button>
                                                         <button class="btn btn-sm btn-outline-warning update-status-btn" data-order="{{ order.id }}" data-action="false">
-                                                            <i class="fas fa-clock me-2"></i> Chờ
+                                                            <i class="fas fa-clock me-2"></i> {% trans "Chờ" %}
                                                         </button>
                                                     {% else %}
                                                         <!-- Pending State -->
                                                         <button class="btn btn-sm btn-outline-primary update-status-btn" data-order="{{ order.id }}" data-action="true">
-                                                            <i class="fas fa-check-circle me-2"></i> Xác Nhận
+                                                            <i class="fas fa-check-circle me-2"></i> {% trans "Xác Nhận" %}
                                                         </button>
                                                         <button class="btn btn-sm btn-warning update-status-btn" data-order="{{ order.id }}" data-action="false">
-                                                            <i class="fas fa-clock me-2"></i> Chờ
+                                                            <i class="fas fa-clock me-2"></i> {% trans "Chờ" %}
                                                         </button>
                                                     {% endif %}
                                                 </td>
                                                 <td>
                                                     <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#returnRoomModal{{ order.id }}">
-                                                        <i class="fas fa-undo-alt me-2"></i> Trả
+                                                        <i class="fas fa-undo-alt me-2"></i> {% trans "Trả" %}
                                                     </a>
                                                     <div class="modal fade" id="returnRoomModal{{ order.id }}" tabindex="-1" aria-labelledby="returnRoomModalLabel{{ order.id }}" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="returnRoomModalLabel{{ order.id }}">Xác nhận trả phòng</h5>
+                                                                    <h5 class="modal-title" id="returnRoomModalLabel{{ order.id }}">{% trans "Xác nhận trả phòng" %}</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?
+                                                                    {% trans "Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?" %}
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-danger">Có, Trả</a>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
+                                                                    <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-danger">{% trans "Có, Trả" %}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <a href="{% url 'update_trade' order_id=order.id %}" class="btn btn-sm btn-info">
-                                                        <i class="fas fa-pencil-alt me-2"></i> Sửa
+                                                        <i class="fas fa-pencil-alt me-2"></i> {% trans "Sửa" %}
                                                     </a>                                                    
                                                     <a href="#" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
-                                                        <i class="fas fa-trash me-2"></i> Xóa
+                                                        <i class="fas fa-trash me-2"></i> {% trans "Xóa" %}
                                                     </a>
                                                     <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
+                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">{% trans "Xác nhận xóa" %}</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Bạn có chắc chắn muốn xóa đơn hàng này không?
+                                                                    {% trans "Bạn có chắc chắn muốn xóa đơn hàng này không?" %}
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
+                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">{% trans "Có, Xóa" %}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -132,7 +133,7 @@
                                     {% endfor %}
                                 {% else %}
                                     <tr class="no-history-row">
-                                        <td colspan="12" class="text-center">Không có lịch sử đặt phòng.</td>
+                                        <td colspan="12" class="text-center">{% trans "Không có lịch sử đặt phòng." %}</td>
                                     </tr>
                                 {% endif %}
                             </tbody>
@@ -142,23 +143,23 @@
 
                 <!-- Order Table for Customer -->
                 {% if profile.role == 'customer' %}
-                    <h5 class="text-center"><strong>Đơn đặt phòng</strong></h5>
+                    <h5 class="text-center"><strong>{% trans "Đơn đặt phòng" %}</strong></h5>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Tên CS lưu trú</th>
-                                    <th>Địa chỉ</th>
-                                    <th>Người đặt phòng</th>
-                                    <th>Số ĐT</th>
-                                    <th>CCCD</th>
-                                    <th>Ngày đặt phòng</th>
-                                    <th>Ngày nhận phòng</th>
-                                    <th>Loại phòng</th>
-                                    <th>Mã phòng</th>
-                                    <th>Giá tiền</th>
-                                    <th>Trạng thái</th>
-                                    <th>Phương thức</th>
+                                    <th>{% trans "Tên CS lưu trú" %}</th>
+                                    <th>{% trans "Địa chỉ" %}</th>
+                                    <th>{% trans "Người đặt phòng" %}</th>
+                                    <th>{% trans "Số ĐT" %}</th>
+                                    <th>{% trans "CCCD" %}</th>
+                                    <th>{% trans "Ngày đặt phòng" %}</th>
+                                    <th>{% trans "Ngày nhận phòng" %}</th>
+                                    <th>{% trans "Loại phòng" %}</th>
+                                    <th>{% trans "Mã phòng" %}</th>
+                                    <th>{% trans "Giá tiền" %}</th>
+                                    <th>{% trans "Trạng thái" %}</th>
+                                    <th>{% trans "Phương thức" %}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -175,49 +176,49 @@
                                             <td>{{ order.datebook|date:"d/m/Y" }}</td>
                                             <td>{{ order.room.roomName }}</td>
                                             <td>{{ order.room.roomCode }}</td>
-                                            <td>{{ order.room.price|format_price }} Đồng</td>
+                                            <td>{{ order.room.price|format_price }} {% trans "Đồng" %}</td>
                                             <td>
                                                 {% if order.confirm %}
-                                                    Xác Nhận
+                                                    {% trans "Xác Nhận" %}
                                                 {% else %}
-                                                    Chờ
+                                                    {% trans "Chờ" %}
                                                 {% endif %}
                                             </td>
                                             <td>{{ order.method }}</td>
                                             <td>
                                                 {% if order.confirm == False %}
                                                     <a href="{% url 'update_trade' order_id=order.id %}" class="btn btn-sm btn-info">
-                                                        <i class="fas fa-pencil-alt me-2"></i> Sửa
+                                                        <i class="fas fa-pencil-alt me-2"></i> {% trans "Sửa" %}
                                                     </a>     
                                                     <a href="#" class="btn btn-sm btn-danger w-100 py-2" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{ order.id }}">
-                                                        <i class="fas fa-trash-alt me-2"></i> Xóa
+                                                        <i class="fas fa-trash-alt me-2"></i> {% trans "Xóa" %}
                                                     </a>
                                                     <div class="modal fade" id="deleteOrderModal{{ order.id }}" tabindex="-1" aria-labelledby="deleteOrderModalLabel{{ order.id }}" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">Xác nhận xóa</h5>
+                                                                    <h5 class="modal-title" id="deleteOrderModalLabel{{ order.id }}">{% trans "Xác nhận xóa" %}</h5>
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    Bạn có chắc chắn muốn xóa đơn hàng này không?
+                                                                    {% trans "Bạn có chắc chắn muốn xóa đơn hàng này không?" %}
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">Có, Xóa</a>
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
+                                                                    <a href="{% url 'delete_order' order_id=order.id %}" class="btn btn-danger">{% trans "Có, Xóa" %}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 {% else %}
-                                                Đơn đặt phòng của bạn đã được xác nhận
+                                                    {% trans "Đơn đặt phòng của bạn đã được xác nhận" %}
                                                 {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}
                                 {% else %}
                                     <tr class="no-history-row">
-                                        <td colspan="12" class="text-center">Không có lịch sử đặt phòng.</td>
+                                        <td colspan="12" class="text-center">{% trans "Không có lịch sử đặt phòng." %}</td>
                                     </tr>
                                 {% endif %}
                             </tbody>
@@ -232,7 +233,7 @@
                             <ul class="pagination">
                                 {% if orders_page.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ orders_page.previous_page_number }}">&#x2190; Trang trước</a>
+                                        <a class="page-link" href="?page={{ orders_page.previous_page_number }}">&#x2190; {% trans "Trang trước" %}</a>
                                     </li>
                                 {% endif %}
                                 {% for num in orders_page.paginator.page_range %}
@@ -242,7 +243,7 @@
                                 {% endfor %}
                                 {% if orders_page.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ orders_page.next_page_number }}">Sang trang &#x2192;</a>
+                                        <a class="page-link" href="?page={{ orders_page.next_page_number }}">{% trans "Sang trang" %} &#x2192;</a>
                                     </li>
                                 {% endif %}
                             </ul>

@@ -1,7 +1,8 @@
 {% extends 'apps/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load custom_filters %}
-{% block title %}Tuyên Quang Booking{% endblock %}
+{% block title %}{% trans "Tuyên Quang Booking" %}{% endblock %}
 
 
 
@@ -31,7 +32,7 @@
 <br /><br />
 
 <div>
-    <h2 class="text-center color-text" id="hotel-section"><strong>Cơ sở lưu trú</strong></h2>
+    <h2 class="text-center color-text" id="hotel-section"><strong>{% trans "Cơ sở lưu trú" %}</strong></h2>
 </div>
 
 <br />
@@ -43,25 +44,25 @@
             <div class="card p-3 mb-4">
         
                 <!-- Filter Options -->
-                <h3 class="text-center color-text"><strong>Tìm kiếm</strong></h3>
+                <h3 class="text-center color-text"><strong>{% trans "Tìm kiếm" %}</strong></h3>
                 <div class="filter-section py-3">
                     <form id="filterForm" method="POST" action="#hotel-section">
                         {% csrf_token %}  
                         <div class="filter-fields">
-                            <h6 class="form-label color-text"><strong>Cơ sở lưu trú</strong></h6>
+                            <h6 class="form-label color-text"><strong>{% trans "Cơ sở lưu trú" %}</strong></h6>
                             <div class="form-group table">
-                                <input type="text" name="name" class="form-control search-input flex-grow-1" placeholder="Nhập cơ sở lưu trú">
+                                <input type="text" name="name" class="form-control search-input flex-grow-1" placeholder="{% trans 'Nhập cơ sở lưu trú' %}">
                             </div>
     
-                            <h6 for="price" class="form-label color-text"><strong>Khoảng giá</strong></h6>
+                            <h6 for="price" class="form-label color-text"><strong>{% trans "Khoảng giá" %}</strong></h6>
                             <div class="" id="price">
                                 <div class="d-flex">
-                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
-                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="{% trans 'Từ' %}" value="{{ request.GET.min_price }}">
+                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="{% trans 'Đến' %}" value="{{ request.GET.max_price }}">
                                 </div>
                             </div>
         
-                            <h6 class="form-label color-text"><strong>Dịch vụ của khách sạn</strong></h6>
+                            <h6 class="form-label color-text"><strong>{% trans "Dịch vụ của khách sạn" %}</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for category in categories %}
@@ -74,8 +75,8 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        
-                            <h6 class="form-label color-text"><strong>Các loại cơ sở lưu trú</strong></h6>
+                            
+                            <h6 class="form-label color-text"><strong>{% trans "Các loại cơ sở lưu trú" %}</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for product_type in product_types %}
@@ -89,7 +90,7 @@
                                 </tbody>
                             </table>
                         
-                            <h6 class="form-label color-text"><strong>Các loại phòng</strong></h6>
+                            <h6 class="form-label color-text"><strong>{% trans "Các loại phòng" %}</strong></h6>
                             <table class="table">
                                 <tbody>
                                     {% for room_type in room_types %}
@@ -102,24 +103,24 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <h6 class="form-label color-text"><strong>Chọn đánh giá:</strong></h6>
+                            <h6 class="form-label color-text"><strong>{% trans "Chọn đánh giá:" %}</strong></h6>
                             <div class="form-group" >
                                 <select name="rate" id="rate" class="form-control">
-                                    <option value="all">--Tất cả số sao-- </option>
-                                    <option value="2" > 2 sao trở lên </option>
-                                    <option value="3" > 3 sao trở lên </option>
-                                    <option value="4" > 4 sao trở lên </option>
-                                    <option value="5" > 5 sao trở lên </option>
+                                    <option value="all">{% trans "--Tất cả số sao--" %} </option>
+                                    <option value="2" > {% trans "2 sao trở lên" %} </option>
+                                    <option value="3" > {% trans "3 sao trở lên" %} </option>
+                                    <option value="4" > {% trans "4 sao trở lên" %} </option>
+                                    <option value="5" > {% trans "5 sao trở lên" %} </option>
                                 </select>
                             </div>
                         
                             <!-- Submit Button -->
                             <div class="mt-3 ">
                                 <button type="submit" class="btn btn orange rounded-pill px-1">
-                                    <i class="fas fa-search me-2"></i> Tìm kiếm
+                                    <i class="fas fa-search me-2"></i> {% trans "Tìm kiếm" %}
                                 </button>
                                 <a href="?" class="btn btn-secondary rounded-pill px-1">
-                                    <i class="fas fa-times-circle me-2"></i> Xóa tìm kiếm
+                                    <i class="fas fa-times-circle me-2"></i> {% trans "Xóa tìm kiếm" %}
                                 </a>
                             </div>
                         </div>
@@ -130,6 +131,7 @@
 
         <!-- Hotel Listings (Right Side) -->
         <div class="col-md-9 custom-right-width">
+            
             <div class="row">
                 {% for product in products %}
                 <div class="col-md-6 mb-4">
@@ -142,7 +144,7 @@
                                 <!-- Address Box -->
                                 <div class="box-group bordered-box flex-grow-1 me-2">
                                     <p><strong>Địa chỉ:</strong> {{ product.location }}</p>
-                                    <button class="btn btn-outline orange-outline view-map-btn" onclick="openMapModal('{{ product.maplocation }}', '{{ product.name }}')">Xem bản đồ</button>
+                                    <button class="btn btn-outline orange-outline view-map-btn" onclick="openMapModal('{{ product.maplocation }}', '{{ product.name }}')">{% trans "Xem bản đồ" %}</button>
                                 </div>
 
                                 <!-- Map Modal with a single, reusable ID -->
@@ -165,32 +167,32 @@
 
                                 <!-- Room/Price Box -->
                                 <div class="box-group bordered-box flex-grow-1">
-                                    <p class="card-text"><strong>Đánh giá:</strong>
+                                    <p class="card-text"><strong>{% trans "Đánh giá:" %}</strong>
                                         {% if product.rate == 0 %}
-                                            Chưa đánh giá
+                                            {% trans "Chưa đánh giá" %}
                                         {% else %}
                                             {% for _ in "1"|center:product.rate %}
                                                 <i class="fa fa-star text-warning"></i>
                                             {% endfor %}
                                         {% endif %}
                                     </p>
-                                    <p class="card-text"><strong>Tình trạng:</strong> 
+                                    <p class="card-text"><strong>{% trans "Tình trạng:" %}</strong> 
                                         {% with product_rooms|get_item:product.id as rooms %}
                                             {% if rooms %}
-                                                Còn phòng
+                                                {% trans "Còn phòng" %}
                                             {% else %}
-                                                Hết phòng
+                                                {% trans "Hết phòng" %}
                                             {% endif %}
                                         {% endwith %}
                                     </p>                                    
-                                    <p class="card-text"><strong>Giá phòng:</strong> {{ product.amountprice }} Đồng</p>
-                                    <p class="card-text"><strong>Số điện thoại:</strong> {{ product.phonecall }} </p>
+                                    <p class="card-text"><strong>{% trans "Giá phòng:" %}</strong> {{ product.amountprice }} VNĐ</p>
+                                    <p class="card-text"><strong>{% trans "Số điện thoại:" %}</strong> {{ product.phonecall }} </p>
                                 </div>
                             </div>
                 
                             <!-- Services and Buttons Group -->
                             <div class="box-group bordered-box mb-3">
-                                <p class="card-text"><strong>Dịch vụ có sẵn:</strong> 
+                                <p class="card-text"><strong>{% trans "Dịch vụ có sẵn:" %}</strong> 
                                     {% for category in product.categories.all %}
                                         {{ category.name }}{% if not forloop.last %}, {% endif %}
                                     {% empty %}
@@ -204,7 +206,7 @@
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="Chat với chúng tôi qua Zalo">
-                                        <i class="fas fa-comments"></i> Chat qua Zalo
+                                        <i class="fas fa-comments"></i> {% trans "Chat qua Zalo" %}
                                     </button>
 
                                     <a 
@@ -213,7 +215,7 @@
                                         data-bs-toggle="tooltip" 
                                         data-bs-placement="top" 
                                         title="Xem chi tiết của {{ product.name }}">
-                                        <i class="fas fa-info-circle"></i> Chi tiết
+                                        <i class="fas fa-info-circle"></i> {% trans "Chi tiết" %}
                                     </a>
                                 </div>
                             </div>
@@ -226,7 +228,7 @@
                                     data-bs-toggle="tooltip" 
                                     data-bs-placement="top" 
                                     title="Đặt phòng tại {{ product.name }}">
-                                    <i class="fas fa-shopping-cart"></i> Đặt phòng
+                                    <i class="fas fa-shopping-cart"></i> {% trans "Đặt phòng" %}
                                 </button>
 
 
@@ -236,8 +238,8 @@
                 </div>                         
                 {% empty %}
                 <div class="col-12 text-center empty-state">
-                    <h6 class="text-danger">Không có cơ sở lưu trú nào.</h6>
-                    <a type="button" class="btn btn-secondary rounded" href="?">Tải lại trang</a>
+                    <h6 class="text-danger">{% trans "Không có cơ sở lưu trú nào." %}</h6>
+                    <a type="button" class="btn btn-secondary rounded" href="?">{% trans "Tải lại trang" %}</a>
                 </div>
                 {% endfor %}
             </div>

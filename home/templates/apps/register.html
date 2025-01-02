@@ -1,5 +1,6 @@
 {% extends 'apps/base.html' %}
-{% block title %}Đăng ký{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Đăng ký" %}{% endblock %}
 
 {% load static %}
 
@@ -18,7 +19,7 @@
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <!-- Added custom-form class to match login -->
                     <div class="card custom-box" style="border-radius: 15px;">
-                        <h2 class="text-uppercase text-center mb-5">Đăng ký tài khoản</h2>  
+                        <h2 class="text-uppercase text-center mb-5">{% trans "Đăng ký tài khoản" %}</h2>  
                         <div class="custom-form">
                             
                             {% for message in messages %}
@@ -28,29 +29,29 @@
                                 {% csrf_token %}
                                 <!-- Form Fields -->
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="Username">Tên tài khoản:</h5>
+                                    <h5 class="form-label" for="Username">{% trans "Tên tài khoản:" %}</h5>
                                     {{ form.username }}
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="email">Email của bạn (Có thể):</h5>
+                                    <h5 class="form-label" for="email">{% trans "mail của bạn (Có thể):" %}E</h5>
                                     {{ form.email }}
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="first_name">Tên Riêng:</h5>
+                                    <h5 class="form-label" for="first_name">{% trans "Tên Riêng:" %}</h5>
                                     {{ form.first_name }}
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="last_name">Tên Họ:</h5>
+                                    <h5 class="form-label" for="last_name">{% trans "Tên Họ:" %}</h5>
                                     {{ form.last_name }}
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="id_password1">Mật khẩu:</h5>
+                                    <h5 class="form-label" for="id_password1">{% trans "Mật khẩu:" %}</h5>
                                     <div class="input-group">
-                                        <input type="password" name="password1" class="form-control form-outline" id="id_password1" placeholder="Nhập mật khẩu" required>
+                                        <input type="password" name="password1" class="form-control form-outline" id="id_password1" placeholder="{% trans 'Nhập mật khẩu' %}" required>
                                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password1', this)">
                                             <i class="bi bi-eye"></i>
                                         </button>
@@ -58,9 +59,9 @@
                                 </div>
                                 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="id_password2">Nhập lại mật khẩu:</h5>
+                                    <h5 class="form-label" for="id_password2">{% trans "Nhập lại mật khẩu:" %}</h5>
                                     <div class="input-group">
-                                        <input type="password" name="password2" class="form-control form-outline" id="id_password2" placeholder="Nhập lại mật khẩu">
+                                        <input type="password" name="password2" class="form-control form-outline" id="id_password2" placeholder="{% trans 'Nhập lại mật khẩu' %}">
                                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password2', this)">
                                             <i class="bi bi-eye"></i>
                                         </button>
@@ -70,11 +71,11 @@
 
                                 <!-- Register Button -->
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn btn orange btn-block btn-lg gradient-custom-4 btn-rounded" style="border-radius: 10px;"><i class="fas fa-user-plus me-2"></i> Đăng ký</button>
+                                    <button type="submit" class="btn btn orange btn-block btn-lg gradient-custom-4 btn-rounded" style="border-radius: 10px;"><i class="fas fa-user-plus me-2"></i> {% trans "Đăng ký" %}</button>
                                 </div>
 
                                 <!-- Login Link -->
-                                <p class="text-center text-muted mt-5 mb-0">Bạn đã có tài khoản rồi? <a href="{% url 'login' %}" class="fw-bold text-body"><u>Đăng nhập ở đây</u></a></p>
+                                <p class="text-center text-muted mt-5 mb-0">{% trans "Bạn đã có tài khoản rồi" %}? <a href="{% url 'login' %}" class="fw-bold text-body"><u>{% trans "Đăng nhập ở đây" %}</u></a></p>
                             </form>
                             <br>
                         </div>
@@ -121,7 +122,7 @@
         const password2 = document.getElementById('id_password2').value;
         if (password1 !== password2) {
             event.preventDefault();
-            alert('Mật khẩu và xác nhận mật khẩu không khớp!');
+            alert(gettext('Mật khẩu và xác nhận mật khẩu không khớp!'));
         }
     });
 </script>

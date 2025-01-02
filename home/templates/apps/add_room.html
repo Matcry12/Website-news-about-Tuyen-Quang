@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Thêm phòng{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Thêm phòng" %}{% endblock %}
 
 {% block extra_js %}
 
@@ -13,15 +14,15 @@
 {% block detail %}
 
 <div class="custom-box">
-    <h1> Thêm phòng </h1>
+    <h1> {% trans "Thêm phòng" %} </h1>
     <h2> {{ error }}</h2>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         
         <div style="text-align: center;">
-            <button type="submit" class="btn btn orange">Thêm</button>
-            <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+            <button type="submit" class="btn btn orange">{% trans "Thêm" %}</button>
+            <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
         </div>
         
     </form>    

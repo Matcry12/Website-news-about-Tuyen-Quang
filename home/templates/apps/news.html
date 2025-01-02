@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Dịch vụ khác{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Dịch vụ khác" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/hotel.css' %}">
@@ -21,7 +22,7 @@
 {% block main-content %}
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4"><strong>Tin Tức & Dịch Vụ</strong></h2>
+    <h2 class="text-center mb-4"><strong>{% trans "Tin Tức & Dịch Vụ" %}</strong></h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 gy-4"> <!-- Bootstrap Grid System -->
         {% for new in news %}
         <div class="col d-flex align-items-stretch"> <!-- Ensure equal card height -->
@@ -36,7 +37,7 @@
                         {{ new.detail|truncatewords:15 }}
                     </p>
                     <div class="text-center mt-auto">
-                        <a href="{{ new.link }}" class="btn btn-outline orange-outline rounded-pill">Xem chi tiết</a>
+                        <a href="{{ new.link }}" class="btn btn-outline orange-outline rounded-pill">{% trans "Xem chi tiết" %}</a>
                     </div>
                 </div>
             </div>

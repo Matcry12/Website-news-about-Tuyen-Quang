@@ -1,7 +1,9 @@
 {% extends 'apps/base.html' %}
-{% block title %}Đăng nhập{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Đăng nhập" %}{% endblock %}
 
 {% load static %}
+
 
 {% block extra_css %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -17,20 +19,20 @@
                     <!-- Custom Box -->
                      
                     <div class="custom-box">
-                        <h2 class="text-uppercase text-center mb-5">Đăng nhập tài khoản</h2>
+                        <h2 class="text-uppercase text-center mb-5">{% trans "Đăng nhập tài khoản" %}</h2>
                         <div class="custom-form">
                             <form method="POST" action="" id="login-form">
                                 {% csrf_token %}
                                 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="username">Tên tài khoản:</h5>
-                                    <input type="text" name="username" id="username" class="form-control" placeholder="Nhập tên tài khoản" required />
+                                    <h5 class="form-label" for="username">{% trans "Tên tài khoản:" %}</h5>
+                                    <input type="text" name="username" id="username" class="form-control" placeholder="{% trans 'Nhập tên tài khoản' %}" required />
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <h5 class="form-label" for="password">Mật khẩu:</h5>
+                                    <h5 class="form-label" for="password">{% trans "Mật khẩu:" %}</h5>
                                     <div class="input-group">
-                                        <input type="password" name="password" class="form-control form-outline" id="id_password1" placeholder="Nhập mật khẩu" required>
+                                        <input type="password" name="password" class="form-control form-outline" id="id_password1" placeholder="{% trans 'Nhập mật khẩu' %}" required>
                                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password1', this)">
                                             <i class="bi bi-eye"></i>
                                         </button>
@@ -39,13 +41,13 @@
 
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn orange btn-block btn-lg gradient-custom-4" style="border-radius: 10px;"><i class="fas fa-sign-in-alt me-2"></i> Đăng nhập</button>
+                                    <button type="submit" class="btn orange btn-block btn-lg gradient-custom-4" style="border-radius: 10px;"><i class="fas fa-sign-in-alt me-2"></i> {% trans "Đăng nhập" %}</button>
                                 </div>
                                 
-                                <p class="text-center text-muted mt-5 mb-0">Bạn chưa có tài khoản? <a href="{% url 'register' %}" class="fw-bold text-body"><u>Đăng ký ở đây</u></a></p>
+                                <p class="text-center text-muted mt-5 mb-0">{% trans "Bạn chưa có tài khoản?" %} <a href="{% url 'register' %}" class="fw-bold text-body"><u>{% trans "Đăng ký ở đây" %}</u></a></p>
                                 
                                 {% if allow %}
-                                    <p class="text-center text-muted mt-5 mb-0">Muốn tạo tài khoản người quản lí? <a href="{% url 'create_superuser' %}" class="fw-bold text-body"><u>Tạo ở đây</u></a></p>
+                                    <p class="text-center text-muted mt-5 mb-0">{% trans "Muốn tạo tài khoản người quản lí?" %} <a href="{% url 'create_superuser' %}" class="fw-bold text-body"><u>{% trans "Tạo ở đây" %}</u></a></p>
                                 {% endif %}
                                 {% for message in messages %}
                                     <p id='message' class="text-center text-muted mt-5 mb-0"> {{ message }}</p>

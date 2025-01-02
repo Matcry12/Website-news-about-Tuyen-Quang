@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Đặt phòng{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Đặt phòng" %}{% endblock %}
 {% load custom_filters %}
 
 {% block extra_css %}
@@ -17,13 +18,13 @@
 {% block booking %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'detail' %}?id={{ room.product.id }}" class="breadcrumbs__item">Chi tiết cơ sở lưu trú</a>
-    <a href="#" class="breadcrumbs__item is-active">Đặt phòng</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'detail' %}?id={{ room.product.id }}" class="breadcrumbs__item">{% trans "Chi tiết cơ sở lưu trú" %}</a>
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Đặt phòng" %}</a> 
 </nav>
 
 <div class="container mt-5 bg-light p-4 rounded shadow custom-container">
-    <h3 class="text-center mb-4">Thông Tin Đặt Phòng</h3>
+    <h3 class="text-center mb-4">{% trans "Thông Tin Đặt Phòng" %}</h3>
     <div class="table-wrapper">
         <form method="POST">
             {% csrf_token %}
@@ -34,19 +35,19 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Tên CS lưu trú:</strong>
+                        <strong>{% trans "Tên CS lưu trú:" %}</strong>
                         <div><strong>{{ room.product.name }}</strong></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Mã Phòng:</strong>
+                        <strong>{% trans "Mã Phòng:" %}</strong>
                         <div><strong>{{ room.roomCode }}</strong></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Loại phòng:</strong>
+                        <strong>{% trans "Loại phòng:" %}</strong>
                         <div><strong>{{ room.room_type }}</strong></div>
                     </div>
                 </div>
@@ -55,22 +56,22 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Giá tiền:</strong>
-                        <div><strong>{{ room.price|format_price }} Đồng</strong></div>
+                        <strong>{% trans "Giá tiền:" %}</strong>
+                        <div><strong>{{ room.price|format_price }} VNĐ</strong></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>TT Tài khoản CS lưu trú:</strong>
+                        <strong>{% trans "TT Tài khoản CS lưu trú:" %}</strong>
                         <div><strong>{{ room.product.owner.last_name }} {{ room.product.owner.first_name }}</strong></div>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Thanh toán:</strong>
+                        <strong>{% trans "Thanh toán:" %}</strong>
                         <select class="form-select" name="payment_method" required>
-                            <option value="Thanh toán chuyển khoản">Thanh toán chuyển khoản</option>
-                            <option value="Thanh toán qua liên hệ">Thanh toán qua liên hệ</option>
+                            <option value="Thanh toán chuyển khoản">{% trans "Thanh toán chuyển khoản" %}</option>
+                            <option value="Thanh toán qua liên hệ">{% trans "Thanh toán qua liên hệ" %}</option>
                         </select>
                     </div>
                 </div>
@@ -79,19 +80,19 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Tên khách hàng:</strong>
+                        <strong>{% trans "Tên khách hàng:" %}</strong>
                         <input type="text" class="form-control" name="customer_name" value="{{ order.cname }}" placeholder="Nhập tên của bạn" title="Vui lòng nhập tên của bạn" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Số CCCD:</strong>
+                        <strong>{% trans "Số CCCD:" %}</strong>
                         <input type="text" class="form-control" name="cccd" pattern="\d{12}" placeholder="Nhập số căn cước công dân" title="Vui lòng nhập 12 chữ số" required>
                     </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Địa chỉ:</strong>
+                        <strong>{% trans "Địa chỉ:" %}</strong>
                         <input type="text" class="form-control" name="address" value="{{ order.address }}" placeholder="Nhập địa chỉ" title="Vui lòng nhập tên địa chỉ của bạn" required>
                     </div>
                 </div>
@@ -100,18 +101,18 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Số ĐT:</strong>
+                        <strong>{% trans "Số ĐT:" %}</strong>
                         <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" placeholder="Nhập số điện thoại" pattern="\d{10}" title="Vui lòng nhập số điện thoại gồm 10 chữ số" required>
                     </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
-                        <strong>Ngày nhận phòng:</strong>
+                        <strong>{% trans "Ngày nhận phòng:" %}</strong>
                         <input type="text" id="datepicker" class="form-control" name="booking_date" value="{{ order.datebook|date:'d/m/Y' }}" placeholder="Nhập ngày đặt phòng" title="Vui lòng nhập ngày đặt phòng" required>
                     </div>
                 </div>
                 <div class="col-md-4 text-center">
-                    <button type="submit" class="btn btn-primary mt-4"><strong>Xác nhận đặt phòng</strong></button>
+                    <button type="submit" class="btn btn-primary mt-4"><strong>{% trans "Xác nhận đặt phòng" %}</strong></button>
                 </div>
             </div>
         </form>    

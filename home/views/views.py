@@ -28,6 +28,8 @@ from django.views.generic import TemplateView, CreateView
 from django.http import QueryDict
 from io import BytesIO
 from django.core.serializers import serialize
+from django.utils.translation import gettext as _
+from django.utils.translation import get_language, activate, gettext
 from .history_view import *
 from .add_view import *
 from .entrance_view import *
@@ -35,7 +37,6 @@ from .manage_hotel import *
 from .delete_view import *
 from .export_view import *
 from .generate_view import *
-
 
 def error_login(request):
     if request.user.is_authenticated:

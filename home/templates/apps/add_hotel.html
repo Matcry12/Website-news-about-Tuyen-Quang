@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Thêm cơ sở lưu trú{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Thêm cơ sở lưu trú" %}{% endblock %}
 
 {% block extra_js %}
 
@@ -13,78 +14,78 @@
 {% block detail %}
 
 <div class="custom-box">
-    <h1 class="text-center mb-4">Thêm cơ sở lưu trú</h1>
+    <h1 class="text-center mb-4">{% trans "Thêm cơ sở lưu trú" %}</h1>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         <h5 class="text-center" style="color: red;">{{ error }}</h5>
         {% csrf_token %}
         
         <!-- Product Form Fields -->
         <div class="form-group mb-3">
-            <label for="{{ form.name.id_for_label }}">Tên cơ sở lưu trú</label>
+            <label for="{{ form.name.id_for_label }}">{% trans "Tên cơ sở lưu trú" %}</label>
             {{ form.name }}
         </div>
 
         {% if profile.role == 'admin' %}
             <div class="form-group mb-3">
-                <label for="{{ form.name.id_for_label }}">Tên tài khoản</label>
+                <label for="{{ form.name.id_for_label }}">{% trans "Tên tài khoản" %}</label>
                 {{ form.owner }}
             </div>
         {% endif %}
         
         <div class="form-group mb-3">
-            <label for="{{ form.amountprice.id_for_label }}">Giá</label>
+            <label for="{{ form.amountprice.id_for_label }}">{% trans "Giá" %}</label>
             {{ form.amountprice }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.detail.id_for_label }}">Chi tiết</label>
+            <label for="{{ form.detail.id_for_label }}">{% trans "Chi tiết" %}</label>
             {{ form.detail }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.categories.id_for_label }}">Danh mục</label>
+            <label for="{{ form.categories.id_for_label }}">{% trans "Danh mục" %}</label>
             {{ form.categories }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.room_types.id_for_label }}">Loại phòng</label>
+            <label for="{{ form.room_types.id_for_label }}">{% trans "Loại phòng" %}</label>
             {{ form.room_types }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.product_type.id_for_label }}">Loại sản phẩm</label>
+            <label for="{{ form.product_type.id_for_label }}">{% trans "Loại sản phẩm" %}</label>
             {{ form.product_type }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.location.id_for_label }}">Vị trí</label>
+            <label for="{{ form.location.id_for_label }}">{% trans "Vị trí" %}</label>
             {{ form.location }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.maplocation.id_for_label }}">Bản đồ</label>
+            <label for="{{ form.maplocation.id_for_label }}">{% trans "Bản đồ" %}</label>
             {{ form.maplocation }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.rate.id_for_label }}">Đánh giá</label>
+            <label for="{{ form.rate.id_for_label }}">{% trans "Đánh giá" %}</label>
             {{ form.rate }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.phonecall.id_for_label }}">Số điện thoại</label>
+            <label for="{{ form.phonecall.id_for_label }}">{% trans "Số điện thoại" %}</label>
             {{ form.phonecall }}
         </div>
         
         <div class="form-group mb-3">
-            <label for="{{ form.imageP.id_for_label }}">Ảnh CS lưu trú</label>
+            <label for="{{ form.imageP.id_for_label }}">{% trans "Ảnh CS lưu trú" %}</label>
             {{ form.imageP }}
         </div>
     
         <!-- Buttons -->
         <div style="text-align: center;">
-            <button type="submit" class="btn btn orange">Thêm</button>
-            <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+            <button type="submit" class="btn btn orange">{% trans "Thêm" %}</button>
+            <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
         </div>
     </form>    
 </div>

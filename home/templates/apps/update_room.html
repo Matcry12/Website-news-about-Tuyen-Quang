@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Cập nhật phòng{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Cập nhật phòng" %}{% endblock %}
 
 {% block extra_js %}
 
@@ -13,13 +14,13 @@
 {% block update_room %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'cart' %}" class="breadcrumbs__item">Quản lí cơ sở lưu trú</a> 
-    <a href="#" class="breadcrumbs__item is-active">Cập nhật phòng</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'cart' %}" class="breadcrumbs__item">{% trans "Quản lí cơ sở lưu trú" %}</a> 
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Cập nhật phòng" %}</a> 
 </nav>
 
 <div class="custom-box">
-    <h1> Cập nhật phòng </h1>
+    <h1> {% trans "Cập nhật phòng" %} </h1>
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -27,29 +28,29 @@
             <h2 class="text-center" style="color: red;">{{error}}</h2>
             <!-- Room Information -->
             <div class="col-md-6">
-                <h3 class="section-title">Thông tin phòng</h3>
+                <h3 class="section-title">{% trans "Thông tin phòng" %}</h3>
                 <div class="form-group">
-                    <label for="{{ room_form.product.id_for_label }}">Cơ sở lưu trú:</label>
+                    <label for="{{ room_form.product.id_for_label }}">{% trans "Cơ sở lưu trú:" %}</label>
                     <p>{{ room.product.name }}</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ room_form.room_code.id_for_label }}">Mã phòng:</label>
+                    <label for="{{ room_form.room_code.id_for_label }}">{% trans "Mã phòng:" %}</label>
                     {{ room_form.room_code }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ room_form.price.id_for_label }}">Giá:</label>
+                    <label for="{{ room_form.price.id_for_label }}">{% trans "Giá:" %}</label>
                     {{ room_form.price }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ room_form.room_type.id_for_label }}">Loại phòng:</label>
+                    <label for="{{ room_form.room_type.id_for_label }}">{% trans "Loại phòng:" %}</label>
                     {{ room_form.room_type }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ room_form.status.id_for_label }}">Trạng thái:</label>
+                    <label for="{{ room_form.status.id_for_label }}">{% trans "Trạng thái:" %}</label>
                     {{ room_form.status }}
                 </div>
             </div>
@@ -57,7 +58,7 @@
             <!-- Image Upload and Preview -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="id_image">Cập nhật ảnh:</label>
+                    <label for="id_image">{% trans "Cập nhật ảnh:" %}</label>
                     <div class="input-group">
                         <input 
                             type="file" 
@@ -69,7 +70,7 @@
                     </div>
                     {% if pic_form.instance.image %}
                         <div class="mt-2">
-                            <p class="text-muted mt-2">Hình ảnh hiện tại:</p>
+                            <p class="text-muted mt-2">{% trans "Hình ảnh hiện tại:" %}</p>
                             <img 
                                 src="{{ pic_form.instance.image.url }}" 
                                 alt="Current Image" 
@@ -80,10 +81,10 @@
                     {% endif %}
                 </div>
             </div>
-
+            
             <br/>
-        <input type="submit" value="Cập nhật" class="btn btn-secondary">
-        <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+        <input type="submit" value="{% trans 'Cập nhật' %}" class="btn btn-secondary">
+        <a class="btn btn-secondary" href="{% url 'cart' %}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
         </div>
     </form>
 </div>

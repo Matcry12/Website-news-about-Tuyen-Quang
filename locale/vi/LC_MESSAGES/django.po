@@ -1,0 +1,1412 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-02 13:56+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\home\templates\apps\add_hotel.html:4
+#: .\home\templates\apps\add_hotel.html:17 .\home\templates\apps\cart.html:87
+#: .\home\templates\apps\cart.html:91
+#: .\home\templates\apps\manage_hotel.html:120
+#: .\home\templates\apps\manage_hotel.html:122
+msgid "Thêm cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:24
+#: .\home\templates\apps\listroom.html:45
+#: .\home\templates\apps\manage_account.html:39
+#: .\home\templates\apps\manage_hotel.html:37
+#: .\home\templates\apps\manage_hotel.html:169
+msgid "Tên cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:30
+#: .\home\templates\apps\manage_account.html:34
+#: .\home\templates\apps\manage_account.html:161
+#: .\home\templates\apps\manage_hotel.html:256
+msgid "Tên tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:36 .\home\templates\apps\cart.html:40
+#: .\home\templates\apps\cart.html:213
+#: .\home\templates\apps\detail_hotel.html:38
+#: .\home\templates\apps\detail_hotel.html:159
+#: .\home\templates\apps\listroom.html:139
+#: .\home\templates\apps\listroom.html:169
+msgid "Giá"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:41 .\home\templates\apps\home.html:218
+#: .\home\templates\apps\manage_hotel.html:178
+#: .\home\templates\apps\manage_hotel.html:210
+msgid "Chi tiết"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:46
+msgid "Danh mục"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:51 .\home\templates\apps\cart.html:128
+#: .\home\templates\apps\cart.html:211 .\home\templates\apps\detail.html:71
+#: .\home\templates\apps\detail_hotel.html:105
+#: .\home\templates\apps\detail_hotel.html:157
+#: .\home\templates\apps\historylist.html:46
+#: .\home\templates\apps\historylist.html:140
+#: .\home\templates\apps\historylist.html:185
+#: .\home\templates\apps\listroom.html:62
+#: .\home\templates\apps\listroom.html:137
+#: .\home\templates\apps\listroom.html:167
+#: .\home\templates\apps\manage_hotel.html:173
+#: .\home\templates\apps\order.html:43 .\home\templates\apps\order.html:158
+msgid "Loại phòng"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:56
+msgid "Loại sản phẩm"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:61
+msgid "Vị trí"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:66
+msgid "Bản đồ"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:71 .\home\templates\apps\cart.html:38
+#: .\home\templates\apps\detail_hotel.html:36
+#: .\home\templates\apps\manage_hotel.html:177
+msgid "Đánh giá"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:76 .\home\templates\apps\cart.html:41
+#: .\home\templates\apps\detail_hotel.html:39
+#: .\home\templates\apps\historylist.html:78
+#: .\home\templates\apps\manage_account.html:60
+#: .\home\templates\apps\manage_account.html:166
+#: .\home\templates\apps\manage_hotel.html:176
+#: .\home\templates\apps\manage_hotel.html:261
+msgid "Số điện thoại"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:81
+msgid "Ảnh CS lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:87
+#: .\home\templates\apps\add_room.html:24
+#: .\home\templates\apps\manage_account.html:114
+#: .\home\templates\apps\manage_hotel.html:140
+msgid "Thêm"
+msgstr ""
+
+#: .\home\templates\apps\add_hotel.html:88
+#: .\home\templates\apps\add_room.html:25
+#: .\home\templates\apps\change_password.html:104
+#: .\home\templates\apps\edit_profile.html:189
+#: .\home\templates\apps\edit_profile.html:191
+#: .\home\templates\apps\update_hotel.html:113
+#: .\home\templates\apps\update_order.html:79
+#: .\home\templates\apps\update_room.html:87
+msgid "Hủy bỏ"
+msgstr ""
+
+#: .\home\templates\apps\add_room.html:4 .\home\templates\apps\add_room.html:17
+#: .\home\templates\apps\cart.html:174 .\home\templates\apps\cart.html:176
+#: .\home\templates\apps\cart.html:190
+msgid "Thêm phòng"
+msgstr ""
+
+#: .\home\templates\apps\base.html:65
+msgid "Du lịch Tuyên Quang"
+msgstr ""
+
+#: .\home\templates\apps\base.html:74
+msgid "DU LỊCH TUYÊN QUANG"
+msgstr ""
+
+#: .\home\templates\apps\base.html:84 .\home\templates\apps\booking.html:21
+#: .\home\templates\apps\cart.html:18
+#: .\home\templates\apps\change_password.html:27
+#: .\home\templates\apps\change_password.html:33
+#: .\home\templates\apps\detail.html:16
+#: .\home\templates\apps\detail_hotel.html:14
+#: .\home\templates\apps\edit_profile.html:31
+#: .\home\templates\apps\edit_profile.html:43
+#: .\home\templates\apps\historylist.html:28
+#: .\home\templates\apps\listroom.html:28
+#: .\home\templates\apps\manage_account.html:17
+#: .\home\templates\apps\manage_hotel.html:17
+#: .\home\templates\apps\order.html:17 .\home\templates\apps\profile.html:8
+#: .\home\templates\apps\update_hotel.html:17
+#: .\home\templates\apps\update_order.html:17
+#: .\home\templates\apps\update_room.html:17
+msgid "Trang chủ"
+msgstr ""
+
+#: .\home\templates\apps\base.html:89 .\home\templates\apps\base.html:151
+msgid "Quản lý cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\base.html:93 .\home\templates\apps\base.html:147
+#: .\home\templates\apps\order.html:5 .\home\templates\apps\order.html:18
+#: .\home\templates\apps\order.html:146
+#: .\home\templates\apps\update_order.html:18
+msgid "Đơn đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\base.html:96 .\home\templates\apps\base.html:156
+#: .\home\templates\apps\manage_account.html:5
+#: .\home\templates\apps\manage_account.html:18
+#: .\home\templates\apps\manage_account.html:27
+msgid "Quản lí tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\base.html:97 .\home\templates\apps\base.html:157
+#: .\home\templates\apps\listroom.html:5 .\home\templates\apps\listroom.html:29
+#: .\home\templates\apps\listroom.html:38
+msgid "Thống kê phòng"
+msgstr ""
+
+#: .\home\templates\apps\base.html:102 .\home\templates\apps\base.html:159
+#: .\home\templates\apps\historylist.html:5
+#: .\home\templates\apps\historylist.html:29
+#: .\home\templates\apps\historylist.html:38
+msgid "Lịch sử đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\base.html:107 .\home\templates\apps\news.html:4
+msgid "Dịch vụ khác"
+msgstr ""
+
+#: .\home\templates\apps\base.html:115
+msgid "Ngôn ngữ"
+msgstr ""
+
+#: .\home\templates\apps\base.html:145
+#: .\home\templates\apps\change_password.html:34
+#: .\home\templates\apps\edit_profile.html:44
+#: .\home\templates\apps\profile.html:3 .\home\templates\apps\profile.html:9
+msgid "Trang cá nhân"
+msgstr ""
+
+#: .\home\templates\apps\base.html:163
+#: .\home\templates\apps\change_password.html:5
+#: .\home\templates\apps\change_password.html:28
+#: .\home\templates\apps\change_password.html:40
+msgid "Đổi mật khẩu"
+msgstr ""
+
+#: .\home\templates\apps\base.html:166 .\home\templates\apps\base.html:175
+msgid "Đăng xuất"
+msgstr ""
+
+#: .\home\templates\apps\base.html:168 .\home\templates\apps\base.html:180
+#: .\home\templates\apps\login.html:3 .\home\templates\apps\login.html:44
+msgid "Đăng nhập"
+msgstr ""
+
+#: .\home\templates\apps\base.html:169 .\home\templates\apps\base.html:183
+#: .\home\templates\apps\register.html:3 .\home\templates\apps\register.html:74
+msgid "Đăng ký"
+msgstr ""
+
+#: .\home\templates\apps\base.html:218 .\home\templates\apps\booking.html:95
+#: .\home\templates\apps\detail.html:46
+#: .\home\templates\apps\update_hotel.html:42
+#: .\home\templates\apps\update_order.html:44
+msgid "Địa chỉ:"
+msgstr ""
+
+#: .\home\templates\apps\base.html:218
+msgid ""
+"Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh "
+"Tuyên Quang |"
+msgstr ""
+
+#: .\home\templates\apps\base.html:219
+msgid "Điện thoại:"
+msgstr ""
+
+#: .\home\templates\apps\base.html:223
+msgid "Thiết kế:"
+msgstr ""
+
+#: .\home\templates\apps\base.html:224
+msgid "Người hướng dẫn:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:4 .\home\templates\apps\booking.html:23
+#: .\home\templates\apps\completebooking.html:4
+#: .\home\templates\apps\home.html:231 .\home\templates\apps\room.html:27
+msgid "Đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:22 .\home\templates\apps\detail.html:4
+#: .\home\templates\apps\detail.html:17
+#: .\home\templates\apps\detail_hotel.html:5
+#: .\home\templates\apps\detail_hotel.html:16
+msgid "Chi tiết cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:27
+#: .\home\templates\apps\completebooking.html:12
+msgid "Thông Tin Đặt Phòng"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:38
+msgid "Tên CS lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:44
+msgid "Mã Phòng:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:50
+#: .\home\templates\apps\update_hotel.html:76
+#: .\home\templates\apps\update_room.html:48
+msgid "Loại phòng:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:59
+msgid "Giá tiền:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:65
+msgid "TT Tài khoản CS lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:71
+msgid "Thanh toán:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:73
+msgid "Thanh toán chuyển khoản"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:74
+msgid "Thanh toán qua liên hệ"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:83
+msgid "Tên khách hàng:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:89
+msgid "Số CCCD:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:104
+msgid "Số ĐT:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:110
+#: .\home\templates\apps\update_order.html:39
+msgid "Ngày nhận phòng:"
+msgstr ""
+
+#: .\home\templates\apps\booking.html:115
+msgid "Xác nhận đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:5 .\home\templates\apps\cart.html:19
+#: .\home\templates\apps\detail_hotel.html:15
+#: .\home\templates\apps\manage_hotel.html:4
+#: .\home\templates\apps\manage_hotel.html:18
+#: .\home\templates\apps\manage_hotel.html:29
+#: .\home\templates\apps\update_hotel.html:18
+#: .\home\templates\apps\update_room.html:18
+msgid "Quản lí cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:30 .\home\templates\apps\cart.html:85
+#: .\home\templates\apps\completebooking.html:20
+#: .\home\templates\apps\detail.html:34
+#: .\home\templates\apps\detail_hotel.html:28
+#: .\home\templates\apps\historylist.html:125
+#: .\home\templates\apps\listroom.html:123
+#: .\home\templates\apps\manage_account.html:127
+#: .\home\templates\apps\manage_hotel.html:154
+#: .\home\templates\apps\order.html:30 .\home\templates\apps\profile.html:19
+msgid "Trở lại"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:32
+msgid "Cơ sở lưu trú của bạn"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:37
+#: .\home\templates\apps\detail_hotel.html:35
+msgid "Tên"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:39 .\home\templates\apps\cart.html:214
+#: .\home\templates\apps\detail_hotel.html:37
+#: .\home\templates\apps\detail_hotel.html:160
+#: .\home\templates\apps\listroom.html:140
+#: .\home\templates\apps\listroom.html:170
+msgid "Tình trạng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:42 .\home\templates\apps\cart.html:215
+#: .\home\templates\apps\manage_account.html:169
+#: .\home\templates\apps\manage_hotel.html:179
+#: .\home\templates\apps\order.html:108 .\home\templates\apps\order.html:191
+msgid "Sửa"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:51 .\home\templates\apps\home.html:172
+#: .\home\templates\apps\manage_hotel.html:201
+msgid "Chưa đánh giá"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:59
+#: .\home\templates\apps\detail_hotel.html:57
+#: .\home\templates\apps\home.html:182
+msgid "Còn phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:59
+#: .\home\templates\apps\detail_hotel.html:57
+#: .\home\templates\apps\home.html:184
+msgid "Hết phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:72
+#: .\home\templates\apps\detail_hotel.html:65
+#: .\home\templates\apps\home.html:241
+#: .\home\templates\apps\manage_hotel.html:245
+#: .\home\templates\apps\manage_hotel.html:267
+msgid "Không có cơ sở lưu trú nào."
+msgstr ""
+
+#: .\home\templates\apps\cart.html:106
+#: .\home\templates\apps\detail_hotel.html:83
+msgid "Bộ lọc"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:113 .\home\templates\apps\cart.html:212
+#: .\home\templates\apps\detail_hotel.html:90
+#: .\home\templates\apps\detail_hotel.html:158
+#: .\home\templates\apps\historylist.html:139
+#: .\home\templates\apps\historylist.html:184
+#: .\home\templates\apps\listroom.html:57
+#: .\home\templates\apps\listroom.html:138
+#: .\home\templates\apps\listroom.html:168 .\home\templates\apps\order.html:45
+msgid "Số phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:119
+#: .\home\templates\apps\detail_hotel.html:96
+#: .\home\templates\apps\historylist.html:89 .\home\templates\apps\home.html:57
+#: .\home\templates\apps\listroom.html:87
+#: .\home\templates\apps\manage_hotel.html:54
+msgid "Khoảng giá"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:130
+#: .\home\templates\apps\detail_hotel.html:107
+#: .\home\templates\apps\historylist.html:48
+#: .\home\templates\apps\listroom.html:64
+msgid "Tất cả loại phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:140
+#: .\home\templates\apps\detail_hotel.html:117
+#: .\home\templates\apps\listroom.html:74 .\home\templates\apps\order.html:48
+#: .\home\templates\apps\order.html:161
+msgid "Trạng thái"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:142
+#: .\home\templates\apps\detail_hotel.html:119
+#: .\home\templates\apps\listroom.html:76
+msgid "Tất cả trạng thái"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:157
+#: .\home\templates\apps\detail_hotel.html:134
+#: .\home\templates\apps\historylist.html:100
+#: .\home\templates\apps\home.html:47 .\home\templates\apps\home.html:120
+#: .\home\templates\apps\listroom.html:98
+#: .\home\templates\apps\manage_account.html:78
+#: .\home\templates\apps\manage_hotel.html:101
+msgid "Tìm kiếm"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:160
+#: .\home\templates\apps\detail_hotel.html:137
+#: .\home\templates\apps\historylist.html:103
+#: .\home\templates\apps\home.html:123 .\home\templates\apps\listroom.html:101
+#: .\home\templates\apps\manage_account.html:81
+#: .\home\templates\apps\manage_hotel.html:104
+msgid "Xóa tìm kiếm"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:171 .\home\templates\apps\cart.html:182
+msgid "Thêm phòng nhanh"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:185
+#: .\home\templates\apps\manage_hotel.html:131
+msgid "Tải file excel mẫu"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:204
+#: .\home\templates\apps\detail_hotel.html:152
+msgid "Danh sách phòng"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:216
+#: .\home\templates\apps\manage_account.html:170
+#: .\home\templates\apps\manage_account.html:255
+#: .\home\templates\apps\manage_hotel.html:180
+#: .\home\templates\apps\order.html:111 .\home\templates\apps\order.html:194
+msgid "Xóa"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:239
+#: .\home\templates\apps\manage_hotel.html:227
+#: .\home\templates\apps\order.html:117 .\home\templates\apps\order.html:200
+msgid "Xác nhận xóa"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:243
+msgid "Bạn có chắc chắn muốn xóa phòng này không?"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:246
+#: .\home\templates\apps\change_password.html:97
+#: .\home\templates\apps\edit_profile.html:181
+#: .\home\templates\apps\manage_account.html:254
+#: .\home\templates\apps\manage_hotel.html:234
+#: .\home\templates\apps\order.html:101 .\home\templates\apps\order.html:124
+#: .\home\templates\apps\order.html:207
+msgid "Hủy"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:247 .\home\templates\apps\order.html:125
+#: .\home\templates\apps\order.html:208
+msgid "Có, Xóa"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:256
+#: .\home\templates\apps\detail_hotel.html:173
+msgid "Không có phòng nào."
+msgstr ""
+
+#: .\home\templates\apps\cart.html:268
+#: .\home\templates\apps\detail_hotel.html:185
+#: .\home\templates\apps\historylist.html:213
+#: .\home\templates\apps\listroom.html:189
+#: .\home\templates\apps\manage_account.html:302
+#: .\home\templates\apps\manage_hotel.html:281
+#: .\home\templates\apps\order.html:236 .\home\templates\apps\room.html:52
+msgid "Trang trước"
+msgstr ""
+
+#: .\home\templates\apps\cart.html:278
+#: .\home\templates\apps\detail_hotel.html:195
+#: .\home\templates\apps\historylist.html:223
+#: .\home\templates\apps\listroom.html:199
+#: .\home\templates\apps\manage_account.html:312
+#: .\home\templates\apps\manage_hotel.html:291
+#: .\home\templates\apps\order.html:246
+msgid "Sang trang"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:35
+#: .\home\templates\apps\edit_profile.html:36
+#: .\home\templates\apps\edit_profile.html:45
+#: .\home\templates\apps\edit_profile.html:53
+msgid "Cập nhật tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:51
+#: .\home\templates\apps\edit_profile.html:135
+#: .\home\templates\apps\manage_account.html:168
+msgid "Mật khẩu"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:56
+#: .\home\templates\apps\edit_profile.html:140
+msgid "Mật khẩu mới:"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:69
+#: .\home\templates\apps\edit_profile.html:153
+msgid "Xác nhận mật khẩu:"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:82
+#: .\home\templates\apps\edit_profile.html:166
+#: .\home\templates\apps\update_hotel.html:112
+#: .\home\templates\apps\update_order.html:77
+#: .\home\templates\apps\update_room.html:86
+msgid "Cập nhật"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:90
+#: .\home\templates\apps\edit_profile.html:174
+msgid "Xác nhận cập nhật thông tin"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:94
+#: .\home\templates\apps\edit_profile.html:178
+msgid "Bạn có chắc chắn muốn cập nhật thông tin này?"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:99
+#: .\home\templates\apps\edit_profile.html:183
+#: .\home\templates\apps\historylist.html:149
+#: .\home\templates\apps\historylist.html:194
+msgid "Xác nhận"
+msgstr ""
+
+#: .\home\templates\apps\change_password.html:133
+#: .\home\templates\apps\change_password.html:143
+#: .\home\templates\apps\edit_profile.html:221
+#: .\home\templates\apps\edit_profile.html:231
+msgid "Đảm bảo mật khẩu chứa kí tự phù hợp"
+msgstr ""
+
+#: .\home\templates\apps\completebooking.html:17
+msgid "Bạn đã đặt phòng thành công"
+msgstr ""
+
+#: .\home\templates\apps\completebooking.html:21
+msgid "Xem phòng"
+msgstr ""
+
+#: .\home\templates\apps\create_superuser.html:4
+#: .\home\templates\apps\create_superuser.html:71
+msgid "Tạo tài khoản quản lí"
+msgstr ""
+
+#: .\home\templates\apps\create_superuser.html:97
+#: .\home\templates\apps\edit_profile.html:34
+#: .\home\templates\apps\edit_profile.html:51
+msgid "Tạo tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:47
+#: .\home\templates\apps\edit_profile.html:103
+#: .\home\templates\apps\home.html:189 .\home\templates\apps\profile.html:59
+#: .\home\templates\apps\update_hotel.html:47
+#: .\home\templates\apps\update_order.html:49
+msgid "Số điện thoại:"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:50
+#: .\home\templates\apps\update_hotel.html:71
+msgid "Dịch vụ:"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:54
+msgid "Không có dịch vụ nào"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:61 .\home\templates\apps\home.html:209
+msgid "Chat qua Zalo"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:77
+msgid "Sắp xếp theo mức giá"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:81
+msgid "Rẻ đến đắt"
+msgstr ""
+
+#: .\home\templates\apps\detail.html:86
+msgid "Đắt đến rẻ"
+msgstr ""
+
+#: .\home\templates\apps\detail_hotel.html:30
+#: .\home\templates\apps\home.html:35 .\home\templates\apps\home.html:52
+#: .\home\templates\apps\listroom.html:136
+msgid "Cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:7
+msgid "Tạo hồ sơ"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:9
+msgid "Cập nhật hồ sơ"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:32
+msgid "Quản lý tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:65
+#: .\home\templates\apps\profile.html:65
+msgid "Thông tin tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:67
+#: .\home\templates\apps\login.html:28 .\home\templates\apps\profile.html:67
+#: .\home\templates\apps\register.html:32
+msgid "Tên tài khoản:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:75
+msgid "Tên riêng:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:79
+msgid "Họ:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:89
+#: .\home\templates\apps\profile.html:60
+msgid "Vai trò:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:94
+#: .\home\templates\apps\profile.html:58
+msgid "Căn cước công dân:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:98
+#: .\home\templates\apps\profile.html:57
+msgid "Ngày sinh:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:108
+msgid "Ảnh hồ sơ:"
+msgstr ""
+
+#: .\home\templates\apps\edit_profile.html:120
+#: .\home\templates\apps\update_hotel.html:98
+#: .\home\templates\apps\update_room.html:73
+msgid "Hình ảnh hiện tại:"
+msgstr ""
+
+#: .\home\templates\apps\errorlogin.html:5
+#: .\home\templates\apps\reset_password.html:5
+msgid "Lỗi đăng nhập"
+msgstr ""
+
+#: .\home\templates\apps\errorlogin.html:21
+msgid "Tài khoản hiện không hợp lệ"
+msgstr ""
+
+#: .\home\templates\apps\errorlogin.html:22 .\home\templates\apps\login.html:22
+#: .\home\templates\apps\reset_password.html:22
+msgid "Đăng nhập tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:58
+#: .\home\templates\apps\historylist.html:138
+#: .\home\templates\apps\historylist.html:183
+#: .\home\templates\apps\order.html:151
+msgid "Tên CS lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:59
+#: .\home\templates\apps\manage_hotel.html:38
+msgid "Nhập tên CS lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:65
+msgid "Khoảng ngày nhận phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:67
+msgid "Bắt đầu"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:68
+msgid "Kết thúc"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:73
+#: .\home\templates\apps\manage_account.html:55
+#: .\home\templates\apps\manage_account.html:165
+#: .\home\templates\apps\manage_hotel.html:260
+msgid "Căn cước công dân"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:74
+msgid "Nhập căn cước công dân"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:79
+msgid "Nhập số điện thoại"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:83
+#: .\home\templates\apps\order.html:38 .\home\templates\apps\order.html:153
+msgid "Người đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:84
+msgid "Nhập người đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:91 .\home\templates\apps\home.html:60
+#: .\home\templates\apps\listroom.html:89
+#: .\home\templates\apps\manage_hotel.html:56
+msgid "Từ"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:92 .\home\templates\apps\home.html:61
+#: .\home\templates\apps\listroom.html:90
+#: .\home\templates\apps\manage_hotel.html:57
+msgid "Đến"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:110
+msgid "Tải xuống lịch sử"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:114
+msgid "Không thể tải lịch sử"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:130
+msgid "Tổng số giao dịch:"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:141
+#: .\home\templates\apps\historylist.html:186
+#: .\home\templates\apps\order.html:46 .\home\templates\apps\order.html:160
+msgid "Giá tiền"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:142
+#: .\home\templates\apps\historylist.html:187
+#: .\home\templates\apps\order.html:42 .\home\templates\apps\order.html:157
+msgid "Ngày nhận phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:143
+#: .\home\templates\apps\historylist.html:188
+msgid "Ngày trả phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:144
+#: .\home\templates\apps\historylist.html:189
+msgid "Người Đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:145
+#: .\home\templates\apps\historylist.html:190
+#: .\home\templates\apps\manage_hotel.html:175
+#: .\home\templates\apps\order.html:152
+msgid "Địa chỉ"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:146
+#: .\home\templates\apps\historylist.html:191
+#: .\home\templates\apps\order.html:39 .\home\templates\apps\order.html:154
+msgid "Số ĐT"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:147
+#: .\home\templates\apps\historylist.html:192
+#: .\home\templates\apps\order.html:40 .\home\templates\apps\order.html:155
+msgid "CCCD"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:148
+#: .\home\templates\apps\historylist.html:193
+#: .\home\templates\apps\order.html:47 .\home\templates\apps\order.html:162
+msgid "Phương thức"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:167
+msgid "Đã trả"
+msgstr ""
+
+#: .\home\templates\apps\historylist.html:172
+#: .\home\templates\apps\historylist.html:199
+#: .\home\templates\apps\listroom.html:156
+#: .\home\templates\apps\listroom.html:175 .\home\templates\apps\order.html:136
+#: .\home\templates\apps\order.html:221
+msgid "Không có lịch sử đặt phòng."
+msgstr ""
+
+#: .\home\templates\apps\home.html:5
+msgid "Tuyên Quang Booking"
+msgstr ""
+
+#: .\home\templates\apps\home.html:54
+msgid "Nhập cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\home.html:65
+msgid "Dịch vụ của khách sạn"
+msgstr ""
+
+#: .\home\templates\apps\home.html:79
+msgid "Các loại cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\home.html:93
+msgid "Các loại phòng"
+msgstr ""
+
+#: .\home\templates\apps\home.html:106
+#: .\home\templates\apps\manage_hotel.html:86
+msgid "Chọn đánh giá:"
+msgstr ""
+
+#: .\home\templates\apps\home.html:109
+#: .\home\templates\apps\manage_hotel.html:88
+msgid "--Tất cả số sao--"
+msgstr ""
+
+#: .\home\templates\apps\home.html:110
+#: .\home\templates\apps\manage_hotel.html:89
+msgid "2 sao trở lên"
+msgstr ""
+
+#: .\home\templates\apps\home.html:111
+#: .\home\templates\apps\manage_hotel.html:90
+msgid "3 sao trở lên"
+msgstr ""
+
+#: .\home\templates\apps\home.html:112
+#: .\home\templates\apps\manage_hotel.html:91
+msgid "4 sao trở lên"
+msgstr ""
+
+#: .\home\templates\apps\home.html:113
+#: .\home\templates\apps\manage_hotel.html:92
+msgid "5 sao trở lên"
+msgstr ""
+
+#: .\home\templates\apps\home.html:147
+msgid "Xem bản đồ"
+msgstr ""
+
+#: .\home\templates\apps\home.html:170
+#: .\home\templates\apps\update_hotel.html:62
+msgid "Đánh giá:"
+msgstr ""
+
+#: .\home\templates\apps\home.html:179
+msgid "Tình trạng:"
+msgstr ""
+
+#: .\home\templates\apps\home.html:188
+msgid "Giá phòng:"
+msgstr ""
+
+#: .\home\templates\apps\home.html:195
+msgid "Dịch vụ có sẵn:"
+msgstr ""
+
+#: .\home\templates\apps\home.html:242
+msgid "Tải lại trang"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:47
+msgid "Tất cả cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:58
+msgid "Nhập số phòng"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:108
+msgid "Tải xuống danh sách phòng"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:112
+msgid "Không thể tải danh sách phòng"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:128
+msgid "Tổng số phòng:"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:129
+msgid "Số phòng trống:"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:129
+msgid "Số phòng chờ:"
+msgstr ""
+
+#: .\home\templates\apps\listroom.html:129
+msgid "Số phòng đang được sử dụng:"
+msgstr ""
+
+#: .\home\templates\apps\login.html:29
+msgid "Nhập tên tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\login.html:33 .\home\templates\apps\register.html:52
+msgid "Mật khẩu:"
+msgstr ""
+
+#: .\home\templates\apps\login.html:35 .\home\templates\apps\register.html:54
+msgid "Nhập mật khẩu"
+msgstr ""
+
+#: .\home\templates\apps\login.html:47
+msgid "Bạn chưa có tài khoản?"
+msgstr ""
+
+#: .\home\templates\apps\login.html:47
+msgid "Đăng ký ở đây"
+msgstr ""
+
+#: .\home\templates\apps\login.html:50
+msgid "Muốn tạo tài khoản người quản lí?"
+msgstr ""
+
+#: .\home\templates\apps\login.html:50
+msgid "Tạo ở đây"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:44
+msgid "Họ tên"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:65
+msgid "Chọn vai trò:"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:67
+msgid "--Tất cả vai trò--"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:68
+msgid "Khách hàng"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:69
+msgid "Chủ cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:70
+msgid "Người quản lí"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:89
+msgid "Tải xuống danh sách tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:91
+#: .\home\templates\apps\manage_hotel.html:114
+msgid "Không thể tải xuống"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:94
+msgid "Thêm tài khoản mới"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:96
+msgid "Tạo tài khoản nhanh"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:104
+msgid "Thêm tài khoản bằng excel"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:105
+msgid "Tải file excel mẫu cho tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:134
+msgid "Số tài khoản:"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:141
+msgid "Chọn thao tác"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:142
+msgid "Cấp lại mã đăng nhập"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:143
+msgid "Cấp vai trò chủ cơ sở"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:144
+msgid "Bỏ vai trò chủ cơ sở"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:145
+msgid "Xóa tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:149
+msgid "Thực hiện"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:153
+msgid "Đang xử lý... Vui lòng chờ."
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:162
+msgid "Vai trò"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:163
+#: .\home\templates\apps\manage_hotel.html:257
+msgid "Họ và tên"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:164
+#: .\home\templates\apps\manage_hotel.html:259
+msgid "Email"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:167
+#: .\home\templates\apps\manage_hotel.html:262
+msgid "Ngày tạo"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:205
+msgid "Không có"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:214
+msgid "Tài khoản đã đổi mật khẩu"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:223
+msgid "Hiện"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:247
+msgid "Xác nhận xóa tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:251
+msgid "Bạn có chắc chắn muốn xóa tài khoản này không?"
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:266
+msgid "Không có tài khoản."
+msgstr ""
+
+#: .\home\templates\apps\manage_account.html:288
+msgid "Không có tài khoản nào."
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:42
+msgid "Chọn loại cơ sở lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:44
+#: .\home\templates\apps\manage_hotel.html:64
+#: .\home\templates\apps\manage_hotel.html:76
+msgid "--Tất cả danh mục--"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:62
+msgid "Chọn loại phòng:"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:74
+msgid "Chọn dịch vụ:"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:112
+msgid "Tải xuống cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:117
+msgid "Tạo cơ sở lưu trú nhanh"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:130
+msgid "Thêm cơ sở lưu trú bằng excel"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:161
+msgid "Số cơ sở lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:170
+msgid "Chủ sở hữu"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:171
+msgid "Giá niêm yết"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:172
+msgid "Dịch vụ"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:174
+msgid "Loại cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:231
+msgid "Bạn có chắc chắn muốn xóa cơ sở lưu trú này?"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:235
+msgid "Có"
+msgstr ""
+
+#: .\home\templates\apps\manage_hotel.html:258
+msgid "Ngày sinh"
+msgstr ""
+
+#: .\home\templates\apps\news.html:25
+msgid "Tin Tức & Dịch Vụ"
+msgstr ""
+
+#: .\home\templates\apps\news.html:40
+msgid "Xem chi tiết"
+msgstr ""
+
+#: .\home\templates\apps\order.html:31
+msgid "Đơn đặt phòng:"
+msgstr ""
+
+#: .\home\templates\apps\order.html:41 .\home\templates\apps\order.html:156
+msgid "Ngày đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\order.html:44 .\home\templates\apps\order.html:159
+msgid "Mã phòng"
+msgstr ""
+
+#: .\home\templates\apps\order.html:49
+msgid "Chỉnh sửa"
+msgstr ""
+
+#: .\home\templates\apps\order.html:65 .\home\templates\apps\order.html:179
+msgid "Đồng"
+msgstr ""
+
+#: .\home\templates\apps\order.html:71 .\home\templates\apps\order.html:79
+#: .\home\templates\apps\order.html:182
+msgid "Xác Nhận"
+msgstr ""
+
+#: .\home\templates\apps\order.html:74 .\home\templates\apps\order.html:82
+#: .\home\templates\apps\order.html:184
+msgid "Chờ"
+msgstr ""
+
+#: .\home\templates\apps\order.html:88
+msgid "Trả"
+msgstr ""
+
+#: .\home\templates\apps\order.html:94
+msgid "Xác nhận trả phòng"
+msgstr ""
+
+#: .\home\templates\apps\order.html:98
+msgid "Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?"
+msgstr ""
+
+#: .\home\templates\apps\order.html:102
+msgid "Có, Trả"
+msgstr ""
+
+#: .\home\templates\apps\order.html:121 .\home\templates\apps\order.html:204
+msgid "Bạn có chắc chắn muốn xóa đơn hàng này không?"
+msgstr ""
+
+#: .\home\templates\apps\order.html:214
+msgid "Đơn đặt phòng của bạn đã được xác nhận"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:39
+msgid "Ngày tham gia:"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:41
+msgid "Vui lòng đăng nhập để xem trang cá nhân."
+msgstr ""
+
+#: .\home\templates\apps\profile.html:54
+msgid "Thông tin người dùng"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:56
+msgid "Họ và tên:"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:68
+msgid "Tạo tài khoản từ:"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:69
+msgid "Lần cuối đăng nhập:"
+msgstr ""
+
+#: .\home\templates\apps\profile.html:78
+msgid "Chỉnh sửa trang cá nhân"
+msgstr ""
+
+#: .\home\templates\apps\register.html:22
+msgid "Đăng ký tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\register.html:37
+msgid "mail của bạn (Có thể):"
+msgstr ""
+
+#: .\home\templates\apps\register.html:42
+msgid "Tên Riêng:"
+msgstr ""
+
+#: .\home\templates\apps\register.html:47
+msgid "Tên Họ:"
+msgstr ""
+
+#: .\home\templates\apps\register.html:62
+msgid "Nhập lại mật khẩu:"
+msgstr ""
+
+#: .\home\templates\apps\register.html:64
+msgid "Nhập lại mật khẩu"
+msgstr ""
+
+#: .\home\templates\apps\register.html:78
+msgid "Bạn đã có tài khoản rồi"
+msgstr ""
+
+#: .\home\templates\apps\register.html:78
+msgid "Đăng nhập ở đây"
+msgstr ""
+
+#: .\home\templates\apps\reset_password.html:21
+msgid "Quý khách vui lòng đăng nhập lại tài khoản"
+msgstr ""
+
+#: .\home\templates\apps\room.html:13
+msgid "Ảnh phòng"
+msgstr ""
+
+#: .\home\templates\apps\room.html:15
+msgid "Ảnh nền"
+msgstr ""
+
+#: .\home\templates\apps\room.html:24 .\home\templates\apps\update_room.html:38
+msgid "Mã phòng:"
+msgstr ""
+
+#: .\home\templates\apps\room.html:25
+#: .\home\templates\apps\update_hotel.html:37
+#: .\home\templates\apps\update_room.html:43
+msgid "Giá:"
+msgstr ""
+
+#: .\home\templates\apps\room.html:39
+msgid "Hiện tại cơ sở lưu trú này đã hết phòng"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:4
+#: .\home\templates\apps\update_hotel.html:23
+msgid "Cập nhật cơ sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:19
+msgid "Cập nhật cở sở lưu trú"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:32
+msgid "Tên cơ sở lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:52
+msgid "Mô tả:"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:57
+msgid "Tọa độ bản đồ:"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:81
+msgid "Loại cơ sở lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\update_hotel.html:86
+#: .\home\templates\apps\update_room.html:61
+msgid "Cập nhật ảnh:"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:4
+#: .\home\templates\apps\update_room.html:4
+#: .\home\templates\apps\update_room.html:19
+#: .\home\templates\apps\update_room.html:23
+msgid "Cập nhật phòng"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:19
+msgid "Cập nhật đơn đặt phòng"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:23
+msgid "Cập nhật Đơn Đặt Phòng"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:31
+msgid "Thông tin Đơn Hàng"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:34
+msgid "Khách hàng:"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:54
+msgid "CCCD:"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:61
+msgid "Trạng thái & Phương thức"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:64
+msgid "Phòng:"
+msgstr ""
+
+#: .\home\templates\apps\update_order.html:72
+msgid "Phương thức thanh toán:"
+msgstr ""
+
+#: .\home\templates\apps\update_room.html:31
+msgid "Thông tin phòng"
+msgstr ""
+
+#: .\home\templates\apps\update_room.html:33
+msgid "Cơ sở lưu trú:"
+msgstr ""
+
+#: .\home\templates\apps\update_room.html:53
+msgid "Trạng thái:"
+msgstr ""
+
+#: .\mywebsite\settings.py:138
+msgid "English"
+msgstr ""
+
+#: .\mywebsite\settings.py:139
+msgid "Vietnamese"
+msgstr ""
+
+#~ msgid "Welcome to My Multi-language Website!"
+#~ msgstr "Xin chao"
+
+#~ msgid "Please select your preferred language from the dropdown."
+#~ msgstr "Lam on"

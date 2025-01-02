@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,8 +61,8 @@
 
   </script>
   {% block extra_js %}{% endblock %}
-
-  <title>Du lịch Tuyên Quang</title>
+  
+  <title>{% trans "Du lịch Tuyên Quang" %}</title>
 </head>
   <!-- menu -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -70,7 +71,7 @@
       <a class="navbar-brand" href="{% url 'home' %}">
         <img src=" {% static 'app/images/logo_nvh (Small).png' %}" width="55" height="55" />
         <img src=" {% static 'app/images/Tuyenquanglogo-removebg-preview.png' %}" width="55" height="55" />
-        DU LỊCH TUYÊN QUANG
+        {% trans "DU LỊCH TUYÊN QUANG" %}
       </a>
       {% endif %}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -80,36 +81,53 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active " aria-current="page" href="{% url 'home' %}"><i class="fa-solid fa-house" style="color: #D6722B;"></i> Trang chủ</a>
+            <a class="nav-link active " aria-current="page" href="{% url 'home' %}"><i class="fa-solid fa-house" style="color: #D6722B;"></i> {% trans "Trang chủ" %}</a>
           </li>
           
           {% if profile.role != 'customer' and profile != none %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'cart' %}"><i class="fa-solid fa-clipboard-list" style="color: #D6722B;"></i> Quản lý cơ sở lưu trú</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'cart' %}"><i class="fa-solid fa-clipboard-list" style="color: #D6722B;"></i> {% trans "Quản lý cơ sở lưu trú" %}</a>
             </li>
           {% endif %}
           {% if profile.role != 'admin' and profile != none %}
-            <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}"><i class="fa-solid fa-receipt" style="color: #D6722B;"></i> Đơn đặt phòng</a></li>
+            <li class="nav-item"><a class="nav-link active" href="{% url 'order' %}"><i class="fa-solid fa-receipt" style="color: #D6722B;"></i> {% trans "Đơn đặt phòng" %}</a></li>
           {% endif %}
           {% if profile.role == 'admin' %}
-              <li class="nav-item"><a class="nav-link active" href="{% url 'manage_account' %}"><i class="fa-solid fa-users" style="color: #D6722B;"></i> Quản lí tài khoản</a></li>
-              <li class="nav-item"><a class="nav-link active" href="{% url 'listroom' %}"><i class="fa-solid fa-bed" style="color: #D6722B;"></i> Thống kê phòng</a></li>
+              <li class="nav-item"><a class="nav-link active" href="{% url 'manage_account' %}"><i class="fa-solid fa-users" style="color: #D6722B;"></i> {% trans "Quản lí tài khoản" %}</a></li>
+              <li class="nav-item"><a class="nav-link active" href="{% url 'listroom' %}"><i class="fa-solid fa-bed" style="color: #D6722B;"></i> {% trans "Thống kê phòng" %}</a></li>
           {% endif %}
           
           {% if profile != none %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'historylist' %}"><i class="fa-solid fa-clock-rotate-left" style="color: #D6722B;"></i> Lịch sử đặt phòng</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'historylist' %}"><i class="fa-solid fa-clock-rotate-left" style="color: #D6722B;"></i> {% trans "Lịch sử đặt phòng" %}</a>
             </li>
           {% endif %}
         
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'news' %}"><i class="fa-solid fa-newspaper" style="color: #D6722B;"></i> Dịch vụ khác</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'news' %}"><i class="fa-solid fa-newspaper" style="color: #D6722B;"></i> {% trans "Dịch vụ khác" %}</a>
           </li>
-
         </ul>
 
       </div>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                🌐 {% trans "Ngôn ngữ"%}
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <button class="dropdown-item" type="submit" name="language" value="vi">
+                            🇻🇳 Tiếng Việt
+                        </button>
+                        <button class="dropdown-item" type="submit" name="language" value="en">
+                            🇺🇸 English
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </li>
         {% if profile.product %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'cart' %}">
@@ -124,45 +142,45 @@
           </a>
           <ul class="dropdown-menu">
             {% if profile != none %}
-              <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-id-card" style="color: #D6722B;"></i> Trang cá nhân</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-id-card" style="color: #D6722B;"></i> {% trans "Trang cá nhân" %}</a></li>
               {% if profile.role != 'admin' %}
-              <li><a class="dropdown-item" href="{% url 'order' %}"><i class="fa-solid fa-receipt" style="color: #D6722B;"></i> Đơn đặt phòng</a></li>
+              <li><a class="dropdown-item" href="{% url 'order' %}"><i class="fa-solid fa-receipt" style="color: #D6722B;"></i> {% trans "Đơn đặt phòng" %}</a></li>
               {% endif %}
               {% if profile.role != 'customer' and profile != none %}
               <li>
-                <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}"><i class="fa-solid fa-clipboard-list" style="color: #D6722B;"></i> Quản lý cơ sở lưu trú</a>
+                <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}"><i class="fa-solid fa-clipboard-list" style="color: #D6722B;"></i> {% trans "Quản lý cơ sở lưu trú" %}</a>
               </li>
               {% endif %}
               
               {% if profile.role == 'admin' %}
-                <li><a class="dropdown-item" href="{% url 'manage_account' %}"><i class="fa-solid fa-users" style="color: #D6722B;"></i> Quản lí tài khoản</a></li>
-                <li><a class="dropdown-item" href="{% url 'listroom' %}"><i class="fa-solid fa-bed" style="color: #D6722B;"></i> Thống kê phòng</a></li>
+                <li><a class="dropdown-item" href="{% url 'manage_account' %}"><i class="fa-solid fa-users" style="color: #D6722B;"></i> {% trans "Quản lí tài khoản" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'listroom' %}"><i class="fa-solid fa-bed" style="color: #D6722B;"></i> {% trans "Thống kê phòng" %}</a></li>
               {% endif %}
-              <li><a class="dropdown-item" href="{% url 'historylist' %}"><i class="fa-solid fa-clock-rotate-left" style="color: #D6722B;"></i> Lịch sử đặt phòng</a></li>
+              <li><a class="dropdown-item" href="{% url 'historylist' %}"><i class="fa-solid fa-clock-rotate-left" style="color: #D6722B;"></i> {% trans "Lịch sử đặt phòng" %}</a></li>
               <li>
                 <a href="{% url 'change_password' %}" class="dropdown-item">
                     <i class="fa-solid fa-lock" style="color: #D6722B;"></i>
-                    Đổi mật khẩu
+                    {% trans "Đổi mật khẩu" %}
                 </a>
               </li>
-              <li><a class="dropdown-item" href= "{% url 'logout' %}" ><i class="fa-solid fa-sign-out-alt" style="color: #D6722B;"></i> Đăng xuất</a></li>
+              <li><a class="dropdown-item" href= "{% url 'logout' %}" ><i class="fa-solid fa-sign-out-alt" style="color: #D6722B;"></i> {% trans "Đăng xuất" %}</a></li>
             {% else %}
-              <li><a class="dropdown-item" href= "{% url 'login' %}" ><i class="fa-solid fa-right-to-bracket" style="color: #D6722B;"></i> Đăng nhập</a></li>
-              <li><a class="dropdown-item" href= "{% url 'register' %}" ><i class="fa-solid fa-user-plus" style="color: #D6722B;"></i> Đăng ký</a></li>
+              <li><a class="dropdown-item" href= "{% url 'login' %}" ><i class="fa-solid fa-right-to-bracket" style="color: #D6722B;"></i> {% trans "Đăng nhập" %}</a></li>
+              <li><a class="dropdown-item" href= "{% url 'register' %}" ><i class="fa-solid fa-user-plus" style="color: #D6722B;"></i> {% trans "Đăng ký" %}</a></li>
             {% endif %}
           </ul>
         </li>
           {% if profile != none %}
           </li>
-            <li class="nav-item"><a class="nav-link active" href= "{% url 'logout' %}" ><i class="fa-solid fa-sign-out-alt" style="color: #D6722B;"></i> Đăng xuất</a></li>
+            <li class="nav-item"><a class="nav-link active" href= "{% url 'logout' %}" ><i class="fa-solid fa-sign-out-alt" style="color: #D6722B;"></i> {% trans "Đăng xuất" %}</a></li>
           </li>
           {% endif %}
         </li>
         <li class="nav-item" style="display: {{ user_not_login }}">
-          <a class="nav-link active" aria-current="page" href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #D6722B;"></i> Đăng nhập</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket" style="color: #D6722B;"></i> {% trans "Đăng nhập" %}</a>
         </li>
         <li class="nav-item" style="display: {{ user_not_login }}">
-          <a class="nav-link active" aria-current="page" href="{% url 'register' %}"><i class="fa-solid fa-user-plus" style="color: #D6722B;"></i> Đăng ký</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'register' %}"><i class="fa-solid fa-user-plus" style="color: #D6722B;"></i> {% trans "Đăng ký" %}</a>
         </li>
       </ul>
     </div>
@@ -197,13 +215,13 @@
   <footer class="container-fluid bg-purple text-light text-center fixed-bottom py-2">
       <small>
           <div>
-              <strong>Địa chỉ:</strong> Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh Tuyên Quang |
-              <strong>Điện thoại:</strong> 0335788907 |
+              <strong>{% trans "Địa chỉ:" %}</strong> {% trans "Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh Tuyên Quang |" %}
+              <strong>{% trans "Điện thoại:" %}</strong> 0335788907 |
               <strong>Email:</strong> <a href="mailto:fdtywadw@gmail.com" class="">fdtywadw@gmail.com</a>
           </div>
           <div>
-              <strong>Thiết kế:</strong> Nguyễn Anh Triết, Hoàng Quang Huy |
-              <strong>Người hướng dẫn:</strong> Nguyễn Thu Thủy
+              <strong>{% trans "Thiết kế:" %}</strong> Nguyễn Anh Triết, Hoàng Quang Huy |
+              <strong>{% trans "Người hướng dẫn:" %}</strong> Nguyễn Thu Thủy
           </div>
       </small>
   </footer>

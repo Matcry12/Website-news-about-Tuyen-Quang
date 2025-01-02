@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Tạo tài khoản quản lí{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Tạo tài khoản quản lí" %}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'app/css/add_room.css' %}">
@@ -67,7 +68,7 @@
 {% block detail %}
 <div class="custom-box">
     <!-- Page Title -->
-    <h1>Tạo tài khoản quản lí</h1>
+    <h1>{% trans "Tạo tài khoản quản lí" %}</h1>
 
     <!-- Form Section -->
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
@@ -93,7 +94,7 @@
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn orange shadow-sm">
-            <i class="fas fa-user-plus me-2"></i> Tạo tài khoản
+            <i class="fas fa-user-plus me-2"></i> {% trans "Tạo tài khoản" %}
         </button>
     </form>
 </div>

@@ -1,12 +1,12 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block title %}
 
 {% if allow %}
-    Tạo hồ sơ
+    {% trans "Tạo hồ sơ" %}
 {% else %}
-    Cập nhật hồ sơ
+    {% trans "Cập nhật hồ sơ" %}
 {% endif %}
 
 {% endblock %}
@@ -28,29 +28,29 @@
 
 {% if profile.role == 'admin' %}
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'manage_account' %}" class="breadcrumbs__item">Quản lý tài khoản</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'manage_account' %}" class="breadcrumbs__item">{% trans "Quản lý tài khoản" %}</a> 
     {% if allow %}
-        <a href="#" class="breadcrumbs__item is-active">Tạo tài khoản</a> 
+        <a href="#" class="breadcrumbs__item is-active">{% trans "Tạo tài khoản" %}</a> 
     {% else %}
-        <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+        <a href="#" class="breadcrumbs__item is-active">{% trans "Cập nhật tài khoản" %}</a> 
     {% endif %}
 
     
 </nav>
 {% else %}
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'profile' %}" class="breadcrumbs__item">Trang cá nhân</a> 
-    <a href="#" class="breadcrumbs__item is-active">Cập nhật tài khoản</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'profile' %}" class="breadcrumbs__item">{% trans "Trang cá nhân" %}</a> 
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Cập nhật tài khoản" %}</a> 
 </nav>
 {% endif %}
 
 <div class="custom-box">
     {% if allow %}
-        <h1> Tạo tài khoản </h1>
+        <h1> {% trans "Tạo tài khoản" %} </h1>
     {% else %}
-        <h1> Cập nhật tài khoản </h1>
+        <h1> {% trans "Cập nhật tài khoản" %} </h1>
     {% endif %}
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data" id="edit-form">
@@ -62,9 +62,9 @@
                 <h3 class="text-center" style="color: red;">{{ error }}</h3>
             {% endif %}
             <div class="col-md-6">
-                <h3>Thông tin tài khoản</h3>
+                <h3>{% trans "Thông tin tài khoản" %}</h3>
                 <div class="form-group">
-                    <label for="{{ user_form.username.id_for_label }}">Tên tài khoản:</label>
+                    <label for="{{ user_form.username.id_for_label }}">{% trans "Tên tài khoản:" %}</label>
                     {{ user_form.username }}
                 </div>
                 <div class="form-group">
@@ -72,11 +72,11 @@
                     {{ user_form.email }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ user_form.first_name.id_for_label }}">Tên riêng:</label>
+                    <label for="{{ user_form.first_name.id_for_label }}">{% trans "Tên riêng:" %}</label>
                     {{ user_form.first_name }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ user_form.last_name.id_for_label }}">Họ:</label>
+                    <label for="{{ user_form.last_name.id_for_label }}">{% trans "Họ:" %}</label>
                     {{ user_form.last_name }}
                 </div>
             </div>
@@ -86,26 +86,26 @@
                 <h3>Thông tin hồ sơ</h3>
                 {% if allow %}
                     <div class="form-group">
-                        <label for="{{ profile_form.role.id_for_label }}">Vai trò:</label>
+                        <label for="{{ profile_form.role.id_for_label }}">{% trans "Vai trò:" %}</label>
                         {{ profile_form.role }}
                     </div>
                 {% endif %}
                 <div class="form-group">
-                    <label for="{{ profile_form.cccd.id_for_label }}">Căn cước công dân:</label>
+                    <label for="{{ profile_form.cccd.id_for_label }}">{% trans "Căn cước công dân:" %}</label>
                     {{ profile_form.cccd }}
                 </div>
                 <div class="form-group">
-                    <label for="{{ profile_form.birthday.id_for_label }}">Ngày sinh:</label>
+                    <label for="{{ profile_form.birthday.id_for_label }}">{% trans "Ngày sinh:" %}</label>
                     <input type="text" id="datepicker" class="form-control" name="birthday" 
                            value="{{ profile_form.birthday.value|date:"d/m/Y" }}">
                 </div>
                 <div class="form-group">
-                    <label for="{{ profile_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    <label for="{{ profile_form.phonecall.id_for_label }}">{% trans "Số điện thoại:" %}</label>
                     {{ profile_form.phonecall }}
                 </div>
 
                 <div class="form-group">
-                    <label for="id_profile_image">Ảnh hồ sơ:</label>
+                    <label for="id_profile_image">{% trans "Ảnh hồ sơ:" %}</label>
                     <div class="input-group">
                         <input 
                             type="file" 
@@ -117,7 +117,7 @@
                     </div>
                     {% if profile_form.instance.profile_image %}
                         <div class="mt-2">
-                            <p class="text-muted mt-2">Hình ảnh hiện tại:</p>
+                            <p class="text-muted mt-2">{% trans "Hình ảnh hiện tại:" %}</p>
                             <img 
                                 src="{{ profile_form.instance.profile_image.url }}" 
                                 alt="Current Image" 
@@ -132,12 +132,12 @@
         </div>
 
         <!-- Password Fields -->
-        <h3 class="mt-4">Mật khẩu</h3>
+        <h3 class="mt-4">{% trans "Mật khẩu" %}</h3>
         <div class="row">
             <!-- Password1 Field -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password1.id_for_label }}">Mật khẩu mới:</label>
+                    <label for="{{ user_form.password1.id_for_label }}">{% trans "Mật khẩu mới:" %}</label>
                     <div class="input-group">
                         {{ user_form.password1 }}
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password1', this)">
@@ -150,7 +150,7 @@
             <!-- Password2 Field -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ user_form.password2.id_for_label }}">Xác nhận mật khẩu:</label>
+                    <label for="{{ user_form.password2.id_for_label }}">{% trans "Xác nhận mật khẩu:" %}</label>
                     <div class="input-group">
                         {{ user_form.password2 }}
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('id_password2', this)">
@@ -163,7 +163,7 @@
 
         <div class="text-center mt-4">
             <button type="button" class="btn orange btn-rounded" data-bs-toggle="modal" data-bs-target="#confirmUpdateModal">
-                Cập nhật
+                {% trans "Cập nhật" %}
             </button>
         
             <!-- Confirmation Modal -->
@@ -171,24 +171,24 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="confirmUpdateModalLabel">Xác nhận cập nhật thông tin</h5>
+                            <h5 class="modal-title" id="confirmUpdateModalLabel">{% trans "Xác nhận cập nhật thông tin" %}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Bạn có chắc chắn muốn cập nhật thông tin này?
+                            {% trans "Bạn có chắc chắn muốn cập nhật thông tin này?" %}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
                             <!-- Hidden Submit Button -->
-                            <button type="submit" name="action" value="Cập nhật" class="btn orange">Xác nhận</button>
+                            <button type="submit" name="action" value="Cập nhật" class="btn orange">{% trans "Xác nhận" %}</button>
                         </div>
                     </div>
                 </div>
             </div>
             {% if profile.role == 'admin' %}
-                <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+                <a class="btn btn-secondary" href="{% url 'manage_account'%}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
             {% else %}
-                <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+                <a class="btn btn-secondary" href="{% url 'profile'%}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
             {% endif %}
             </div>
         </div>
@@ -218,7 +218,7 @@
 
             // Apply validation only if the field has value
             if (this.value && !this.value.match(passwordPattern)) {
-                this.setCustomValidity('Đảm bảo mật khẩu chứa kí tự phù hợp');
+                this.setCustomValidity(`{% trans "Đảm bảo mật khẩu chứa kí tự phù hợp" %}`);
             }
         });
 
@@ -228,7 +228,7 @@
 
             // Apply validation only if the field has value
             if (this.value && !this.value.match(passwordPattern)) {
-                this.setCustomValidity('Đảm bảo mật khẩu chứa kí tự phù hợp');
+                this.setCustomValidity(`{% trans "Đảm bảo mật khẩu chứa kí tự phù hợp" %}`);
             }
         });
     });

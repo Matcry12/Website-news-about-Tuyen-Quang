@@ -1,11 +1,12 @@
 {% extends 'apps/base.html' %}
-{% block title %}Trang cá nhân{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Trang cá nhân" %}{% endblock %}
 
 {% block profile %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="#" class="breadcrumbs__item is-active">Trang cá nhân</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Trang cá nhân" %}</a> 
 </nav>
 
 
@@ -15,7 +16,7 @@
         <!-- Back Button -->
         <div class="d-flex align-items-center justify-content-between mb-4">
             <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{% url 'home' %}">
-                <i class="fas fa-arrow-left me-2"></i> Trở lại
+                <i class="fas fa-arrow-left me-2"></i> {% trans "Trở lại" %}
             </a>
         </div>
 
@@ -35,9 +36,9 @@
                 {% if profile %}
                     <h2 class="fw-bold">{{ profile.user.last_name }} {{ profile.user.first_name }}</h2>
                     <p class="text-muted fs-5 mb-1"><i class="fas fa-envelope me-2"></i>Email: {{ profile.user.email }}</p>
-                    <p class="text-muted fs-5 mb-1"><i class="fas fa-calendar-alt me-2"></i>Ngày tham gia: {{ profile.user.date_joined|date:"d/m/Y" }}</p>
+                    <p class="text-muted fs-5 mb-1"><i class="fas fa-calendar-alt me-2"></i>{% trans "Ngày tham gia:" %} {{ profile.user.date_joined|date:"d/m/Y" }}</p>
                 {% else %}
-                    <h2 class="text-danger">Vui lòng đăng nhập để xem trang cá nhân.</h2>
+                    <h2 class="text-danger">{% trans "Vui lòng đăng nhập để xem trang cá nhân." %}</h2>
                 {% endif %}
             </div>
         </div>
@@ -50,22 +51,22 @@
         <div class="row gx-5">
             <!-- Left Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase text fw-bold purple-text">Thông tin người dùng</h5>
+                <h5 class="text-uppercase text fw-bold purple-text">{% trans "Thông tin người dùng" %}</h5>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Họ và tên:</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</li>
-                    <li class="list-group-item"><strong>Ngày sinh:</strong> {{ profile.birthday|date:"d/m/Y" }}</li>
-                    <li class="list-group-item"><strong>Căn cước công dân:</strong> {{ profile.cccd }}</li>
-                    <li class="list-group-item"><strong>Số điện thoại:</strong> {{ profile.phonecall }}</li>
-                    <li class="list-group-item"><strong>Vai trò:</strong> {{ profile.get_role_display }}</li>
+                    <li class="list-group-item"><strong>{% trans "Họ và tên:" %}</strong> {{ profile.user.last_name }} {{ profile.user.first_name }}</li>
+                    <li class="list-group-item"><strong>{% trans "Ngày sinh:" %}</strong> {{ profile.birthday|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>{% trans "Căn cước công dân:" %}</strong> {{ profile.cccd }}</li>
+                    <li class="list-group-item"><strong>{% trans "Số điện thoại:" %}</strong> {{ profile.phonecall }}</li>
+                    <li class="list-group-item"><strong>{% trans "Vai trò:" %}</strong> {{ profile.get_role_display }}</li>
                 </ul>
             </div>
             <!-- Right Section -->
             <div class="col-md-6">
-                <h5 class="text-uppercase text purple-text fw-bold">Thông tin tài khoản</h5>
+                <h5 class="text-uppercase text purple-text fw-bold">{% trans "Thông tin tài khoản" %}</h5>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Tên tài khoản:</strong> {{ profile.user.username }}</li>
-                    <li class="list-group-item"><strong>Tạo tài khoản từ:</strong> {{ profile.user.date_joined|date:"d/m/Y" }}</li>
-                    <li class="list-group-item"><strong>Lần cuối đăng nhập:</strong> {{ profile.user.last_login|date:"d/m/Y H:i" }}</li>
+                    <li class="list-group-item"><strong>{% trans "Tên tài khoản:" %}</strong> {{ profile.user.username }}</li>
+                    <li class="list-group-item"><strong>{% trans "Tạo tài khoản từ:" %}</strong> {{ profile.user.date_joined|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>{% trans "Lần cuối đăng nhập:" %}</strong> {{ profile.user.last_login|date:"d/m/Y H:i" }}</li>
                 </ul>
             </div>
         </div>
@@ -74,7 +75,7 @@
         <!-- Edit Profile Button -->
         <div class="mt-4 text-center">
             <a href="{% url 'edit_profile' user_id=profile.user.id %}" class="btn btn purple btn-lg rounded-pill px-4">
-                <i class="fas fa-edit me-2"></i> Chỉnh sửa trang cá nhân
+                <i class="fas fa-edit me-2"></i> {% trans "Chỉnh sửa trang cá nhân" %}
             </a>
         </div>
     </div>

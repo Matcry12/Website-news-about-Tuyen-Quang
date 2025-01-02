@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Cập nhật cơ sở lưu trú{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Cập nhật cơ sở lưu trú" %}{% endblock %}
 
 {% block extra_js %}
 
@@ -13,13 +14,13 @@
 {% block update_hotel %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'cart' %}" class="breadcrumbs__item">Quản lí cơ sở lưu trú</a> 
-    <a href="#" class="breadcrumbs__item is-active">Cập nhật cở sở lưu trú</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'cart' %}" class="breadcrumbs__item">{% trans "Quản lí cơ sở lưu trú" %}</a> 
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Cập nhật cở sở lưu trú" %}</a> 
 </nav>
 
 <div class="custom-box">
-    <h1> Cập nhật cơ sở lưu trú </h1>
+    <h1> {% trans "Cập nhật cơ sở lưu trú" %} </h1>
     <br/>
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -28,37 +29,37 @@
             <!-- Hotel Information -->
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ hotel_form.name.id_for_label }}">Tên cơ sở lưu trú:</label>
+                    <label for="{{ hotel_form.name.id_for_label }}">{% trans "Tên cơ sở lưu trú:" %}</label>
                     {{ hotel_form.name }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.amountprice.id_for_label }}">Giá:</label>
+                    <label for="{{ hotel_form.amountprice.id_for_label }}">{% trans "Giá:" %}</label>
                     {{ hotel_form.amountprice }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.location.id_for_label }}">Địa chỉ:</label>
+                    <label for="{{ hotel_form.location.id_for_label }}">{% trans "Địa chỉ:" %}</label>
                     {{ hotel_form.location }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    <label for="{{ hotel_form.phonecall.id_for_label }}">{% trans "Số điện thoại:" %}</label>
                     {{ hotel_form.phonecall }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.detail.id_for_label }}">Mô tả:</label>
+                    <label for="{{ hotel_form.detail.id_for_label }}">{% trans "Mô tả:" %}</label>
                     {{ hotel_form.detail }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.maplocation.id_for_label }}">Tọa độ bản đồ:</label>
+                    <label for="{{ hotel_form.maplocation.id_for_label }}">{% trans "Tọa độ bản đồ:" %}</label>
                     {{ hotel_form.maplocation }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.rate.id_for_label }}">Đánh giá:</label>
+                    <label for="{{ hotel_form.rate.id_for_label }}">{% trans "Đánh giá:" %}</label>
                     {{ hotel_form.rate }}
                 </div>
             </div>
@@ -67,22 +68,22 @@
             
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="{{ hotel_form.categories.id_for_label }}">Dịch vụ:</label>
+                    <label for="{{ hotel_form.categories.id_for_label }}">{% trans "Dịch vụ:" %}</label>
                     {{ hotel_form.categories }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.room_types.id_for_label }}">Loại phòng:</label>
+                    <label for="{{ hotel_form.room_types.id_for_label }}">{% trans "Loại phòng:" %}</label>
                     {{ hotel_form.room_types }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ hotel_form.product_type.id_for_label }}">Loại cơ sở lưu trú:</label>
+                    <label for="{{ hotel_form.product_type.id_for_label }}">{% trans "Loại cơ sở lưu trú:" %}</label>
                     {{ hotel_form.product_type }}
                 </div>
                 
                 <div class="form-group">
-                    <label for="id_imageP">Cập nhật ảnh:</label>
+                    <label for="id_imageP">{% trans "Cập nhật ảnh:" %}</label>
                     <div class="input-group">
                         <input 
                             type="file" 
@@ -94,7 +95,7 @@
                     </div>
                     {% if pic_form.instance.imageP %}
                         <div class="mt-2">
-                            <p class="text-muted mt-2">Hình ảnh hiện tại:</p>
+                            <p class="text-muted mt-2">{% trans "Hình ảnh hiện tại:" %}</p>
                             <img 
                                 src="{{ pic_form.instance.imageP.url }}" 
                                 alt="Current Image" 
@@ -108,8 +109,8 @@
 
             </div>
             
-            <input type="submit" value="Cập nhật" class="btn btn-secondary">
-            <a class="btn btn-secondary" href="{% url 'cart'%}"><i class="fas fa-times-circle me-2"></i> Hủy bỏ</a>
+            <input type="submit" value="{% trans 'Cập nhật' %}" class="btn btn-secondary">
+            <a class="btn btn-secondary" href="{% url 'cart'%}"><i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}</a>
         </div>
         
         

@@ -1,6 +1,9 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Quản lí cơ sở lưu trú{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Quản lí cơ sở lưu trú" %}{% endblock %}
+
+
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'app/css/manage_hotel.css' %}">
@@ -11,8 +14,8 @@
 {% block manager %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'cart' %}" class="breadcrumbs__item is-active">Quản lí cơ sở lưu trú</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'cart' %}" class="breadcrumbs__item is-active">{% trans "Quản lí cơ sở lưu trú" %}</a> 
 </nav>
 
 <div id = "center-box">
@@ -23,7 +26,7 @@
          
         <div class="card shadow-sm" id = "first">
             <div class="card-body">
-                <h5 class="text-center color-text"><strong>Quản lí cơ sở lưu trú</strong></h5>  
+                <h5 class="text-center color-text"><strong>{% trans "Quản lí cơ sở lưu trú" %}</strong></h5>  
 
                 <div class="filter-section py-3">
                     <form method="GET">
@@ -31,14 +34,14 @@
                         <div class="filter-fields">
                             <!-- Filter by Name -->
                             <div class="">
-                                <label for="name" class="form-label">Tên cơ sở lưu trú</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên CS lưu trú" value="{{ request.GET.name }}">
+                                <label for="name" class="form-label">{% trans "Tên cơ sở lưu trú" %}</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="{% trans 'Nhập tên CS lưu trú' %}" value="{{ request.GET.name }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="hotel" class="form-label">Chọn loại cơ sở lưu trú:</label>
+                                <label for="hotel" class="form-label">{% trans "Chọn loại cơ sở lưu trú:" %}</label>
                                 <select name="hotel" id="hotel" class="form-control">
-                                    <option value="all">--Tất cả danh mục-- </option>
+                                    <option value="all">{% trans "--Tất cả danh mục--" %}</option>
                                     {% for type in hotel_type %}
                                         <option value="{{ type.id }}" >
                                             {{ type }}
@@ -48,17 +51,17 @@
                             </div>
 
                             <div class="form-group" id="price">
-                                <label for="price" class="form-label color-text"><strong>Khoảng giá</strong></label>
+                                <label for="price" class="form-label color-text"><strong>{% trans "Khoảng giá" %}</strong></label>
                                 <div class="d-flex">
-                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
-                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                    <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="{% trans 'Từ' %}" value="{{ request.GET.min_price }}">
+                                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="{% trans 'Đến' %}" value="{{ request.GET.max_price }}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="room" class="form-label">Chọn loại phòng:</label>
+                                <label for="room" class="form-label">{% trans "Chọn loại phòng:" %}</label>
                                 <select name="room" id="room" class="form-control" data-mdb-select-init multiple>
-                                    <option value="all">--Tất cả danh mục-- </option>
+                                    <option value="all">{% trans "--Tất cả danh mục--" %}</option>
                                     {% for room in room_type %}
                                         <option value="{{ room.id }}" >
                                             {{ room.name }}
@@ -68,9 +71,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="category" class="form-label">Chọn dịch vụ:</label>
+                                <label for="category" class="form-label">{% trans "Chọn dịch vụ:" %}</label>
                                 <select name="category" id="category" class="form-control" data-mdb-select-init multiple>
-                                    <option value="all">--Tất cả danh mục-- </option>
+                                    <option value="all">{% trans "--Tất cả danh mục--" %} </option>
                                     {% for category in categories %}
                                         <option value="{{ category.id }}" >
                                             {{ category.name }}
@@ -80,13 +83,13 @@
                             </div>
 
                             <div class="form-group" >
-                                <label for="rate" class="form-label">Chọn đánh giá:</label>
+                                <label for="rate" class="form-label">{% trans "Chọn đánh giá:" %}</label>
                                 <select name="rate" id="rate" class="form-control">
-                                    <option value="all">--Tất cả số sao-- </option>
-                                    <option value="2" > 2 sao trở lên </option>
-                                    <option value="3" > 3 sao trở lên </option>
-                                    <option value="4" > 4 sao trở lên </option>
-                                    <option value="5" > 5 sao trở lên </option>
+                                    <option value="all">{% trans "--Tất cả số sao--" %}</option>
+                                    <option value="2" > {% trans "2 sao trở lên" %} </option>
+                                    <option value="3" > {% trans "3 sao trở lên" %} </option>
+                                    <option value="4" > {% trans "4 sao trở lên" %} </option>
+                                    <option value="5" > {% trans "5 sao trở lên" %} </option>
                                 </select>
                             </div>
                             
@@ -95,10 +98,10 @@
                         <!-- Filter Buttons -->
                         <div class="mt-3 ">
                             <button type="submit" class="btn btn-lg btn-primary px-2 py-2" id="submit">
-                                <i class="fas fa-search me-2"></i> Tìm kiếm
+                                <i class="fas fa-search me-2"></i> {% trans "Tìm kiếm" %}
                             </button>
                             <a href="?" class="btn btn-lg btn-outline-secondary px-1 py-2">
-                                <i class="fas fa-times-circle me-2"></i> Xóa tìm kiếm
+                                <i class="fas fa-times-circle me-2"></i> {% trans "Xóa tìm kiếm" %}
                             </a>
                         </div>
                         <br>
@@ -106,17 +109,17 @@
                     
 
                     {% if allowed %}
-                        <a href="{% url 'export_hotel' %}?{{ request.GET.urlencode }}" class="btn orange d-block mb-3"><i class="fas fa-download me-2"></i> Tải xuống cơ sở lưu trú</a>
+                        <a href="{% url 'export_hotel' %}?{{ request.GET.urlencode }}" class="btn orange d-block mb-3"><i class="fas fa-download me-2"></i> {% trans "Tải xuống cơ sở lưu trú" %}</a>
                     {% else %}
-                        <a href="" class="btn btn-danger d-block mb-3"><i class="fas fa-ban me-2"></i> Không thể tải xuống</a>
+                        <a href="" class="btn btn-danger d-block mb-3"><i class="fas fa-ban me-2"></i> {% trans "Không thể tải xuống" %}</a>
                     {% endif %}
 
-                    <a href="javascript:void(0);" class="btn btn-outline purple d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i> Tạo cơ sở lưu trú nhanh</a>
+                    <a href="javascript:void(0);" class="btn btn-outline purple d-block mb-3" id="showMoreBtn"><i class="fas fa-plus-circle"></i> {% trans "Tạo cơ sở lưu trú nhanh" %}</a>
 
                     <div id="extraContent2" style="display: block;">
-                        <h5 class="text-center"><strong>Thêm cơ sở lưu trú</strong></h5>
+                        <h5 class="text-center"><strong>{% trans "Thêm cơ sở lưu trú" %}</strong></h5>
                         <div class="text-center">
-                            <a class="btn btn-outline purple mt-2" href="{% url 'add_hotel_user' %}"> <i class="fas fa-plus-circle me-2"></i> Thêm cơ sở lưu trú </a>
+                            <a class="btn btn-outline purple mt-2" href="{% url 'add_hotel_user' %}"> <i class="fas fa-plus-circle me-2"></i> {% trans "Thêm cơ sở lưu trú" %} </a>
                         </div>
                     </div>
 
@@ -124,8 +127,8 @@
                     <div id="extraContent" style="display: none;">
                         <br>
 
-                        <h5 class="text-center"><strong>Thêm cơ sở lưu trú bằng excel</strong></h5>
-                        <a class="btn btn-sm btn-outline purple mt-2" href="{% url 'download_example_hotel' %}"><i class="fas fa-download me-2"></i> Tải file excel mẫu</a>
+                        <h5 class="text-center"><strong>{% trans "Thêm cơ sở lưu trú bằng excel" %}</strong></h5>
+                        <a class="btn btn-sm btn-outline purple mt-2" href="{% url 'download_example_hotel' %}"><i class="fas fa-download me-2"></i> {% trans "Tải file excel mẫu" %}</a>
                         </br>
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
@@ -134,7 +137,7 @@
                                     
                                 </label>
                                 <input type="file" name="hotel_excel" id="hotel_excel" accept=".xlsx, .xls" required class="form-control">
-                                <button type="submit" class="btn btn-outline purple mt-2"><i class="fas fa-plus-circle me-2"></i> Thêm</button>
+                                <button type="submit" class="btn btn-outline purple mt-2"><i class="fas fa-plus-circle me-2"></i> {% trans "Thêm" %}</button>
                             </div>
                         </form>
                     </div>
@@ -148,14 +151,14 @@
         <div class="card shadow-sm" id = "second">
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; Trở lại</a>
+                    <a class="btn btn-outline-dark rounded-btn" href="{% url 'home' %}">&#x2190; {% trans "Trở lại" %}</a>
                 </div>
                 
                 <div class="col-12 mb-4">
                     
                     <h4 style="color: red;"><strong>{{ error }}</strong></h4>
 
-                    <h5 ><strong>Số cơ sở lưu trú: {{ count }}</strong></h5>
+                    <h5 ><strong>{% trans "Số cơ sở lưu trú:" %} {{ count }}</strong></h5>
 
                     <!-- Check if there are any histories -->
                     {% if hotels_page %}
@@ -163,18 +166,18 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Tên cơ sở lưu trú</th>
-                                        <th>Chủ sở hữu</th>
-                                        <th>Giá niêm yết</th>
-                                        <th>Dịch vụ</th>
-                                        <th>Loại phòng</th>
-                                        <th>Loại cơ sở lưu trú</th>
-                                        <th>Địa chỉ</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Đánh giá</th>   
-                                        <th>Chi tiết</th>
-                                        <th>Sửa</th>
-                                        <th>Xóa</th>
+                                        <th>{% trans "Tên cơ sở lưu trú" %}</th>
+                                        <th>{% trans "Chủ sở hữu" %}</th>
+                                        <th>{% trans "Giá niêm yết" %}</th>
+                                        <th>{% trans "Dịch vụ" %}</th>
+                                        <th>{% trans "Loại phòng" %}</th>
+                                        <th>{% trans "Loại cơ sở lưu trú" %}</th>
+                                        <th>{% trans "Địa chỉ" %}</th>
+                                        <th>{% trans "Số điện thoại" %}</th>
+                                        <th>{% trans "Đánh giá" %}</th>
+                                        <th>{% trans "Chi tiết" %}</th>
+                                        <th>{% trans "Sửa" %}</th>
+                                        <th>{% trans "Xóa" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -195,7 +198,7 @@
                                                 <td>{{hotel.phonecall}}</td>
                                                 <td>
                                                     {% if hotel.rate == 0 %}
-                                                        Chưa đánh giá
+                                                        {% trans "Chưa đánh giá" %}
                                                     {% else %}
                                                         {% for _ in "1"|center:hotel.rate %}
                                                             <i class="fa fa-star text-warning"></i>
@@ -204,7 +207,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{% url 'detail_hotel' hotel_id=hotel.id %}" class="btn btn-outline purple btn-sm rounded-pill px-3 d-inline-flex align-items-center">
-                                                        <i class="fas fa-info-circle me-2"></i> Chi tiết
+                                                        <i class="fas fa-info-circle me-2"></i> {% trans "Chi tiết" %}
                                                     </a>
                                                 </td>
                                                 <td>
@@ -221,15 +224,15 @@
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận xóa</h5>
+                                                                <h5 class="modal-title" id="exampleModalLabel">{% trans "Xác nhận xóa" %}</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa cơ sở lưu trú này?
+                                                                {% trans "Bạn có chắc chắn muốn xóa cơ sở lưu trú này?" %}
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                                                                <a href="{% url 'delete_hotel' hotel_id=hotel.id %}" class="btn btn-danger">Có</a>
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
+                                                                <a href="{% url 'delete_hotel' hotel_id=hotel.id %}" class="btn btn-danger">{% trans "Có" %}</a>
                                                             </div>
                                                             </div>
                                                         </div>
@@ -239,7 +242,7 @@
                                         {% endfor %}
                                     {% else %}
                                         <tr class="no-history-row">
-                                            <td colspan="11" class="text-center">Không có cơ sở lưu trú nào.</td>
+                                            <td colspan="11" class="text-center">{% trans "Không có cơ sở lưu trú nào." %}</td>
                                         </tr>                                    
                                     {% endif %}
                                 </tbody>                                
@@ -250,18 +253,18 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Tên tài khoản</th>
-                                        <th>Họ và tên</th>
-                                        <th>Ngày sinh</th>
-                                        <th>Email</th>
-                                        <th>Căn cước công dân</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Ngày tạo</th>
+                                        <th>{% trans "Tên tài khoản" %}</th>
+                                        <th>{% trans "Họ và tên" %}</th>
+                                        <th>{% trans "Ngày sinh" %}</th>
+                                        <th>{% trans "Email" %}</th>
+                                        <th>{% trans "Căn cước công dân" %}</th>
+                                        <th>{% trans "Số điện thoại" %}</th>
+                                        <th>{% trans "Ngày tạo" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr class="no-history-row">
-                                        <td colspan="11" class="text-center">Không có cơ sở lưu trú nào.</td>
+                                        <td colspan="11" class="text-center">{% trans "Không có cơ sở lưu trú nào." %}</td>
                                     </tr>   
                                 </tbody>                                
                             </table>
@@ -275,7 +278,7 @@
                             <ul class="pagination">
                                 {% if hotels_page.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ hotels_page.previous_page_number }}&{{ query_string }}">&#x2190; Trang trước</a>
+                                        <a class="page-link" href="?page={{ hotels_page.previous_page_number }}&{{ query_string }}">&#x2190; {% trans "Trang trước" %}</a>
                                     </li>
                                 {% endif %}
                                 {% for num in hotels_page.paginator.page_range %}
@@ -285,7 +288,7 @@
                                 {% endfor %}
                                 {% if hotels_page.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ hotels_page.next_page_number }}&{{ query_string }}">Sang trang &#x2192;</a>
+                                        <a class="page-link" href="?page={{ hotels_page.next_page_number }}&{{ query_string }}">{% trans "Sang trang" %} &#x2192;</a>
                                     </li>
                                 {% endif %}
                             </ul>
@@ -311,11 +314,11 @@
                 if (extraContent.style.display === 'none') {
                     extraContent.style.display = 'block'; // Show the content
                     extraContent2.style.display = 'none'; // Show the content
-                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo CS lưu trú thủ công'; // Change the button text to "Hide"
+                    showMoreBtn.innerHTML = `<i class="fas fa-plus-circle"></i> ${gettext('Tạo CS lưu trú thủ công')}`; // Change the button text to "Hide"
                 } else {
                     extraContent.style.display = 'none'; // Hide the content
                     extraContent2.style.display = 'block'; // Show the content
-                    showMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Tạo CS lưu trú nhanh'; // Change the button text back to "See more"
+                    showMoreBtn.innerHTML = `<i class="fas fa-plus-circle"></i> ${gettext('Tạo CS lưu trú nhanh')}`; // Change the button text back to "See more"
                 }
             });
         }

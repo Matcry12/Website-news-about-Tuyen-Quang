@@ -1,6 +1,7 @@
 {% extends 'apps/base.html' %}
 {% load static %}
-{% block title %}Cập nhật phòng{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Cập nhật phòng" %}{% endblock %}
 
 {% block extra_js %}
 
@@ -13,13 +14,13 @@
 {% block update_room %}
 
 <nav class="breadcrumbs">
-    <a href="{% url 'home' %}" class="breadcrumbs__item">Trang chủ</a>
-    <a href="{% url 'order' %}" class="breadcrumbs__item">Đơn đặt phòng</a> 
-    <a href="#" class="breadcrumbs__item is-active">Cập nhật đơn đặt phòng</a> 
+    <a href="{% url 'home' %}" class="breadcrumbs__item">{% trans "Trang chủ" %}</a>
+    <a href="{% url 'order' %}" class="breadcrumbs__item">{% trans "Đơn đặt phòng" %}</a> 
+    <a href="#" class="breadcrumbs__item is-active">{% trans "Cập nhật đơn đặt phòng" %}</a> 
 </nav>
 
 <div class="custom-box">
-    <h1> Cập nhật Đơn Đặt Phòng </h1>
+    <h1> {% trans "Cập nhật Đơn Đặt Phòng" %} </h1>
     <br />
     <form action="" method="POST" class="custom-form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -27,40 +28,40 @@
             <h2 class="text-center" style="color: red;">{{error}}</h2>
             <!-- Order Information -->
             <div class="col-md-6">
-                <h3 class="section-title">Thông tin Đơn Hàng</h3>
+                <h3 class="section-title">{% trans "Thông tin Đơn Hàng" %}</h3>
 
                 <div class="form-group">
-                    <label for="{{ order_form.cname.id_for_label }}">Khách hàng:</label>
+                    <label for="{{ order_form.cname.id_for_label }}">{% trans "Khách hàng:" %}</label>
                     {{ order_form.cname }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ order_form.datebook.id_for_label }}">Ngày nhận phòng:</label>
+                    <label for="{{ order_form.datebook.id_for_label }}">{% trans "Ngày nhận phòng:" %}</label>
                     {{ order_form.datebook }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ order_form.address.id_for_label }}">Địa chỉ:</label>
+                    <label for="{{ order_form.address.id_for_label }}">{% trans "Địa chỉ:" %}</label>
                     {{ order_form.address }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ order_form.phonecall.id_for_label }}">Số điện thoại:</label>
+                    <label for="{{ order_form.phonecall.id_for_label }}">{% trans "Số điện thoại:" %}</label>
                     {{ order_form.phonecall }}
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ order_form.cccd.id_for_label }}">CCCD:</label>
+                    <label for="{{ order_form.cccd.id_for_label }}">{% trans "CCCD:" %}</label>
                     {{ order_form.cccd }}
                 </div>
             </div>
 
             <!-- Status and Method -->
             <div class="col-md-6">
-                <h3 class="section-title">Trạng thái & Phương thức</h3>
+                <h3 class="section-title">{% trans "Trạng thái & Phương thức" %}</h3>
 
                 <div class="form-group">
-                    <label for="{{ order_form.room.id_for_label }}">Phòng:</label>
+                    <label for="{{ order_form.room.id_for_label }}">{% trans "Phòng:" %}</label>
                     {{ order_form.room }}
                     {% if order_form.room.errors %}
                         <div class="text-danger">{{ order_form.room.errors }}</div>
@@ -68,14 +69,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="{{ order_form.method.id_for_label }}">Phương thức thanh toán:</label>
+                    <label for="{{ order_form.method.id_for_label }}">{% trans "Phương thức thanh toán:" %}</label>
                     {{ order_form.method }}
                 </div>
 
             </div>
-            <input type="submit" value="Cập nhật" class="btn btn-secondary">
+            <input type="submit" value="{% trans 'Cập nhật' %}" class="btn btn-secondary">
             <a class="btn btn-secondary" href="{% url 'order' %}">
-                <i class="fas fa-times-circle me-2"></i> Hủy bỏ
+                <i class="fas fa-times-circle me-2"></i> {% trans "Hủy bỏ" %}
             </a>
         </div>
 
