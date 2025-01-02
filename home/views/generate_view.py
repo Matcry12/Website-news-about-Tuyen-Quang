@@ -92,8 +92,9 @@ def generate_example_room(request):
 
     # Example data to be shown in the file (optional)
     example_data = [
-        ["0005", "1000000", "Phòng Đơn", 'Trống'],
-        ["0006", "5000000", "Phòng VIP", 'Trống',],
+        ["0005", "1000000", "Phòng Đơn", 'Trống/Empty'],
+        ["0006", "5000000", "Phòng VIP", 'Đang được sử dụng/ In use',],
+        ["0005", "1000000", "Phòng Đơn", 'Chờ/Wait'],
     ]
 
     # Add example data to the sheet (you can add more rows or leave it empty for the user to fill)

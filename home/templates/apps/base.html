@@ -136,6 +136,26 @@
             </a>
           </li>
         {% endif %}
+        {% if profile.role == 'admin' %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+          </a>
+          <ul class="dropdown-menu">
+              {% if profile.role != 'customer' and profile != none %}
+              <li>
+                <a class="dropdown-item" aria-current="page" href="{% url 'cart' %}"><i class="fa-solid fa-clipboard-list" style="color: #D6722B;"></i> {% trans "Quản lý cơ sở lưu trú" %}</a>
+              </li>
+              {% endif %}
+              
+              {% if profile.role == 'admin' %}
+                <li><a class="dropdown-item" href="{% url 'manage_account' %}"><i class="fa-solid fa-users" style="color: #D6722B;"></i> {% trans "Quản lí tài khoản" %}</a></li>
+                <li><a class="dropdown-item" href="{% url 'listroom' %}"><i class="fa-solid fa-bed" style="color: #D6722B;"></i> {% trans "Thống kê phòng" %}</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'historylist' %}"><i class="fa-solid fa-clock-rotate-left" style="color: #D6722B;"></i> {% trans "Lịch sử đặt phòng" %}</a></li>
+          </ul>
+        </li>
+        {% endif %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="customerDef">
             {{request.user}}

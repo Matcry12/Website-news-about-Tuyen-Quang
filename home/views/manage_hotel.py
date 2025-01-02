@@ -348,6 +348,12 @@ def manage_hotel(request):
                         phonecall=product_data['Số điện thoại']
                     )
 
+                    profile_owner = UserProfile.objects.get(user = owner)
+
+                    profile_owner.product = product
+
+                    profile_owner.save()
+
                     # Handle categories (comma-separated names)
                     if product_data['Dịch vụ']:
                         categories_excel = product_data['Dịch vụ'].split(',')

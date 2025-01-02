@@ -89,14 +89,19 @@ def add_hotel_user(request):
     if request.method == 'POST':
         form = ProductFormCreateUser(request.POST, request.FILES)
         if form.is_valid():
-            product = form.save(commit=False) 
-            user_profile_seller = UserProfile.objects.get(user=product.owner)
-            user_profile_seller.product = product
-            user_profile_seller.save()
-            product.save()
-            
-            form.save_m2m() 
-            return redirect(reverse_lazy('cart'))
+            try:
+                product = form.save(commit=False) 
+                
+                product.save()
+
+                user_profile_seller = UserProfile.objects.get(user=product.owner)
+                user_profile_seller.product = product
+                user_profile_seller.save()
+                
+                form.save_m2m() 
+                return redirect(reverse_lazy('cart'))
+            except Exception as e:
+               error = f'Lỗi trong quá trình nhập dữ liệu: {e}'
         else:
             error = 'Vui lòng kiểm tra lại thông tin và thử lại.'
     else:
