@@ -226,7 +226,7 @@ class UserProfile(models.Model):
     data_modified = models.DateTimeField(auto_now=True)
     profile_image = models.ImageField(null=True, blank=True, upload_to="profiles/")
     base_password = models.TextField(null=True, blank=True)
-    product = models.OneToOneField("Product", null=True, blank=True, on_delete=models.CASCADE)
+    product = models.OneToOneField("Product", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.user.username

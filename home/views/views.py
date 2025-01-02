@@ -770,40 +770,40 @@ def manage_account(request):
                     'Số điện thoại',
                     'Mật khẩu',
                 ]
-                
-                # Iterate over the rows in the sheet
-                for row in sheet.iter_rows(min_row=2, values_only=True):
-                    account_data = dict(zip(headers, row))
+                with transaction.atomic():
+                    # Iterate over the rows in the sheet
+                    for row in sheet.iter_rows(min_row=2, values_only=True):
+                        account_data = dict(zip(headers, row))
 
-                    username = account_data.get('Tên tài khoản (username)', '').strip()
+                        username = account_data.get('Tên tài khoản (username)', '').strip()
 
-                    # Check if the username is not empty
-                    if not username:
-                        continue  # Skip this row if username is missing or empty
+                        # Check if the username is not empty
+                        if not username:
+                            continue  # Skip this row if username is missing or empty
 
-                    # Check if the user already exists, if so, skip
-                    try:
-                        user = User.objects.get(username=username)
-                    except ObjectDoesNotExist:
-                        user = None  # If user does not exist, proceed with creating new user
-                    
-                    if not user:  # Only create a new user if it doesn't exist
-                        # Create the new user and set password
-                        user = User.objects.create_user(
-                            username=username,
-                            email=account_data['Email'],
-                            first_name=account_data['Tên riêng'],
-                            last_name=account_data['Tên đệm'],
-                            password=account_data['Mật khẩu'],  # Set password using 'create_user'
-                        )
+                        # Check if the user already exists, if so, skip
+                        try:
+                            user = User.objects.get(username=username)
+                        except ObjectDoesNotExist:
+                            user = None  # If user does not exist, proceed with creating new user
+                        
+                        if not user:  # Only create a new user if it doesn't exist
+                            # Create the new user and set password
+                            user = User.objects.create_user(
+                                username=username,
+                                email=account_data['Email'],
+                                first_name=account_data['Tên riêng'],
+                                last_name=account_data['Tên đệm'],
+                                password=account_data['Mật khẩu'],  # Set password using 'create_user'
+                            )
 
-                        # Create the user profile
-                        UserProfile.objects.create(
-                            user=user,
-                            role = 'seller',
-                            phonecall=account_data['Số điện thoại'],
-                            base_password = account_data['Mật khẩu'],
-                        )
+                            # Create the user profile
+                            UserProfile.objects.create(
+                                user=user,
+                                role = 'seller',
+                                phonecall=account_data['Số điện thoại'],
+                                base_password = account_data['Mật khẩu'],
+                            )
             except Exception as e:
                 error = 'Lỗi trong quá trình nhập dữ liệu'
     

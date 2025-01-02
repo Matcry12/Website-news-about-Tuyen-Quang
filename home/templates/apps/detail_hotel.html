@@ -88,15 +88,15 @@
                                 <!-- Filter by Room Code -->
                                 <div class="">
                                     <label for="room_code" class="form-label">{% trans "Số phòng" %}</label>
-                                    <input type="text" name="room_code" id="room_code" class="form-control" placeholder="Nhập số phòng" value="{{ request.GET.room_code }}">
+                                    <input type="text" name="room_code" id="room_code" class="form-control" placeholder="{% trans 'Nhập số phòng' %}" value="{{ request.GET.room_code }}">
                                 </div>
 
                                 <!-- Filter by Price Range -->
                                 <div class="" id="price">
                                     <label for="price" class="form-label">{% trans "Khoảng giá" %}</label>
                                     <div class="d-flex">
-                                        <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="Từ" value="{{ request.GET.min_price }}">
-                                        <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Đến" value="{{ request.GET.max_price }}">
+                                        <input type="number" name="min_price" id="min_price" class="form-control me-2" placeholder="{% trans 'Từ' %}" value="{{ request.GET.min_price }}">
+                                        <input type="number" name="max_price" id="max_price" class="form-control" placeholder="{% trans 'Đến' %}" value="{{ request.GET.max_price }}">
                                     </div>
                                 </div>
 

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-02 15:19+0700\n"
-"PO-Revision-Date: 2025-01-02 16:04+0700\n"
+"POT-Creation-Date: 2025-01-02 19:03+0700\n"
+"PO-Revision-Date: 2025-01-02 18:56+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -165,32 +165,35 @@ msgstr "TUYEN QUANG TOURISM"
 msgid "Trang chủ"
 msgstr "Home"
 
-#: .\home\templates\apps\base.html:89 .\home\templates\apps\base.html:151
+#: .\home\templates\apps\base.html:89 .\home\templates\apps\base.html:147
+#: .\home\templates\apps\base.html:171
 msgid "Quản lý cơ sở lưu trú"
 msgstr "Manage Accommodation Facilities"
 
-#: .\home\templates\apps\base.html:93 .\home\templates\apps\base.html:147
+#: .\home\templates\apps\base.html:93 .\home\templates\apps\base.html:167
 #: .\home\templates\apps\order.html:5 .\home\templates\apps\order.html:18
 #: .\home\templates\apps\order.html:146
 #: .\home\templates\apps\update_order.html:18
 msgid "Đơn đặt phòng"
 msgstr "Booking Orders"
 
-#: .\home\templates\apps\base.html:96 .\home\templates\apps\base.html:156
+#: .\home\templates\apps\base.html:96 .\home\templates\apps\base.html:152
+#: .\home\templates\apps\base.html:176
 #: .\home\templates\apps\manage_account.html:5
 #: .\home\templates\apps\manage_account.html:18
 #: .\home\templates\apps\manage_account.html:27
 msgid "Quản lí tài khoản"
 msgstr "Account Management"
 
-#: .\home\templates\apps\base.html:97 .\home\templates\apps\base.html:157
-#: .\home\templates\apps\listroom.html:5 .\home\templates\apps\listroom.html:29
+#: .\home\templates\apps\base.html:97 .\home\templates\apps\base.html:153
+#: .\home\templates\apps\base.html:177 .\home\templates\apps\listroom.html:5
+#: .\home\templates\apps\listroom.html:29
 #: .\home\templates\apps\listroom.html:38
 msgid "Thống kê phòng"
 msgstr "Room Statistics"
 
-#: .\home\templates\apps\base.html:102 .\home\templates\apps\base.html:159
-#: .\home\templates\apps\historylist.html:5
+#: .\home\templates\apps\base.html:102 .\home\templates\apps\base.html:155
+#: .\home\templates\apps\base.html:179 .\home\templates\apps\historylist.html:5
 #: .\home\templates\apps\historylist.html:29
 #: .\home\templates\apps\historylist.html:38
 msgid "Lịch sử đặt phòng"
@@ -204,42 +207,42 @@ msgstr "Other Services"
 msgid "Ngôn ngữ"
 msgstr "Language"
 
-#: .\home\templates\apps\base.html:145
+#: .\home\templates\apps\base.html:165
 #: .\home\templates\apps\change_password.html:34
 #: .\home\templates\apps\edit_profile.html:44
 #: .\home\templates\apps\profile.html:3 .\home\templates\apps\profile.html:9
 msgid "Trang cá nhân"
 msgstr "Personal page"
 
-#: .\home\templates\apps\base.html:163
+#: .\home\templates\apps\base.html:183
 #: .\home\templates\apps\change_password.html:5
 #: .\home\templates\apps\change_password.html:28
 #: .\home\templates\apps\change_password.html:40
 msgid "Đổi mật khẩu"
 msgstr "Change Password"
 
-#: .\home\templates\apps\base.html:166 .\home\templates\apps\base.html:175
+#: .\home\templates\apps\base.html:186 .\home\templates\apps\base.html:195
 msgid "Đăng xuất"
 msgstr "Logout"
 
-#: .\home\templates\apps\base.html:168 .\home\templates\apps\base.html:180
+#: .\home\templates\apps\base.html:188 .\home\templates\apps\base.html:200
 #: .\home\templates\apps\login.html:3 .\home\templates\apps\login.html:44
 msgid "Đăng nhập"
 msgstr "Login"
 
-#: .\home\templates\apps\base.html:169 .\home\templates\apps\base.html:183
+#: .\home\templates\apps\base.html:189 .\home\templates\apps\base.html:203
 #: .\home\templates\apps\register.html:3 .\home\templates\apps\register.html:74
 msgid "Đăng ký"
 msgstr "Register"
 
-#: .\home\templates\apps\base.html:218 .\home\templates\apps\booking.html:95
+#: .\home\templates\apps\base.html:243 .\home\templates\apps\booking.html:95
 #: .\home\templates\apps\detail.html:46
 #: .\home\templates\apps\update_hotel.html:42
 #: .\home\templates\apps\update_order.html:44
 msgid "Địa chỉ:"
 msgstr "Address:"
 
-#: .\home\templates\apps\base.html:218
+#: .\home\templates\apps\base.html:243
 msgid ""
 "Trường THPT Nguyễn Văn Huyên, Tổ 9, Phường An Tường, TP. Tuyên Quang, Tỉnh "
 "Tuyên Quang |"
@@ -247,15 +250,15 @@ msgstr ""
 "Nguyen Van Huyen High School, Group 9, An Tuong Ward, Tuyen Quang City, "
 "Tuyen Quang Province |"
 
-#: .\home\templates\apps\base.html:219
+#: .\home\templates\apps\base.html:244
 msgid "Điện thoại:"
 msgstr "Phone:"
 
-#: .\home\templates\apps\base.html:223
+#: .\home\templates\apps\base.html:248
 msgid "Thiết kế:"
 msgstr "Designed by:"
 
-#: .\home\templates\apps\base.html:224
+#: .\home\templates\apps\base.html:249
 msgid "Người hướng dẫn:"
 msgstr "Supervisor:"
 
@@ -653,6 +656,25 @@ msgstr "Expensive to cheap"
 msgid "Cơ sở lưu trú"
 msgstr "Accommodation"
 
+#: .\home\templates\apps\detail_hotel.html:91
+#: .\home\templates\apps\listroom.html:58
+msgid "Nhập số phòng"
+msgstr "Enter room number"
+
+#: .\home\templates\apps\detail_hotel.html:98
+#: .\home\templates\apps\historylist.html:91 .\home\templates\apps\home.html:60
+#: .\home\templates\apps\listroom.html:89
+#: .\home\templates\apps\manage_hotel.html:56
+msgid "Từ"
+msgstr "From"
+
+#: .\home\templates\apps\detail_hotel.html:99
+#: .\home\templates\apps\historylist.html:92 .\home\templates\apps\home.html:61
+#: .\home\templates\apps\listroom.html:90
+#: .\home\templates\apps\manage_hotel.html:57
+msgid "Đến"
+msgstr "To"
+
 #: .\home\templates\apps\edit_profile.html:7
 msgid "Tạo hồ sơ"
 msgstr "Create profile"
@@ -683,6 +705,10 @@ msgstr "Proper name:"
 #: .\home\templates\apps\edit_profile.html:79
 msgid "Họ:"
 msgstr "Surname:"
+
+#: .\home\templates\apps\edit_profile.html:86
+msgid "Thông tin hồ sơ"
+msgstr "Profile information"
 
 #: .\home\templates\apps\edit_profile.html:89
 #: .\home\templates\apps\profile.html:60
@@ -771,18 +797,6 @@ msgstr "Booker"
 #: .\home\templates\apps\historylist.html:84
 msgid "Nhập người đặt phòng"
 msgstr "Enter the booker"
-
-#: .\home\templates\apps\historylist.html:91 .\home\templates\apps\home.html:60
-#: .\home\templates\apps\listroom.html:89
-#: .\home\templates\apps\manage_hotel.html:56
-msgid "Từ"
-msgstr "From"
-
-#: .\home\templates\apps\historylist.html:92 .\home\templates\apps\home.html:61
-#: .\home\templates\apps\listroom.html:90
-#: .\home\templates\apps\manage_hotel.html:57
-msgid "Đến"
-msgstr "To"
 
 #: .\home\templates\apps\historylist.html:110
 msgid "Tải xuống lịch sử"
@@ -935,10 +949,6 @@ msgstr "Reload page"
 #: .\home\templates\apps\listroom.html:47
 msgid "Tất cả cơ sở lưu trú"
 msgstr "All accommodations"
-
-#: .\home\templates\apps\listroom.html:58
-msgid "Nhập số phòng"
-msgstr "Enter room number"
 
 #: .\home\templates\apps\listroom.html:108
 msgid "Tải xuống danh sách phòng"
@@ -1184,11 +1194,11 @@ msgstr "Yes"
 msgid "Ngày sinh"
 msgstr "Birthday"
 
-#: .\home\templates\apps\news.html:25
+#: .\home\templates\apps\news.html:26
 msgid "Tin Tức & Dịch Vụ"
 msgstr "News & Services"
 
-#: .\home\templates\apps\news.html:40
+#: .\home\templates\apps\news.html:48
 msgid "Xem chi tiết"
 msgstr "See details"
 
