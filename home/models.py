@@ -77,7 +77,8 @@ class Product(models.Model):
     maplocation = models.CharField(max_length=255, default='N/A')
     rate = models.IntegerField(
         null=True,
-        validators=[MinValueValidator(0)]
+        validators=[MinValueValidator(0)],
+        default=0
     )
     phonecall = models.CharField(max_length=255, blank=False, default='0')
 

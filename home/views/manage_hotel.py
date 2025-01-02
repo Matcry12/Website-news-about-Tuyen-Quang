@@ -118,37 +118,39 @@ def Cart(request):
                 'Trạng thái'
             ]
 
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                room_data = dict(zip(headers, row))
+            with transaction.atomic():
 
-                # Fetch Product
-                product_excel = products.first() if products.exists() else None
-                if not product_excel:
-                    continue
+                for row in sheet.iter_rows(min_row=2, values_only=True):
+                    room_data = dict(zip(headers, row))
 
-                # Fetch RoomType
-                room_type_name = room_data['Loại phòng']
-                try:
-                    room_type_excel = RoomType.objects.get(name=room_type_name)
-                except RoomType.DoesNotExist:
-                    room_type_excel = None
+                    # Fetch Product
+                    product_excel = products.first() if products.exists() else None
+                    if not product_excel:
+                        continue
 
-                # Fetch StatusType
-                status_type_name = room_data['Trạng thái']
-                try:
-                    status_type_excel = StatusType.objects.get(name=status_type_name)
-                except StatusType.DoesNotExist:
-                    status_type_excel = None
+                    # Fetch RoomType
+                    room_type_name = room_data['Loại phòng']
+                    try:
+                        room_type_excel = RoomType.objects.get(name=room_type_name)
+                    except RoomType.DoesNotExist:
+                        room_type_excel = None
 
-                # Create Room
-                Room.objects.create(
-                    product=product_excel,
-                    room_code=room_data['Mã số phòng'],
-                    price=room_data['Giá thành'],
-                    room_type=room_type_excel,
-                    status=status_type_excel,
-                )
-            return redirect('cart')
+                    # Fetch StatusType
+                    status_type_name = room_data['Trạng thái']
+                    try:
+                        status_type_excel = StatusType.objects.get(name=status_type_name)
+                    except StatusType.DoesNotExist:
+                        status_type_excel = None
+
+                    # Create Room
+                    Room.objects.create(
+                        product=product_excel,
+                        room_code=room_data['Mã số phòng'],
+                        price=room_data['Giá thành'],
+                        room_type=room_type_excel,
+                        status=status_type_excel,
+                    )
+                return redirect('cart')
         except Exception as e:
             error = f'Lỗi trong quá trình nhập dữ liệu: {e}'
 
@@ -323,58 +325,59 @@ def manage_hotel(request):
                     'Loại cơ sở lưu trú', 'Địa chỉ', 'Tọa độ', 'Đánh giá (sao)', 'Số điện thoại'
                 ]
                 
-                # Iterate over the rows in the sheet
-                for row in sheet.iter_rows(min_row=2, values_only=True):
-                    product_data = dict(zip(headers, row))
-                    
-                    if not product_data['Tên cơ sở lưu trú']:
-                        continue
+                with transaction.atomic():
+                    # Iterate over the rows in the sheet
+                    for row in sheet.iter_rows(min_row=2, values_only=True):
+                        product_data = dict(zip(headers, row))
+                        
+                        if not product_data['Tên cơ sở lưu trú']:
+                            continue
 
-                    try:
-                        # Get or create the owner User
-                        owner = User.objects.get(username=product_data['Chủ sở hữu (username)'])
-                    except ObjectDoesNotExist:
-                        owner = None  # or handle exception if user does not exist
-                    
-                    # Create the Product instance
-                    product = Product.objects.create(
-                        name=product_data['Tên cơ sở lưu trú'],
-                        amountprice=product_data['Giá niêm yết'],
-                        owner=owner,
-                        detail=product_data['Mô tả'],
-                        location=product_data['Địa chỉ'],
-                        maplocation=product_data['Tọa độ'],
-                        rate=product_data['Đánh giá (sao)'],
-                        phonecall=product_data['Số điện thoại']
-                    )
+                        try:
+                            # Get or create the owner User
+                            owner = User.objects.get(username=product_data['Chủ sở hữu (username)'])
+                        except ObjectDoesNotExist:
+                            owner = None  # or handle exception if user does not exist
+                        
+                        # Create the Product instance
+                        product = Product.objects.create(
+                            name=product_data['Tên cơ sở lưu trú'],
+                            amountprice=product_data['Giá niêm yết'],
+                            owner=owner,
+                            detail=product_data['Mô tả'],
+                            location=product_data['Địa chỉ'],
+                            maplocation=product_data['Tọa độ'],
+                            rate=product_data['Đánh giá (sao)'],
+                            phonecall=product_data['Số điện thoại']
+                        )
 
-                    profile_owner = UserProfile.objects.get(user = owner)
+                        profile_owner = UserProfile.objects.get(user = owner)
 
-                    profile_owner.product = product
+                        profile_owner.product = product
 
-                    profile_owner.save()
+                        profile_owner.save()
 
-                    # Handle categories (comma-separated names)
-                    if product_data['Dịch vụ']:
-                        categories_excel = product_data['Dịch vụ'].split(',')
-                        for category_name in categories_excel:
-                            category_excel = category.objects.get(name=category_name.strip())
-                            product.categories.add(category_excel)
+                        # Handle categories (comma-separated names)
+                        if product_data['Dịch vụ']:
+                            categories_excel = product_data['Dịch vụ'].split(',')
+                            for category_name in categories_excel:
+                                category_excel = category.objects.get(name=category_name.strip())
+                                product.categories.add(category_excel)
 
-                    # Handle room types (comma-separated names)
-                    if product_data['Các loại phòng']:
-                        room_types_excel = product_data['Các loại phòng'].split(',')
-                        for room_type_name in room_types_excel:
-                            room_type_excel = RoomType.objects.get(name=room_type_name.strip())
-                            product.room_types.add(room_type_excel)
+                        # Handle room types (comma-separated names)
+                        if product_data['Các loại phòng']:
+                            room_types_excel = product_data['Các loại phòng'].split(',')
+                            for room_type_name in room_types_excel:
+                                room_type_excel = RoomType.objects.get(name=room_type_name.strip())
+                                product.room_types.add(room_type_excel)
 
-                    # Handle product types (comma-separated names)
-                    if product_data['Loại cơ sở lưu trú']:
-                        product_types_excel = product_data['Loại cơ sở lưu trú'].split(',')
-                        for product_type_name in product_types_excel:
-                            product_type_excel = ProductType.objects.get(name=product_type_name.strip())
-                            product.product_type.add(product_type_excel)
-                return redirect('manage_hotel')
+                        # Handle product types (comma-separated names)
+                        if product_data['Loại cơ sở lưu trú']:
+                            product_types_excel = product_data['Loại cơ sở lưu trú'].split(',')
+                            for product_type_name in product_types_excel:
+                                product_type_excel = ProductType.objects.get(name=product_type_name.strip())
+                                product.product_type.add(product_type_excel)
+                    return redirect('manage_hotel')
             except Exception as e:
                error = f'Lỗi trong quá trình nhập dữ liệu: {e}'
     
