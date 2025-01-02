@@ -177,7 +177,7 @@ def home(request):
 
     sorted_products = sorted(products, key=parse_amount_start)
 
-    status_id = StatusType.objects.filter(name='Trống').values_list('id', flat=True).first()
+    status_id = StatusType.objects.filter(name='Trống/Empty').values_list('id', flat=True).first()
     product_rooms = {}
 
     if status_id:
@@ -215,7 +215,7 @@ def detail(request):
 
     id = request.GET.get('id', '')
     product = get_object_or_404(Product, id=id)
-    status = StatusType.objects.get(name='Trống')
+    status = StatusType.objects.get(name='Trống/Empty')
     rooms_on_sale = product.rooms.filter(status=status)
 
     # Get sorting parameter from GET
@@ -301,8 +301,8 @@ def booking(request, order_id=None):
     else:
         product = room = None
     
-    outstock = StatusType.objects.filter(name='Đang được sử dụng').values_list('id', flat=True).first()
-    wait = StatusType.objects.filter(name='Chờ').values_list('id', flat=True).first()
+    outstock = StatusType.objects.filter(name='Đang được sử dụng/ In use').values_list('id', flat=True).first()
+    wait = StatusType.objects.filter(name='Chờ/Wait').values_list('id', flat=True).first()
 
     if room.status.id == wait or room.status.id == outstock:
         return redirect('home')
@@ -366,7 +366,7 @@ def booking(request, order_id=None):
             room=room,
             quantity=1,
         )
-        status_instance = StatusType.objects.get(name="Chờ")
+        status_instance = StatusType.objects.get(name="Chờ/Wait")
         room.status = status_instance
         room.save()
         messages.success(request, "Bạn đã đặt phòng thành công")
@@ -608,7 +608,7 @@ def return_room(request, order_id):
     
     messages.success(request, "Order complete successfully")
 
-    status_instance = StatusType.objects.get(name="Trống")
+    status_instance = StatusType.objects.get(name="Trống/Empty")
     orderD.room.status = status_instance
     orderD.room.save()
     # Delete the order

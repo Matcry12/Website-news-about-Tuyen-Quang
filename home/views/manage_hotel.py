@@ -77,7 +77,7 @@ def Cart(request):
         room_type = RoomType.objects.all()
         status_type = StatusType.objects.all()
         hotel_type = ProductType.objects.all()
-        onsale = rooms.filter(status__name='Trống').exists()
+        onsale = rooms.filter(status__name='Trống/Empty').exists()
 
         error = ''
 
@@ -180,11 +180,11 @@ def updateOrder(request):
 
     if action == 'true':
         Order.confirm = True
-        status_instance = StatusType.objects.get(name="Đang được sử dụng")
+        status_instance = StatusType.objects.get(name="Đang được sử dụng/ In use")
         Order.room.status = status_instance
         Order.room.save()
     elif action == 'false':
-        status_instance = StatusType.objects.get(name="Chờ")
+        status_instance = StatusType.objects.get(name="Chờ/Wait")
         Order.room.status = status_instance
         Order.room.save()
         Order.confirm = False
@@ -410,7 +410,7 @@ def detail_hotel(request, hotel_id):
         rooms = filter_room_detail(request, hotel_id)
         room_type = RoomType.objects.all()
         status_type = StatusType.objects.all()
-        onsale = rooms.filter(status__name='Trống').exists()
+        onsale = rooms.filter(status__name='Trống/Empty').exists()
         paginator = Paginator(rooms, 15)  # Show 5 orders per page
         page_number = request.GET.get('page')  # Get current page number from URL
         room_page = paginator.get_page(page_number)

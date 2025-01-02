@@ -13,7 +13,7 @@ def delete_order(request, order_id):
     if orderD.confirm == False:
         if orderD.room.product.owner != request.user and orderD.customer != request.user:
             return redirect('order')
-        status_instance = StatusType.objects.get(name="Trống")
+        status_instance = StatusType.objects.get(name="Trống/Empty")
         orderD.room.status = status_instance
         orderD.room.save()
         orderD.delete()
