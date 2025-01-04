@@ -119,7 +119,7 @@ class Comment(models.Model):
             MaxValueValidator(5)
         ]
     )
-    text = models.TextField()
+    text = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
