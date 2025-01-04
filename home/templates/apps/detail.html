@@ -98,6 +98,91 @@
             </div>
         </div>
     </div>
+
+    <div class="card shadow p-4 mt-4">
+        <h3 class="mb-4">{% trans "Bình luận & Đánh giá" %}</h3>
+        <div class="row">
+            <!-- Comment Form Section -->
+            <div class="col-md-4">
+                <form id="commentForm" method="POST">
+                    {% csrf_token %}
+                    <h6><strong>{% trans "Viết bình luận của bạn" %}</strong></h6>
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">{% trans "Chọn đánh giá" %}</label>
+                        <select class="form-select" name="rating" id="rating" required>
+                            <option value="5">⭐⭐⭐⭐⭐ - {% trans "Tuyệt vời" %}</option>
+                            <option value="4">⭐⭐⭐⭐ - {% trans "Rất tốt" %}</option>
+                            <option value="3">⭐⭐⭐ - {% trans "Tốt" %}</option>
+                            <option value="2">⭐⭐ - {% trans "Trung bình" %}</option>
+                            <option value="1">⭐ - {% trans "Kém" %}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">{% trans "Bình luận" %}</label>
+                        <div class="mb-3">
+                            <textarea 
+                                class="form-control" 
+                                name="comment" 
+                                id="comment" 
+                                rows="4" 
+                                placeholder="{% trans 'Viết bình luận của bạn...' %}" 
+                                required></textarea>
+                        </div>                        
+                    </div>
+                    <button type="submit" class="btn btn orange rounded w-100">
+                        {% trans "Gửi bình luận" %}
+                    </button>
+                </form>
+            </div>
+    
+            <!-- Comment Display Section -->
+            <div class="col-md-8">
+                <h6><strong>{% trans "Bình luận gần đây" %}</strong></h6>
+                <div class="comments-container">
+                    {% for comment in comments_page %}
+                        <div class="comment mb-3 p-3 border rounded bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>{{ comment.user.username }}</strong>
+                                <span>
+                                    {% for star in "★★★★★"|slice:comment.rating %}
+                                        ⭐
+                                    {% endfor %}
+                                </span>
+                            </div>
+                            <p class="mb-1">{{ comment.text }}</p>
+                            <small class="text-muted">{{ comment.created_at|date:"d/m/Y H:i" }}</small>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">{% trans "Chưa có bình luận nào." %}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if comments_page %}
+            <div class="d-flex justify-content-center mt-4">
+                <nav>
+                    <ul class="pagination">
+                        {% if comments_page.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?comment_page={{ comments_page.previous_page_number }}&{{ query_string }}">&#x2190; {% trans "Trang trước" %}</a>
+                            </li>
+                        {% endif %}
+                        {% for num in comments_page.paginator.page_range %}
+                            <li class="page-item {% if comments_page.number == num %}active{% endif %}">
+                                <a class="page-link" href="?comment_page={{ num }}&{{ query_string }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if comments_page.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?comment_page={{ comments_page.next_page_number }}&{{ query_string }}">{% trans "Sang trang" %} &#x2192;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
+    </div>
+    
 </div>
 
 <style>

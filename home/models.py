@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.timezone import now
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # User Creation Form
 class CreationUserForm(UserCreationForm):
@@ -38,6 +38,8 @@ class CreationUserForm(UserCreationForm):
             }),
         }
 
+
+    
 # Category model
 class category(models.Model):
     name = models.CharField(max_length=1000)
@@ -77,7 +79,10 @@ class Product(models.Model):
     maplocation = models.CharField(max_length=255, default='N/A')
     rate = models.IntegerField(
         null=True,
-        validators=[MinValueValidator(0)],
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(5)
+        ],
         default=0
     )
     phonecall = models.CharField(max_length=255, blank=False, default='0')
@@ -96,6 +101,29 @@ class Product(models.Model):
         return f"{self.owner.last_name} {self.owner.first_name}"
     class Meta:
         ordering = ['name']
+
+class Comment(models.Model):
+    product = models.ForeignKey(
+        Product, 
+        on_delete=models.CASCADE, 
+        related_name='comments'
+    )
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE
+    )
+    rating = models.PositiveIntegerField(
+        default=5,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5)
+        ]
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.rating} ⭐"
     
 class StatusType(models.Model):
     name = models.CharField(max_length=100)  # Display name for the room type
@@ -150,19 +178,21 @@ class Room(models.Model):
 class order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     dateOrder = models.DateTimeField(auto_now_add=True)
-    outdateOrder = models.DateTimeField(null=True, blank=True)
+    datebook = models.DateTimeField(null=True, blank=False)
     complete = models.BooleanField(default=False)
     confirm = models.BooleanField(default=False)
     address = models.CharField(max_length=255, blank=False, default="N/A")
     cname = models.CharField(max_length=255, blank=False, default="N/A")
     phonecall = models.CharField(max_length=255, blank=False, default='0')
     cccd = models.CharField(max_length=255, blank=False, default='0')
-    datebook = models.DateTimeField(null=True, blank=False)
+    
     method = models.CharField(max_length=255, blank=False, default="N/A")
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"Order #{self.id} by {self.customer} ({'Complete' if self.confirm else 'Pending'})"
+    class Meta:
+        ordering = ['-dateOrder']
 
 class history(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -178,6 +208,8 @@ class history(models.Model):
 
     def __str__(self):
         return f"History for Order #{self.id} - {self.customer}"
+    class Meta:
+        ordering = ['-outdateOrder'] 
 
 # Cart model
 class cart(models.Model):

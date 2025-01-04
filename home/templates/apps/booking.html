@@ -26,6 +26,7 @@
 <div class="container mt-5 bg-light p-4 rounded shadow custom-container">
     <h3 class="text-center mb-4">{% trans "Thông Tin Đặt Phòng" %}</h3>
     <div class="table-wrapper">
+        <h2 class="text-center" style="color: red;">{{ error }}</h2>
         <form method="POST">
             {% csrf_token %}
             
@@ -70,8 +71,8 @@
                     <div class="field-wrapper">
                         <strong>{% trans "Thanh toán:" %}</strong>
                         <select class="form-select" name="payment_method" required>
-                            <option value="Thanh toán chuyển khoản">{% trans "Thanh toán chuyển khoản" %}</option>
-                            <option value="Thanh toán qua liên hệ">{% trans "Thanh toán qua liên hệ" %}</option>
+                            <option value="{% trans 'Thanh toán chuyển khoản' %}">{% trans "Thanh toán chuyển khoản" %}</option>
+                            <option value="{% trans 'Thanh toán qua liên hệ' %}">{% trans "Thanh toán qua liên hệ" %}</option>
                         </select>
                     </div>
                 </div>
@@ -81,19 +82,19 @@
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>{% trans "Tên khách hàng:" %}</strong>
-                        <input type="text" class="form-control" name="customer_name" value="{{ order.cname }}" placeholder="Nhập tên của bạn" title="Vui lòng nhập tên của bạn" required>
+                        <input type="text" class="form-control" name="customer_name" value="{{ order.cname }}" placeholder="{% trans 'Nhập tên của bạn' %}" title="{% trans 'Vui lòng nhập tên của bạn' %}" required>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>{% trans "Số CCCD:" %}</strong>
-                        <input type="text" class="form-control" name="cccd" pattern="\d{12}" placeholder="Nhập số căn cước công dân" title="Vui lòng nhập 12 chữ số" required>
+                        <input type="text" class="form-control" name="cccd" pattern="\d{12}" placeholder="{% trans 'Nhập số căn cước công dân' %}" title="{% trans 'Vui lòng nhập 12 chữ số' %}" required>
                     </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>{% trans "Địa chỉ:" %}</strong>
-                        <input type="text" class="form-control" name="address" value="{{ order.address }}" placeholder="Nhập địa chỉ" title="Vui lòng nhập tên địa chỉ của bạn" required>
+                        <input type="text" class="form-control" name="address" value="{{ order.address }}" placeholder="{% trans 'Nhập địa chỉ' %}" title="{% trans 'Vui lòng nhập tên địa chỉ của bạn' %}" required>
                     </div>
                 </div>
             </div>
@@ -102,13 +103,13 @@
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>{% trans "Số ĐT:" %}</strong>
-                        <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" placeholder="Nhập số điện thoại" pattern="\d{10}" title="Vui lòng nhập số điện thoại gồm 10 chữ số" required>
+                        <input type="text" class="form-control" name="phone_number" value="{{ order.phonecall }}" placeholder="{% trans 'Nhập số điện thoại' %}" pattern="\d{10}" title="{% trans 'Vui lòng nhập số điện thoại gồm 10 chữ số' %}" required>
                     </div>                    
                 </div>
                 <div class="col-md-4">
                     <div class="field-wrapper">
                         <strong>{% trans "Ngày nhận phòng:" %}</strong>
-                        <input type="text" id="datepicker" class="form-control" name="booking_date" value="{{ order.datebook|date:'d/m/Y' }}" placeholder="Nhập ngày đặt phòng" title="Vui lòng nhập ngày đặt phòng" required>
+                        <input type="text" id="datepicker" class="form-control" name="booking_date" value="{{ order.datebook|date:'d/m/Y' }}" placeholder="{% trans 'Nhập ngày đặt phòng' %}" title="{% trans 'Vui lòng nhập ngày đặt phòng' %}" required>
                     </div>
                 </div>
                 <div class="col-md-4 text-center">

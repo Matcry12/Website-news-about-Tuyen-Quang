@@ -1,9 +1,10 @@
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.db import transaction
+from django.urls import reverse
 from ..models import *
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Q, Value, F, FloatField, Count, CharField
+from django.db.models import Q, Value, F, FloatField, Count, CharField, Avg, BooleanField
 import json
 from collections import defaultdict
 from django.contrib.auth import authenticate,login,logout
@@ -87,7 +88,10 @@ def parse_price(price):
 
 def home(request):
     # Annotate amount_start for sorting
-    products = Product.objects.all()
+    products = Product.objects.annotate(
+        comment_count=Count('comments'),
+        average_rating=Avg('comments__rating')
+    )
 
     if request.user.is_authenticated:
         profile = UserProfile.objects.get(user=request.user)
@@ -180,7 +184,6 @@ def home(request):
 
     status_id = StatusType.objects.filter(name='Trống/Empty').values_list('id', flat=True).first()
     product_rooms = {}
-
     if status_id:
         product_rooms = {
             product.id: product.rooms.filter(status_id=status_id)
@@ -218,6 +221,10 @@ def detail(request):
     product = get_object_or_404(Product, id=id)
     status = StatusType.objects.get(name='Trống/Empty')
     rooms_on_sale = product.rooms.filter(status=status)
+    comments = Comment.objects.filter(product=product).order_by('-created_at')
+    paginator_comment = Paginator(comments, 5)
+    page_number_comment = request.GET.get('comment_page')
+    comments_page = paginator_comment.get_page(page_number_comment)
 
     # Get sorting parameter from GET
     price_sort = request.GET.get('priceSort', 'asc')
@@ -239,8 +246,20 @@ def detail(request):
     # Generate query string for pagination links
     query_params = request.GET.copy()
     query_params.pop('page', None)
+    query_params.pop('comment_page', None) 
     query_string = query_params.urlencode()
 
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        text = request.POST.get('comment')
+        Comment.objects.create(
+            product=product,
+            user=request.user,
+            rating=rating,
+            text=text
+        )
+        return HttpResponseRedirect(f"{reverse('detail')}?id={id}")
+    
     context = {
         'product': product,
         'user_not_login': user_not_login,
@@ -248,6 +267,8 @@ def detail(request):
         'profile': profile,
         'room_page': room_page,
         'query_string': query_string,
+        'comments': comments,
+        'comments_page': comments_page,
     }
     return render(request, 'apps/detail.html', context)
 
@@ -294,6 +315,8 @@ def booking(request, order_id=None):
         user_not_login = "block"
         profile = None
         return redirect('error_login')
+    
+    error = ''
 
     # If product_id and room_id are provided, fetch corresponding objects
     if product_id and room_id:
@@ -313,8 +336,6 @@ def booking(request, order_id=None):
     else:
         order_obj = None
 
-    
-
     if request.method == 'POST':
         # Extract form data
         customer_name = request.POST.get('customer_name')
@@ -322,56 +343,64 @@ def booking(request, order_id=None):
         address = request.POST.get('address')
         phone_number = request.POST.get('phone_number')
         booking_date = request.POST.get('booking_date')
-        payment_method = request.POST.get('payment_method')
-        # Ensure room_id is included
-        room_id = request.POST.get('room_id')
 
-        booking_date_obj = datetime.strptime(booking_date, "%d/%m/%Y")
+        cbooking_date = datetime.strptime(booking_date, "%d/%m/%Y").date()
+        current_date = now().date()
+        
 
-        # Form validation (optional)
-        if not all([customer_name, cccd, address, phone_number, booking_date_obj, room_id]):
-            return HttpResponse("Xảy ra sự cố lỗi trong quá trình nhập thông tin. Vui lòng kiểm tra lại", status=400)
-
-        if profile.role != 'customer':
-            return HttpResponse("Tài khoản này không thể đặt phòng", status=400)
-
-        # Handle order creation or update
-        if order_obj:
-            # Update existing order
-            order_obj.cname = customer_name
-            order_obj.address = address
-            order_obj.cccd = cccd
-            order_obj.phonecall = phone_number
-            order_obj.datebook = booking_date_obj
-            order_obj.room = get_object_or_404(Room, id=room_id)
-            order_obj.method = payment_method
-            order_obj.save()
+        if cbooking_date < current_date:
+            error = 'Không thể đặt phòng trong quá khứ.'
         else:
-            # Create a new order
-            order_obj = order.objects.create(
-                customer=request.user,
-                cname=customer_name,
-                address=address,
-                phonecall=phone_number,
-                cccd = cccd,
-                datebook=booking_date_obj,
-                complete=False,  # Order is incomplete initially
-                method = payment_method,
-                room=get_object_or_404(Room, id=room_id)
-            )
+            payment_method = request.POST.get('payment_method')
+            # Ensure room_id is included
+            room_id = request.POST.get('room_id')
 
-        # Handle cart items (add the room to the cart)
-        room = get_object_or_404(Room, id=room_id)  # Get the room based on the provided room_id
-        cart_item = cart.objects.create(
-            order=order_obj,
-            room=room,
-            quantity=1,
-        )
-        status_instance = StatusType.objects.get(name="Chờ/Wait")
-        room.status = status_instance
-        room.save()
-        messages.success(request, "Bạn đã đặt phòng thành công")
-        return redirect('completebooking')
+            booking_date_obj = datetime.strptime(booking_date, "%d/%m/%Y")
+
+            # Form validation (optional)
+            if not all([customer_name, cccd, address, phone_number, booking_date_obj, room_id]):
+                return HttpResponse("Xảy ra sự cố lỗi trong quá trình nhập thông tin. Vui lòng kiểm tra lại", status=400)
+
+            if profile.role != 'customer':
+                return HttpResponse("Tài khoản này không thể đặt phòng", status=400)
+
+            # Handle order creation or update
+            if order_obj:
+                # Update existing order
+                order_obj.cname = customer_name
+                order_obj.address = address
+                order_obj.cccd = cccd
+                order_obj.phonecall = phone_number
+                order_obj.datebook = booking_date_obj
+                order_obj.room = get_object_or_404(Room, id=room_id)
+                order_obj.method = payment_method
+                order_obj.save()
+            else:
+                # Create a new order
+                order_obj = order.objects.create(
+                    customer=request.user,
+                    cname=customer_name,
+                    address=address,
+                    phonecall=phone_number,
+                    cccd = cccd,
+                    datebook=booking_date_obj,
+                    complete=False,  # Order is incomplete initially
+                    method = payment_method,
+                    room=get_object_or_404(Room, id=room_id)
+                )
+
+            # Handle cart items (add the room to the cart)
+            room = get_object_or_404(Room, id=room_id)  # Get the room based on the provided room_id
+            cart_item = cart.objects.create(
+                order=order_obj,
+                room=room,
+                quantity=1,
+            )
+            status_instance = StatusType.objects.get(name="Chờ/Wait")
+            room.status = status_instance
+            room.save()
+            messages.success(request, "Bạn đã đặt phòng thành công")
+            return redirect('completebooking')
 
     if order_obj:
         room_obj = order_obj.room  # Get the room associated with the order
@@ -384,7 +413,8 @@ def booking(request, order_id=None):
         'room': room_obj,
         'product': product,
         'user_not_login': user_not_login,
-        'profile': profile
+        'profile': profile,
+        'error': error,
     }
 
     return render(request, 'apps/booking.html', context)
@@ -593,27 +623,31 @@ def return_room(request, order_id):
     # Fetch the order
     
     orderD = order.objects.get(id=order_id)
-    
-    # Save the order details to the history table
-    history.objects.create(
-        customer=orderD.customer,
-        dateOrder=orderD.dateOrder,
-        datebook=orderD.datebook,
-        address=orderD.address,
-        cname=orderD.cname,
-        cccd = orderD.cccd,
-        phonecall=orderD.phonecall,
-        room=orderD.room,
-        method = orderD.method,
-    )
-    
-    messages.success(request, "Order complete successfully")
 
-    status_instance = StatusType.objects.get(name="Trống/Empty")
-    orderD.room.status = status_instance
-    orderD.room.save()
-    # Delete the order
-    orderD.delete()
+    order_date = orderD.datebook.date() if hasattr(orderD.datebook, 'date') else orderD.datebook
+    current_date = now().date()
+
+    if order_date <= current_date:
+        # Save the order details to the history table
+        history.objects.create(
+            customer=orderD.customer,
+            dateOrder=orderD.dateOrder,
+            datebook=orderD.datebook,
+            address=orderD.address,
+            cname=orderD.cname,
+            cccd = orderD.cccd,
+            phonecall=orderD.phonecall,
+            room=orderD.room,
+            method = orderD.method,
+        )
+        
+        messages.success(request, "Order complete successfully")
+
+        status_instance = StatusType.objects.get(name="Trống/Empty")
+        orderD.room.status = status_instance
+        orderD.room.save()
+        # Delete the order
+        orderD.delete()
     
     # Redirect to the cart page
     return redirect('order')

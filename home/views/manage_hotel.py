@@ -9,7 +9,14 @@ def Order(request):
         customer = request.user
         user_profile = UserProfile.objects.get(user=customer)
         # Corrected the field name to `customer`
-        order_instance = order.objects.filter(room__product__owner=customer)
+        current_datetime = now()
+        order_instance = order.objects.annotate(
+            allow=Case(
+                When(datebook__lte=current_datetime, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField()
+            )
+        ).filter(room__product__owner=customer)
         if user_profile.role == "customer":
             order_instance = order.objects.filter(customer=customer)
         user_not_login = "none"
@@ -29,6 +36,8 @@ def Order(request):
 
     if user_profile.role == 'admin':
         return redirect('error_login')
+    
+    
 
     context = {
         'orders_page': orders_page,

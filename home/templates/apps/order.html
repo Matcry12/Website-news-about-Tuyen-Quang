@@ -95,12 +95,18 @@
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    {% trans "Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?" %}
+                                                                    {% if order.allow %}
+                                                                        {% trans "Bạn có chắc chắn muốn trả phòng cho đơn hàng này không?" %}
+                                                                    {% else %}
+                                                                        {% trans "Bạn không thể trả phòng khi chưa đến ngày khách nhận phòng." %}
+                                                                    {% endif %}
                                                                 </div>
+                                                                {% if order.allow %}
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Hủy" %}</button>
                                                                     <a href="{% url 'return_room' order_id=order.id %}" class="btn btn-danger">{% trans "Có, Trả" %}</a>
                                                                 </div>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                     </div>
