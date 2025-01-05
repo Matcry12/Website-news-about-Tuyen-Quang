@@ -150,7 +150,7 @@
                                 </span>
                             </div>
                             <p class="mb-1">{{ comment.text }}</p>
-                            <small class="text-muted">{{ comment.created_at|date:"d/m/Y H:i" }}</small>
+                            <small class="text-muted">{{ comment.created_at|date:"d/m/Y" }}</small>
                         </div>
                     {% empty %}
                         <p class="text-muted">{% trans "Chưa có bình luận nào." %}</p>

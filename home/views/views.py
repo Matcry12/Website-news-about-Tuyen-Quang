@@ -250,6 +250,8 @@ def detail(request):
     query_string = query_params.urlencode()
 
     if request.method == 'POST':
+        if profile == None:
+            return redirect('error_login')
         rating = request.POST.get('rating')
         text = request.POST.get('comment')
         Comment.objects.create(
