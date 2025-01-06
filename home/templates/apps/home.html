@@ -145,6 +145,42 @@
                                 <div class="box-group bordered-box flex-grow-1 me-2">
                                     <p><strong>{% trans "Địa chỉ" %}:</strong> {{ product.location }}</p>
                                     <button class="btn btn-outline orange-outline view-map-btn" onclick="openMapModal('{{ product.maplocation }}', '{{ product.name }}')">{% trans "Xem bản đồ" %}</button>
+                                    
+                                    <p class="card-text">
+                                        <strong>{% trans "Phê bình:" %}</strong>
+                                        {% if product.average_rating %}
+                                            <span class="
+                                                {% if product.average_rating <= 1 %}text-danger
+                                                {% elif product.average_rating <= 2 %}text-warning
+                                                {% elif product.average_rating <= 3 %}text-info
+                                                {% elif product.average_rating <= 4 %}text-primary
+                                                {% else %}text-success{% endif %}
+                                            ">
+                                            <strong>
+                                                {% if product.average_rating <= 1 %}
+                                                    {% trans "Kém" %}
+                                                {% elif product.average_rating <= 2 %}
+                                                    {% trans "Trung bình" %}
+                                                {% elif product.average_rating <= 3 %}
+                                                    {% trans "Tốt" %}
+                                                {% elif product.average_rating <= 4 %}
+                                                    {% trans "Rất tốt" %}
+                                                {% else %}
+                                                    {% trans "Tuyệt vời" %}
+                                                {% endif %}
+                                            </strong>
+                                            </span>
+                                        {% else %}
+                                            {% trans "Chưa có đánh giá" %}
+                                        {% endif %}
+                                    </p>
+                                    
+
+                                    
+                                    <p class="card-text">
+                                        <strong>{% trans "Nhận xét:" %}</strong>
+                                        {{ product.comment_count|default:"0" }} {% trans "lượt" %}
+                                    </p>
                                 </div>
 
                                 <!-- Map Modal with a single, reusable ID -->
@@ -163,17 +199,14 @@
                                             </iframe>
                                         </div>
                                     </div>
-                                </div>                      
+                                </div>                
+                                
+                                
 
                                 <!-- Room/Price Box -->
                                 <div class="box-group bordered-box flex-grow-1">
 
                                     <!-- Comment Count -->
-                                    <p class="card-text">
-                                        <strong>{% trans "Nhận xét:" %}</strong>
-                                        {{ product.comment_count|default:"0" }} {% trans "lượt" %}
-                                    </p>
-                                    
                                     <!-- Rating Stars -->
                                     <p class="card-text">
                                         <strong>{% trans "Đánh giá:" %}</strong>

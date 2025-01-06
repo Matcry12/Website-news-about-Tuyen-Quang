@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-04 21:27+0700\n"
-"PO-Revision-Date: 2025-01-04 21:34+0700\n"
+"POT-Creation-Date: 2025-01-06 20:08+0700\n"
+"PO-Revision-Date: 2025-01-06 20:09+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -53,7 +53,7 @@ msgstr "Account Name"
 msgid "Giá"
 msgstr "Price"
 
-#: .\home\templates\apps\add_hotel.html:41 .\home\templates\apps\home.html:242
+#: .\home\templates\apps\add_hotel.html:41 .\home\templates\apps\home.html:275
 #: .\home\templates\apps\manage_hotel.html:178
 #: .\home\templates\apps\manage_hotel.html:210 .\home\templatetags\forms.py:88
 msgid "Chi tiết"
@@ -264,7 +264,7 @@ msgstr "Supervisor:"
 
 #: .\home\templates\apps\booking.html:4 .\home\templates\apps\booking.html:23
 #: .\home\templates\apps\completebooking.html:4
-#: .\home\templates\apps\home.html:255 .\home\templates\apps\room.html:27
+#: .\home\templates\apps\home.html:288 .\home\templates\apps\room.html:27
 msgid "Đặt phòng"
 msgstr "Book a Room"
 
@@ -422,26 +422,26 @@ msgstr "Status"
 msgid "Sửa"
 msgstr "Edit"
 
-#: .\home\templates\apps\cart.html:51 .\home\templates\apps\home.html:181
+#: .\home\templates\apps\cart.html:51 .\home\templates\apps\home.html:214
 #: .\home\templates\apps\manage_hotel.html:201
 msgid "Chưa đánh giá"
 msgstr "Not Rated"
 
 #: .\home\templates\apps\cart.html:59
 #: .\home\templates\apps\detail_hotel.html:57
-#: .\home\templates\apps\home.html:194
+#: .\home\templates\apps\home.html:227
 msgid "Còn phòng"
 msgstr "Available"
 
 #: .\home\templates\apps\cart.html:59
 #: .\home\templates\apps\detail_hotel.html:57
-#: .\home\templates\apps\home.html:196
+#: .\home\templates\apps\home.html:229
 msgid "Hết phòng"
 msgstr "Fully Booked"
 
 #: .\home\templates\apps\cart.html:72
 #: .\home\templates\apps\detail_hotel.html:65
-#: .\home\templates\apps\home.html:265
+#: .\home\templates\apps\home.html:298
 #: .\home\templates\apps\manage_hotel.html:245
 #: .\home\templates\apps\manage_hotel.html:267
 msgid "Không có cơ sở lưu trú nào."
@@ -579,7 +579,7 @@ msgstr "Previous Page"
 #: .\home\templates\apps\listroom.html:199
 #: .\home\templates\apps\manage_account.html:312
 #: .\home\templates\apps\manage_hotel.html:291
-#: .\home\templates\apps\order.html:252
+#: .\home\templates\apps\order.html:252 .\home\templates\apps\room.html:62
 msgid "Sang trang"
 msgstr "Next Page"
 
@@ -660,7 +660,7 @@ msgstr "Create account"
 
 #: .\home\templates\apps\detail.html:47
 #: .\home\templates\apps\edit_profile.html:103
-#: .\home\templates\apps\home.html:209 .\home\templates\apps\profile.html:59
+#: .\home\templates\apps\home.html:242 .\home\templates\apps\profile.html:59
 #: .\home\templates\apps\update_hotel.html:47
 #: .\home\templates\apps\update_order.html:49
 msgid "Số điện thoại:"
@@ -675,7 +675,7 @@ msgstr "Service:"
 msgid "Không có dịch vụ nào"
 msgstr "No services available"
 
-#: .\home\templates\apps\detail.html:61 .\home\templates\apps\home.html:233
+#: .\home\templates\apps\detail.html:61 .\home\templates\apps\home.html:266
 msgid "Chat qua Zalo"
 msgstr "Chat via Zalo"
 
@@ -703,23 +703,23 @@ msgstr "Write your comment"
 msgid "Chọn đánh giá"
 msgstr "Select rating"
 
-#: .\home\templates\apps\detail.html:113
+#: .\home\templates\apps\detail.html:113 .\home\templates\apps\home.html:169
 msgid "Tuyệt vời"
 msgstr "Great"
 
-#: .\home\templates\apps\detail.html:114
+#: .\home\templates\apps\detail.html:114 .\home\templates\apps\home.html:167
 msgid "Rất tốt"
 msgstr "Very good"
 
-#: .\home\templates\apps\detail.html:115
+#: .\home\templates\apps\detail.html:115 .\home\templates\apps\home.html:165
 msgid "Tốt"
 msgstr "Good"
 
-#: .\home\templates\apps\detail.html:116
+#: .\home\templates\apps\detail.html:116 .\home\templates\apps\home.html:163
 msgid "Trung bình"
 msgstr "Medium"
 
-#: .\home\templates\apps\detail.html:117
+#: .\home\templates\apps\detail.html:117 .\home\templates\apps\home.html:161
 msgid "Kém"
 msgstr "Least"
 
@@ -1015,36 +1015,44 @@ msgstr "5 stars or more"
 msgid "Xem bản đồ"
 msgstr "View map"
 
-#: .\home\templates\apps\home.html:173
+#: .\home\templates\apps\home.html:150
+msgid "Phê bình:"
+msgstr "Criticize:"
+
+#: .\home\templates\apps\home.html:174
+msgid "Chưa có đánh giá"
+msgstr "No reviews yet"
+
+#: .\home\templates\apps\home.html:181
 msgid "Nhận xét:"
 msgstr "Comment:"
 
-#: .\home\templates\apps\home.html:174
+#: .\home\templates\apps\home.html:182
 msgid "lượt"
 msgstr "reviews"
 
-#: .\home\templates\apps\home.html:179
+#: .\home\templates\apps\home.html:212
 #: .\home\templates\apps\update_hotel.html:62
 msgid "Đánh giá:"
 msgstr "Rate"
 
-#: .\home\templates\apps\home.html:191
+#: .\home\templates\apps\home.html:224
 msgid "Tình trạng:"
 msgstr "Status:"
 
-#: .\home\templates\apps\home.html:203
+#: .\home\templates\apps\home.html:236
 msgid "Giá phòng:"
 msgstr "Price:"
 
-#: .\home\templates\apps\home.html:219
+#: .\home\templates\apps\home.html:252
 msgid "Dịch vụ có sẵn:"
 msgstr "Services available:"
 
-#: .\home\templates\apps\home.html:223
+#: .\home\templates\apps\home.html:256
 msgid "Không có dịch vụ"
 msgstr "No services available"
 
-#: .\home\templates\apps\home.html:266
+#: .\home\templates\apps\home.html:299
 msgid "Tải lại trang"
 msgstr "Reload page"
 
