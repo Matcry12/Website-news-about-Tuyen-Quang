@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 20:08+0700\n"
-"PO-Revision-Date: 2025-01-06 20:09+0700\n"
+"POT-Creation-Date: 2025-01-07 17:37+0700\n"
+"PO-Revision-Date: 2025-01-07 17:38+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1016,8 +1016,8 @@ msgid "Xem bản đồ"
 msgstr "View map"
 
 #: .\home\templates\apps\home.html:150
-msgid "Phê bình:"
-msgstr "Criticize:"
+msgid "Phản hồi:"
+msgstr "Feedback:"
 
 #: .\home\templates\apps\home.html:174
 msgid "Chưa có đánh giá"
@@ -1577,6 +1577,9 @@ msgstr "English"
 #: .\mywebsite\settings.py:139
 msgid "Vietnamese"
 msgstr "Vietnamese"
+
+#~ msgid "Phê bình:"
+#~ msgstr "Criticize:"
 
 #, fuzzy
 #~| msgid "Ngày trả phòng"
