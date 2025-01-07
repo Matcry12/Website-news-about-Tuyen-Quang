@@ -219,7 +219,10 @@
                                                         <button 
                                                             id="toggleButton-{{ forloop.counter }}" 
                                                             class="btn btn-outline purple btn-sm rounded-pill px-3 mt-2" 
-                                                            onclick="togglePassword({{ forloop.counter }})">
+                                                            onclick="togglePassword({{ forloop.counter }})"
+                                                            data-show-text="{% trans 'Hiện' %}"
+                                                            data-hide-text="{% trans 'Ẩn' %}"
+                                                            >
                                                             {% trans "Hiện" %}
                                                         </button>
                                                     </div>
@@ -514,10 +517,11 @@
 
         if (passwordField.style.display === 'none') {
             passwordField.style.display = 'block'; // Show password
-            toggleButton.innerText = gettext('Ẩn'); // Change button text to "Hide"
+            console.log('change')
+            toggleButton.innerText = toggleButton.getAttribute('data-hide-text'); // Change button text to "Hide"
         } else {
             passwordField.style.display = 'none'; // Hide password
-            toggleButton.innerText = gettext('Hiện'); // Change button text to "Show"
+            toggleButton.innerText = toggleButton.getAttribute('data-show-text'); // Change button text to "Show"
         }
     }
 

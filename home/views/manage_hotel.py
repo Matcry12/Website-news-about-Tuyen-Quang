@@ -348,6 +348,11 @@ def manage_hotel(request):
                         except ObjectDoesNotExist:
                             owner = None  # or handle exception if user does not exist
                         
+                        profile_owner = UserProfile.objects.get(user = owner)
+
+                        if profile_owner.product != None:
+                            continue
+
                         # Create the Product instance
                         product = Product.objects.create(
                             name=product_data['Tên cơ sở lưu trú'],
@@ -359,8 +364,6 @@ def manage_hotel(request):
                             rate=product_data['Đánh giá (sao)'],
                             phonecall=product_data['Số điện thoại']
                         )
-
-                        profile_owner = UserProfile.objects.get(user = owner)
 
                         profile_owner.product = product
 

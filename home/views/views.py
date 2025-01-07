@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.db import transaction
 from django.urls import reverse
+from django.utils.crypto import get_random_string
 from ..models import *
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Q, Value, F, FloatField, Count, CharField, Avg, BooleanField
@@ -734,7 +735,7 @@ def manage_account(request):
                 for user_id in selected_users:
                     user = User.objects.get(id=user_id)
                     profile = UserProfile.objects.get(user__id = user_id)
-                    new_password = User.objects.make_random_password(length=10)
+                    new_password = get_random_string(10)
                     user.set_password(new_password)
                     profile.base_password = new_password
                     profile.save()
@@ -812,7 +813,7 @@ def manage_account(request):
                         account_data = dict(zip(headers, row))
 
                         username = account_data.get('Tên tài khoản (username)', '').strip()
-
+                        print(type(account_data['Mật khẩu']))
                         # Check if the username is not empty
                         if not username:
                             continue  # Skip this row if username is missing or empty
@@ -830,7 +831,7 @@ def manage_account(request):
                                 email=account_data['Email'],
                                 first_name=account_data['Tên riêng'],
                                 last_name=account_data['Tên đệm'],
-                                password=account_data['Mật khẩu'],  # Set password using 'create_user'
+                                password=str(account_data['Mật khẩu']),  # Set password using 'create_user'
                             )
 
                             # Create the user profile
@@ -841,7 +842,7 @@ def manage_account(request):
                                 base_password = account_data['Mật khẩu'],
                             )
             except Exception as e:
-                error = 'Lỗi trong quá trình nhập dữ liệu'
+                error = f"Lỗi trong quá trình nhập dữ liệu: {e}"
     
     products = Product.objects.all()
     account_hotel = {
