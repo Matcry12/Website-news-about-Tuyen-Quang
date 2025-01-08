@@ -341,69 +341,72 @@ def booking(request, order_id=None):
 
     if request.method == 'POST':
         # Extract form data
-        customer_name = request.POST.get('customer_name')
-        cccd = request.POST.get('cccd')
-        address = request.POST.get('address')
-        phone_number = request.POST.get('phone_number')
-        booking_date = request.POST.get('booking_date')
+        try:
+            customer_name = request.POST.get('customer_name')
+            cccd = request.POST.get('cccd')
+            address = request.POST.get('address')
+            phone_number = request.POST.get('phone_number')
+            booking_date = request.POST.get('booking_date')
 
-        cbooking_date = datetime.strptime(booking_date, "%d/%m/%Y").date()
-        current_date = now().date()
-        
+            cbooking_date = datetime.strptime(booking_date, "%d/%m/%Y").date()
+            current_date = now().date()
+            
 
-        if cbooking_date < current_date:
-            error = 'Không thể đặt phòng trong quá khứ.'
-        else:
-            payment_method = request.POST.get('payment_method')
-            # Ensure room_id is included
-            room_id = request.POST.get('room_id')
-
-            booking_date_obj = datetime.strptime(booking_date, "%d/%m/%Y")
-
-            # Form validation (optional)
-            if not all([customer_name, cccd, address, phone_number, booking_date_obj, room_id]):
-                return HttpResponse("Xảy ra sự cố lỗi trong quá trình nhập thông tin. Vui lòng kiểm tra lại", status=400)
-
-            if profile.role != 'customer':
-                return HttpResponse("Tài khoản này không thể đặt phòng", status=400)
-
-            # Handle order creation or update
-            if order_obj:
-                # Update existing order
-                order_obj.cname = customer_name
-                order_obj.address = address
-                order_obj.cccd = cccd
-                order_obj.phonecall = phone_number
-                order_obj.datebook = booking_date_obj
-                order_obj.room = get_object_or_404(Room, id=room_id)
-                order_obj.method = payment_method
-                order_obj.save()
+            if cbooking_date < current_date:
+                error = 'Không thể đặt phòng trong quá khứ.'
             else:
-                # Create a new order
-                order_obj = order.objects.create(
-                    customer=request.user,
-                    cname=customer_name,
-                    address=address,
-                    phonecall=phone_number,
-                    cccd = cccd,
-                    datebook=booking_date_obj,
-                    complete=False,  # Order is incomplete initially
-                    method = payment_method,
-                    room=get_object_or_404(Room, id=room_id)
-                )
+                payment_method = request.POST.get('payment_method')
+                # Ensure room_id is included
+                room_id = request.POST.get('room_id')
 
-            # Handle cart items (add the room to the cart)
-            room = get_object_or_404(Room, id=room_id)  # Get the room based on the provided room_id
-            cart_item = cart.objects.create(
-                order=order_obj,
-                room=room,
-                quantity=1,
-            )
-            status_instance = StatusType.objects.get(name="Chờ/Wait")
-            room.status = status_instance
-            room.save()
-            messages.success(request, "Bạn đã đặt phòng thành công")
-            return redirect('completebooking')
+                booking_date_obj = datetime.strptime(booking_date, "%d/%m/%Y")
+
+                # Form validation (optional)
+                if not all([customer_name, cccd, address, phone_number, booking_date_obj, room_id]):
+                    return HttpResponse("Xảy ra sự cố lỗi trong quá trình nhập thông tin. Vui lòng kiểm tra lại", status=400)
+
+                if profile.role != 'customer':
+                    return HttpResponse("Tài khoản này không thể đặt phòng", status=400)
+                with transaction.atomic():
+                    # Handle order creation or update
+                    if order_obj:
+                        # Update existing order
+                        order_obj.cname = customer_name
+                        order_obj.address = address
+                        order_obj.cccd = cccd
+                        order_obj.phonecall = phone_number
+                        order_obj.datebook = booking_date_obj
+                        order_obj.room = get_object_or_404(Room, id=room_id)
+                        order_obj.method = payment_method
+                        order_obj.save()
+                    else:
+                        # Create a new order
+                        order_obj = order.objects.create(
+                            customer=request.user,
+                            cname=customer_name,
+                            address=address,
+                            phonecall=phone_number,
+                            cccd = cccd,
+                            datebook=booking_date_obj,
+                            complete=False,  # Order is incomplete initially
+                            method = payment_method,
+                            room=get_object_or_404(Room, id=room_id)
+                        )
+
+                    # Handle cart items (add the room to the cart)
+                    room = get_object_or_404(Room, id=room_id)  # Get the room based on the provided room_id
+                    cart_item = cart.objects.create(
+                        order=order_obj,
+                        room=room,
+                        quantity=1,
+                    )
+                    status_instance = StatusType.objects.get(name="Chờ/Wait")
+                    room.status = status_instance
+                    room.save()
+                    messages.success(request, "Bạn đã đặt phòng thành công")
+                    return redirect('completebooking')
+        except Exception as e:
+            error = 'Lỗi trong quá trình nhập dữ liệu'
 
     if order_obj:
         room_obj = order_obj.room  # Get the room associated with the order
