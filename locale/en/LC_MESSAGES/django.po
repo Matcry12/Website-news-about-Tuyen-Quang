@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-07 17:37+0700\n"
-"PO-Revision-Date: 2025-01-07 17:38+0700\n"
+"POT-Creation-Date: 2025-01-08 22:45+0700\n"
+"PO-Revision-Date: 2025-01-08 22:46+0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -80,9 +80,10 @@ msgstr "Categories"
 msgid "Loại phòng"
 msgstr "Room type"
 
-#: .\home\templates\apps\add_hotel.html:56 .\home\templatetags\forms.py:91
-msgid "Loại sản phẩm"
-msgstr "Product Type"
+#: .\home\templates\apps\add_hotel.html:56
+#: .\home\templates\apps\manage_hotel.html:174
+msgid "Loại cơ sở lưu trú"
+msgstr "Type of accommodation"
 
 #: .\home\templates\apps\add_hotel.html:61 .\home\templatetags\forms.py:92
 msgid "Vị trí"
@@ -422,7 +423,9 @@ msgstr "Status"
 msgid "Sửa"
 msgstr "Edit"
 
-#: .\home\templates\apps\cart.html:51 .\home\templates\apps\home.html:214
+#: .\home\templates\apps\cart.html:51
+#: .\home\templates\apps\detail_hotel.html:49
+#: .\home\templates\apps\home.html:214
 #: .\home\templates\apps\manage_hotel.html:201
 msgid "Chưa đánh giá"
 msgstr "Not Rated"
@@ -527,7 +530,7 @@ msgstr "Room List"
 
 #: .\home\templates\apps\cart.html:216
 #: .\home\templates\apps\manage_account.html:170
-#: .\home\templates\apps\manage_account.html:255
+#: .\home\templates\apps\manage_account.html:258
 #: .\home\templates\apps\manage_hotel.html:180
 #: .\home\templates\apps\order.html:117 .\home\templates\apps\order.html:200
 msgid "Xóa"
@@ -546,7 +549,7 @@ msgstr "Are you sure you want to delete this room?"
 #: .\home\templates\apps\cart.html:246
 #: .\home\templates\apps\change_password.html:97
 #: .\home\templates\apps\edit_profile.html:181
-#: .\home\templates\apps\manage_account.html:254
+#: .\home\templates\apps\manage_account.html:257
 #: .\home\templates\apps\manage_hotel.html:234
 #: .\home\templates\apps\order.html:106 .\home\templates\apps\order.html:130
 #: .\home\templates\apps\order.html:213
@@ -567,7 +570,7 @@ msgstr "No rooms available."
 #: .\home\templates\apps\detail_hotel.html:185
 #: .\home\templates\apps\historylist.html:213
 #: .\home\templates\apps\listroom.html:189
-#: .\home\templates\apps\manage_account.html:302
+#: .\home\templates\apps\manage_account.html:305
 #: .\home\templates\apps\manage_hotel.html:281
 #: .\home\templates\apps\order.html:242 .\home\templates\apps\room.html:52
 msgid "Trang trước"
@@ -577,7 +580,7 @@ msgstr "Previous Page"
 #: .\home\templates\apps\detail_hotel.html:195
 #: .\home\templates\apps\historylist.html:223
 #: .\home\templates\apps\listroom.html:199
-#: .\home\templates\apps\manage_account.html:312
+#: .\home\templates\apps\manage_account.html:315
 #: .\home\templates\apps\manage_hotel.html:291
 #: .\home\templates\apps\order.html:252 .\home\templates\apps\room.html:62
 msgid "Sang trang"
@@ -1222,22 +1225,27 @@ msgid "Tài khoản đã đổi mật khẩu"
 msgstr "Account password changed"
 
 #: .\home\templates\apps\manage_account.html:223
+#: .\home\templates\apps\manage_account.html:226
 msgid "Hiện"
 msgstr "Show"
 
-#: .\home\templates\apps\manage_account.html:247
+#: .\home\templates\apps\manage_account.html:224
+msgid "Ẩn"
+msgstr "Hide"
+
+#: .\home\templates\apps\manage_account.html:250
 msgid "Xác nhận xóa tài khoản"
 msgstr "Confirm account deletion"
 
-#: .\home\templates\apps\manage_account.html:251
+#: .\home\templates\apps\manage_account.html:254
 msgid "Bạn có chắc chắn muốn xóa tài khoản này không?"
 msgstr "Are you sure you want to delete this room?"
 
-#: .\home\templates\apps\manage_account.html:266
+#: .\home\templates\apps\manage_account.html:269
 msgid "Không có tài khoản."
 msgstr "No account."
 
-#: .\home\templates\apps\manage_account.html:288
+#: .\home\templates\apps\manage_account.html:291
 msgid "Không có tài khoản nào."
 msgstr "No account yet."
 
@@ -1286,10 +1294,6 @@ msgstr "List price"
 #: .\home\templates\apps\manage_hotel.html:172
 msgid "Dịch vụ"
 msgstr "Service"
-
-#: .\home\templates\apps\manage_hotel.html:174
-msgid "Loại cơ sở lưu trú"
-msgstr "Type of accommodation"
 
 #: .\home\templates\apps\manage_hotel.html:231
 msgid "Bạn có chắc chắn muốn xóa cơ sở lưu trú này?"
@@ -1404,8 +1408,8 @@ msgid "Đăng ký tài khoản"
 msgstr "Sign up for an account"
 
 #: .\home\templates\apps\register.html:37
-msgid "mail của bạn (Có thể):"
-msgstr "Your email (Possible):"
+msgid "Email của bạn (Có thể):"
+msgstr "Your Email (Optional):"
 
 #: .\home\templates\apps\register.html:42
 msgid "Tên Riêng:"
@@ -1557,6 +1561,10 @@ msgstr "Enter description"
 #: .\home\templatetags\forms.py:87
 msgid "Đang bán"
 msgstr "On sale"
+
+#: .\home\templatetags\forms.py:91
+msgid "Loại sản phẩm"
+msgstr "Product Type"
 
 #: .\home\templatetags\forms.py:147 .\home\templatetags\forms.py:200
 msgid "Ảnh đại diện"

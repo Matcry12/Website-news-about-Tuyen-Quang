@@ -48,9 +48,9 @@
                                             <td>{{ product.name }}</td>
                                             <td>
                                                 {% if product.rate == 0 %}
-                                                    {% trans "Chưa đánh giá" %}
+                                                    <span class="text-muted">{% trans "Chưa đánh giá" %}</span>
                                                 {% else %}
-                                                    {% for _ in "1"|center:product.rate %}
+                                                    {% for _ in ""|center:product.rate %}
                                                         <i class="fa fa-star text-warning"></i>
                                                     {% endfor %}
                                                 {% endif %}
